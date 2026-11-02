@@ -1,14 +1,15 @@
+using ClosedXML.Excel;
+using SmartHRM.DAL;
+using SmartHRM.DTO;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Device.Location;
 using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
-using System.Device.Location;
-using ClosedXML.Excel;
-using SmartHRM.DAL;
-using SmartHRM.DTO;
+using System.Xml.XPath;
 
 namespace SmartHRM.BUS
 {
@@ -312,6 +313,7 @@ namespace SmartHRM.BUS
         readonly TimesheetDAL dal = new TimesheetDAL();
 
         public DataTable View(int month, int year) { Session.Require(Const.M_TIMESHEET, "view"); return dal.View(month, year); }
+        public DataTable GetIssues(int month, int year) { Session.Require(Const.M_TIMESHEET, "view"); return dal.GetIssues(month, year); }
 
         public void Calculate(int month, int year)
         {

@@ -43,6 +43,34 @@ namespace SmartHRM.BUS
         }
 
         public List<EmployeeDTO> GetEmployees(int deptId) { return new EmployeeDAL().GetByDepartment(deptId); }
+
+        public Dictionary<int, int> CountActive() { Session.Require(Module, "view"); return dal.CountAll(); }
+
+        /// <summary>Id của đơn vị và toàn bộ đơn vị con cháu.</summary>
+        public List<int> SubtreeIds(int deptId)
+        {
+            var all = dal.GetAll();
+            var ids = new List<int> { deptId };
+            for (int i = 0; i < ids.Count; i++)
+            {
+                int cur = ids[i];
+                ids.AddRange(all.Where(d => d.ParentId == cur && !ids.Contains(d.Id)).Select(d => d.Id));
+            }
+            return ids;
+        }
+
+        public DataTable GetEmployeeTable(int deptId, bool includeChildren)
+        {
+            Session.Require(Const.M_ORG, "view");
+            return new EmployeeDAL().GetTableByDepartments(includeChildren ? SubtreeIds(deptId) : new List<int> { deptId });
+        }
+
+        public string ManagerName(DepartmentDTO d)
+        {
+            if (!d.ManagerId.HasValue) return "";
+            var e = new EmployeeDAL().GetById(d.ManagerId.Value);
+            return e == null ? "" : e.Code + " - " + e.FullName;
+        }
     }
 
     public class PositionBUS : GenericBUS<PositionDTO>
@@ -177,17 +205,27 @@ namespace SmartHRM.BUS
 
             var emp = new EmployeeDTO
             {
-                FullName = c.FullName, Email = c.Email, Phone = c.Phone, BirthDate = c.BirthDate,
-                Status = Const.Probation, JoinDate = DateTime.Today,
-                DepartmentId = req == null ? null : req.DepartmentId, PositionId = req == null ? null : req.PositionId
+                FullName = c.FullName,
+                Email = c.Email,
+                Phone = c.Phone,
+                BirthDate = c.BirthDate,
+                Status = Const.Probation,
+                JoinDate = DateTime.Today,
+                DepartmentId = req == null ? null : req.DepartmentId,
+                PositionId = req == null ? null : req.PositionId
             };
             new EmployeeBUS().Save(emp);
 
             var cdal = new ContractDAL();
             var contract = new ContractDTO
             {
-                EmployeeId = emp.Id, ContractNo = cdal.NextNo(), Type = "Thử việc",
-                StartDate = DateTime.Today, EndDate = DateTime.Today.AddDays(59), Status = "Hiệu lực", Note = "Tự động tạo khi onboard"
+                EmployeeId = emp.Id,
+                ContractNo = cdal.NextNo(),
+                Type = "Thử việc",
+                StartDate = DateTime.Today,
+                EndDate = DateTime.Today.AddDays(59),
+                Status = "Hiệu lực",
+                Note = "Tự động tạo khi onboard"
             };
             cdal.Insert(contract);
 

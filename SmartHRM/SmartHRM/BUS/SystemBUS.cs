@@ -51,6 +51,11 @@ namespace SmartHRM.BUS
                 throw new ValidationException("Còn tài khoản thuộc nhóm quyền này, hãy chuyển họ sang nhóm khác trước.");
         }
 
+        public int CountUsers(int roleId)
+        {
+            return DbHelper.ScalarInt("SELECT COUNT(*) FROM users WHERE role_id=@r", DbHelper.P("@r", roleId));
+        }
+
         public List<RolePermissionDTO> GetPermissions(int roleId)
         {
             Session.Require(Const.M_ROLE, "view");

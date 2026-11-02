@@ -85,6 +85,24 @@ namespace SmartHRM.DAL
                 DbHelper.P("@l", locked), DbHelper.P("@m", month), DbHelper.P("@y", year));
         }
 
+        /// <summary>Các bất thường cần xử lý trước khi chốt công: thiếu giờ ra, đơn chưa duyệt, không có dữ liệu chấm công.</summary>
+        public DataTable GetIssues(int month, int year)
+        {
+            return DbHelper.Query(
+                "SELECT e.code AS `Mã NV`, e.full_name AS `Họ tên`, a.work_date AS `Ngày`, 'Có giờ vào nhưng thiếu giờ ra' AS `Vấn đề` " +
+                "FROM attendance a JOIN employees e ON e.id=a.employee_id " +
+                "WHERE MONTH(a.work_date)=@m AND YEAR(a.work_date)=@y AND a.check_in IS NOT NULL AND a.check_out IS NULL " +
+                "UNION ALL " +
+                "SELECT e.code, e.full_name, l.from_date, CONCAT('Đơn chờ duyệt: ', l.type) " +
+                "FROM leave_requests l JOIN employees e ON e.id=l.employee_id " +
+                "WHERE l.status='Chờ duyệt' AND MONTH(l.from_date)=@m AND YEAR(l.from_date)=@y " +
+                "UNION ALL " +
+                "SELECT e.code, e.full_name, NULL, 'Không có dữ liệu chấm công trong tháng' FROM employees e " +
+                "WHERE e.status<>'Nghỉ việc' AND (e.join_date IS NULL OR e.join_date <= LAST_DAY(STR_TO_DATE(CONCAT(@y,'-',@m,'-01'),'%Y-%m-%d'))) " +
+                "AND NOT EXISTS (SELECT 1 FROM attendance a WHERE a.employee_id=e.id AND MONTH(a.work_date)=@m AND YEAR(a.work_date)=@y) " +
+                "ORDER BY 1, 3", DbHelper.P("@m", month), DbHelper.P("@y", year));
+        }
+
         public DataTable View(int month, int year)
         {
             return DbHelper.Query(

@@ -7,3 +7,8 @@ D:\BT Classroom Lab\SmartHRM (.NET)\SmartHRM\SmartHRM\obj\Debug\SmartHRM.GUI.Log
 D:\BT Classroom Lab\SmartHRM (.NET)\SmartHRM\SmartHRM\obj\Debug\SmartHRM.Properties.Resources.resources
 D:\BT Classroom Lab\SmartHRM (.NET)\SmartHRM\SmartHRM\obj\Debug\SmartHRM.csproj.GenerateResource.cache
 D:\BT Classroom Lab\SmartHRM (.NET)\SmartHRM\SmartHRM\obj\Debug\SmartHRM.csproj.CoreCompileInputs.cache
+D:\BT Classroom Lab\SmartHRM (.NET)\SmartHRM\SmartHRM\obj\Debug\SmartHRM.GUI.OrgChartForm.resources
+D:\BT Classroom Lab\SmartHRM (.NET)\SmartHRM\SmartHRM\obj\Debug\SmartHRM.GUI.PayrollForm.resources
+D:\BT Classroom Lab\SmartHRM (.NET)\SmartHRM\SmartHRM\obj\Debug\SmartHRM.GUI.ReportForm.resources
+D:\BT Classroom Lab\SmartHRM (.NET)\SmartHRM\SmartHRM\obj\Debug\SmartHRM.GUI.RoleForm.resources
+D:\BT Classroom Lab\SmartHRM (.NET)\SmartHRM\SmartHRM\obj\Debug\SmartHRM.GUI.TimesheetForm.resources

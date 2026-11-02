@@ -1,9 +1,10 @@
+using MySqlConnector;
+using SmartHRM.DTO;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
-using MySqlConnector;
-using SmartHRM.DTO;
 
 namespace SmartHRM.DAL
 {
@@ -13,6 +14,13 @@ namespace SmartHRM.DAL
         {
             return base.GetAll(where, orderBy == "id DESC" ? "code" : orderBy, ps);
         }
+        /// <summary>Số nhân viên đang làm theo từng phòng ban (một truy vấn duy nhất).</summary>
+        public Dictionary<int, int> CountAll()
+        {
+            var dt = DbHelper.Query("SELECT department_id, COUNT(*) AS c FROM employees WHERE status<>'Nghỉ việc' AND department_id IS NOT NULL GROUP BY department_id");
+            return dt.Rows.Cast<DataRow>().ToDictionary(r => Convert.ToInt32(r["department_id"]), r => Convert.ToInt32(r["c"]));
+        }
+
         public int CountEmployees(int deptId)
         {
             return DbHelper.ScalarInt("SELECT COUNT(*) FROM employees WHERE department_id=@d AND status<>'Nghỉ việc'", DbHelper.P("@d", deptId));
@@ -35,6 +43,17 @@ namespace SmartHRM.DAL
             DbHelper.Execute("UPDATE employees SET annual_leave_balance = annual_leave_balance + @d WHERE id=@i",
                 DbHelper.P("@d", delta), DbHelper.P("@i", employeeId));
         }
+        /// <summary>Danh sách nhân viên (để hiển thị) của một hoặc nhiều phòng ban.</summary>
+        public DataTable GetTableByDepartments(IEnumerable<int> deptIds)
+        {
+            var ids = string.Join(",", deptIds.Select(i => i.ToString()).DefaultIfEmpty("0"));   // chỉ gồm số nguyên nên an toàn
+            return DbHelper.Query(
+                "SELECT e.code AS `Mã NV`, e.full_name AS `Họ tên`, IFNULL(p.name,'') AS `Chức vụ`, IFNULL(d.name,'') AS `Đơn vị`, " +
+                "e.status AS `Trạng thái`, IFNULL(e.email,'') AS `Email`, IFNULL(e.phone,'') AS `Điện thoại` " +
+                "FROM employees e LEFT JOIN positions p ON p.id=e.position_id LEFT JOIN departments d ON d.id=e.department_id " +
+                "WHERE e.department_id IN (" + ids + ") ORDER BY d.code, e.code");
+        }
+
         public List<EmployeeDTO> GetByDepartment(int deptId)
         {
             return GetAll("department_id=@d", "code", DbHelper.P("@d", deptId));

@@ -3,12 +3,12 @@
   "WorkspaceRootPath": "D:\\BT Classroom Lab\\SmartHRM (.NET)\\SmartHRM\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{C9F9ED6F-FFDF-4847-B5E9-2D17FC14A237}|SmartHRM\\SmartHRM.csproj|d:\\bt classroom lab\\smarthrm (.net)\\smarthrm\\smarthrm\\gui\\auditlogform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
-      "RelativeMoniker": "D:0:0:{C9F9ED6F-FFDF-4847-B5E9-2D17FC14A237}|SmartHRM\\SmartHRM.csproj|solutionrelative:smarthrm\\gui\\auditlogform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+      "AbsoluteMoniker": "D:0:0:{C9F9ED6F-FFDF-4847-B5E9-2D17FC14A237}|SmartHRM\\SmartHRM.csproj|d:\\bt classroom lab\\smarthrm (.net)\\smarthrm\\smarthrm\\gui\\orgchartform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{C9F9ED6F-FFDF-4847-B5E9-2D17FC14A237}|SmartHRM\\SmartHRM.csproj|solutionrelative:smarthrm\\gui\\orgchartform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{C9F9ED6F-FFDF-4847-B5E9-2D17FC14A237}|SmartHRM\\SmartHRM.csproj|d:\\bt classroom lab\\smarthrm (.net)\\smarthrm\\smarthrm\\gui\\auditlogform.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{C9F9ED6F-FFDF-4847-B5E9-2D17FC14A237}|SmartHRM\\SmartHRM.csproj|solutionrelative:smarthrm\\gui\\auditlogform.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{C9F9ED6F-FFDF-4847-B5E9-2D17FC14A237}|SmartHRM\\SmartHRM.csproj|d:\\bt classroom lab\\smarthrm (.net)\\smarthrm\\smarthrm\\gui\\payrollform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{C9F9ED6F-FFDF-4847-B5E9-2D17FC14A237}|SmartHRM\\SmartHRM.csproj|solutionrelative:smarthrm\\gui\\payrollform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
     }
   ],
   "DocumentGroupContainers": [
@@ -23,27 +23,26 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "AuditLogForm.cs [Design]",
-              "DocumentMoniker": "D:\\BT Classroom Lab\\SmartHRM (.NET)\\SmartHRM\\SmartHRM\\GUI\\AuditLogForm.cs",
-              "RelativeDocumentMoniker": "SmartHRM\\GUI\\AuditLogForm.cs",
-              "ToolTip": "D:\\BT Classroom Lab\\SmartHRM (.NET)\\SmartHRM\\SmartHRM\\GUI\\AuditLogForm.cs [Design]",
-              "RelativeToolTip": "SmartHRM\\GUI\\AuditLogForm.cs [Design]",
+              "Title": "OrgChartForm.cs [Design]",
+              "DocumentMoniker": "D:\\BT Classroom Lab\\SmartHRM (.NET)\\SmartHRM\\SmartHRM\\GUI\\OrgChartForm.cs",
+              "RelativeDocumentMoniker": "SmartHRM\\GUI\\OrgChartForm.cs",
+              "ToolTip": "D:\\BT Classroom Lab\\SmartHRM (.NET)\\SmartHRM\\SmartHRM\\GUI\\OrgChartForm.cs [Design]",
+              "RelativeToolTip": "SmartHRM\\GUI\\OrgChartForm.cs [Design]",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-11-02T01:25:11.931Z",
+              "WhenOpened": "2026-11-02T08:46:54.923Z",
               "EditorCaption": " [Design]"
             },
             {
               "$type": "Document",
               "DocumentIndex": 1,
-              "Title": "AuditLogForm.Designer.cs",
-              "DocumentMoniker": "D:\\BT Classroom Lab\\SmartHRM (.NET)\\SmartHRM\\SmartHRM\\GUI\\AuditLogForm.Designer.cs",
-              "RelativeDocumentMoniker": "SmartHRM\\GUI\\AuditLogForm.Designer.cs",
-              "ToolTip": "D:\\BT Classroom Lab\\SmartHRM (.NET)\\SmartHRM\\SmartHRM\\GUI\\AuditLogForm.Designer.cs",
-              "RelativeToolTip": "SmartHRM\\GUI\\AuditLogForm.Designer.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Title": "PayrollForm.cs [Design]",
+              "DocumentMoniker": "D:\\BT Classroom Lab\\SmartHRM (.NET)\\SmartHRM\\SmartHRM\\GUI\\PayrollForm.cs",
+              "RelativeDocumentMoniker": "SmartHRM\\GUI\\PayrollForm.cs",
+              "ToolTip": "D:\\BT Classroom Lab\\SmartHRM (.NET)\\SmartHRM\\SmartHRM\\GUI\\PayrollForm.cs [Design]",
+              "RelativeToolTip": "SmartHRM\\GUI\\PayrollForm.cs [Design]",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-11-01T18:49:43.093Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-11-02T08:46:50.858Z",
+              "EditorCaption": " [Design]"
             }
           ]
         }
