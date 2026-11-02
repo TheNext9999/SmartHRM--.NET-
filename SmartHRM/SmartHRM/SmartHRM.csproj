@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{C9F9ED6F-FFDF-4847-B5E9-2D17FC14A237}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>SmartHRM</RootNamespace>
+    <AssemblyName>SmartHRM</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System">
+      <HintPath>C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\System.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BUS\Core.cs" />
+    <Compile Include="BUS\DbInitializer.cs" />
+    <Compile Include="BUS\ExcelHelper.cs" />
+    <Compile Include="BUS\GenericBUS.cs" />
+    <Compile Include="BUS\HrBUS.cs" />
+    <Compile Include="BUS\MailAndAuth.cs" />
+    <Compile Include="BUS\PayBUS.cs" />
+    <Compile Include="BUS\PerfBUS.cs" />
+    <Compile Include="BUS\SystemBUS.cs" />
+    <Compile Include="BUS\TimeBUS.cs" />
+    <Compile Include="DAL\DbHelper.cs" />
+    <Compile Include="DAL\GenericDAL.cs" />
+    <Compile Include="DAL\HrDALs.cs" />
+    <Compile Include="DAL\PerfDALs.cs" />
+    <Compile Include="DAL\ReportDAL.cs" />
+    <Compile Include="DAL\SystemDALs.cs" />
+    <Compile Include="DAL\TimePayDALs.cs" />
+    <Compile Include="DTO\Attributes.cs" />
+    <Compile Include="DTO\BaseDTO.cs" />
+    <Compile Include="DTO\Const.cs" />
+    <Compile Include="DTO\HrDTOs.cs" />
+    <Compile Include="DTO\PerfDTOs.cs" />
+    <Compile Include="DTO\SystemDTOs.cs" />
+    <Compile Include="DTO\TimePayDTOs.cs" />
+    <Compile Include="GUI\AuditLogForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\AuditLogForm.Designer.cs">
+      <DependentUpon>AuditLogForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\CrudForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\CrudForm.Designer.cs">
+      <DependentUpon>CrudForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\CrudService.cs" />
+    <Compile Include="GUI\DashboardForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\DashboardForm.Designer.cs">
+      <DependentUpon>DashboardForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\EntityEditForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\EntityEditForm.Designer.cs">
+      <DependentUpon>EntityEditForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\KpiCard.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GUI\KpiCard.Designer.cs">
+      <DependentUpon>KpiCard.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\LoginForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\LoginForm.Designer.cs">
+      <DependentUpon>LoginForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\MainForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\MainForm.Designer.cs">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\OrgChartForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\OrgChartForm.Designer.cs">
+      <DependentUpon>OrgChartForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\PayrollForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\PayrollForm.Designer.cs">
+      <DependentUpon>PayrollForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\ReportForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\ReportForm.Designer.cs">
+      <DependentUpon>ReportForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\RoleForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\RoleForm.Designer.cs">
+      <DependentUpon>RoleForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\TimesheetForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\TimesheetForm.Designer.cs">
+      <DependentUpon>TimesheetForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\Ui.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\Ui.Designer.cs">
+      <DependentUpon>Ui.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="GUI\CrudForm.resx">
+      <DependentUpon>CrudForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\DashboardForm.resx">
+      <DependentUpon>DashboardForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\EntityEditForm.resx">
+      <DependentUpon>EntityEditForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\KpiCard.resx">
+      <DependentUpon>KpiCard.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\LoginForm.resx">
+      <DependentUpon>LoginForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
