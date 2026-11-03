@@ -201,16 +201,21 @@ namespace SmartHRM.GUI
         {
             using (var f = new Form
             {
-                Text = "Dọn nhật ký cũ", ClientSize = new Size(400, 150), FormBorderStyle = FormBorderStyle.FixedDialog,
-                StartPosition = FormStartPosition.CenterParent, MaximizeBox = false, MinimizeBox = false, Font = Font
+                Text = "Dọn nhật ký cũ",
+                ClientSize = new Size(400, 150),
+                FormBorderStyle = FormBorderStyle.FixedDialog,
+                StartPosition = FormStartPosition.CenterParent,
+                MaximizeBox = false,
+                MinimizeBox = false,
+                Font = Font
             })
             {
                 var n = new NumericUpDown { Minimum = 30, Maximum = 3650, Value = 180, Left = 215, Top = 20, Width = 80 };
                 var ok = new Button { Text = "Xóa nhật ký cũ", Left = 215, Top = 90, Width = 160, Height = 32 };
                 f.Controls.AddRange(new Control[]
                 {
-                    new Label { Text = "Chỉ giữ lại nhật ký trong (ngày):", Left = 15, Top = 24, AutoSize = true }, n,
-                    new Label { Text = "Tối thiểu 30 ngày. Hành động này không thể hoàn tác.", Left = 15, Top = 56, AutoSize = true, ForeColor = Color.Firebrick },
+                    new System.Windows.Forms.Label { Text = "Chỉ giữ lại nhật ký trong (ngày):", Left = 15, Top = 24, AutoSize = true }, n,
+                    new System.Windows.Forms.Label { Text = "Tối thiểu 30 ngày. Hành động này không thể hoàn tác.", Left = 15, Top = 56, AutoSize = true, ForeColor = Color.Firebrick },
                     ok
                 });
                 ok.Click += (s, ev) =>

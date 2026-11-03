@@ -128,6 +128,14 @@ namespace SmartHRM.BUS
 
         // Dashboard
         public DataTable Headcount() { Session.Require(Const.M_DASHBOARD, "view"); return dal.HeadcountByDepartment(); }
+        public DataTable DashGender() { Session.Require(Const.M_DASHBOARD, "view"); return dal.GenderRatio(); }
+        public DataTable DashTurnover(int year)
+        {
+            Session.Require(Const.M_DASHBOARD, "view");
+            var dt = dal.Turnover(year);
+            dt.Columns.Remove("Tỷ lệ nghỉ việc (%)");     // biểu đồ chỉ so sánh số lượng mới / nghỉ
+            return dt;
+        }
         public DataTable CostLastMonths() { Session.Require(Const.M_DASHBOARD, "view"); return dal.PayrollCostLastMonths(6); }
         public Dictionary<string, string> Kpis(int expiringContracts)
         {

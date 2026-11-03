@@ -19,8 +19,8 @@
         {
             this.components = new System.ComponentModel.Container();
             this.pnlHeader = new System.Windows.Forms.Panel();
-            this.lblHeader = new System.Windows.Forms.Label();
             this.lblSub = new System.Windows.Forms.Label();
+            this.lblHeader = new System.Windows.Forms.Label();
             this.pnlFooter = new System.Windows.Forms.Panel();
             this.lblRequired = new System.Windows.Forms.Label();
             this.btnSave = new System.Windows.Forms.Button();
@@ -33,57 +33,64 @@
             this.pnlBody.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.epMain)).BeginInit();
             this.SuspendLayout();
-            //
+            // 
             // pnlHeader
-            //
-            this.pnlHeader.BackColor = System.Drawing.Color.FromArgb(31, 78, 121);
+            // 
+            this.pnlHeader.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(78)))), ((int)(((byte)(121)))));
             this.pnlHeader.Controls.Add(this.lblSub);
             this.pnlHeader.Controls.Add(this.lblHeader);
             this.pnlHeader.Dock = System.Windows.Forms.DockStyle.Top;
+            this.pnlHeader.Location = new System.Drawing.Point(0, 0);
             this.pnlHeader.Name = "pnlHeader";
             this.pnlHeader.Size = new System.Drawing.Size(580, 58);
             this.pnlHeader.TabIndex = 0;
-            //
+            // 
+            // lblSub
+            // 
+            this.lblSub.AutoSize = true;
+            this.lblSub.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(200)))), ((int)(((byte)(220)))), ((int)(((byte)(240)))));
+            this.lblSub.Location = new System.Drawing.Point(18, 35);
+            this.lblSub.Name = "lblSub";
+            this.lblSub.Size = new System.Drawing.Size(0, 17);
+            this.lblSub.TabIndex = 0;
+            // 
             // lblHeader
-            //
+            // 
             this.lblHeader.AutoSize = true;
             this.lblHeader.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Bold);
             this.lblHeader.ForeColor = System.Drawing.Color.White;
             this.lblHeader.Location = new System.Drawing.Point(16, 8);
             this.lblHeader.Name = "lblHeader";
+            this.lblHeader.Size = new System.Drawing.Size(97, 25);
+            this.lblHeader.TabIndex = 1;
             this.lblHeader.Text = "Thêm mới";
-            //
-            // lblSub
-            //
-            this.lblSub.AutoSize = true;
-            this.lblSub.ForeColor = System.Drawing.Color.FromArgb(200, 220, 240);
-            this.lblSub.Location = new System.Drawing.Point(18, 35);
-            this.lblSub.Name = "lblSub";
-            this.lblSub.Text = "";
-            //
+            // 
             // pnlFooter
-            //
-            this.pnlFooter.BackColor = System.Drawing.Color.FromArgb(240, 243, 247);
+            // 
+            this.pnlFooter.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(243)))), ((int)(((byte)(247)))));
             this.pnlFooter.Controls.Add(this.lblRequired);
             this.pnlFooter.Controls.Add(this.btnSave);
             this.pnlFooter.Controls.Add(this.btnCancel);
             this.pnlFooter.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.pnlFooter.Location = new System.Drawing.Point(0, 464);
             this.pnlFooter.Name = "pnlFooter";
             this.pnlFooter.Size = new System.Drawing.Size(580, 56);
             this.pnlFooter.TabIndex = 2;
-            //
+            // 
             // lblRequired
-            //
+            // 
             this.lblRequired.AutoSize = true;
-            this.lblRequired.ForeColor = System.Drawing.Color.FromArgb(160, 30, 30);
+            this.lblRequired.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(160)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
             this.lblRequired.Location = new System.Drawing.Point(16, 20);
             this.lblRequired.Name = "lblRequired";
+            this.lblRequired.Size = new System.Drawing.Size(223, 17);
+            this.lblRequired.TabIndex = 0;
             this.lblRequired.Text = "* là trường bắt buộc  |  Ctrl+S để lưu";
-            //
+            // 
             // btnSave
-            //
+            // 
             this.btnSave.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnSave.BackColor = System.Drawing.Color.FromArgb(31, 78, 121);
+            this.btnSave.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(78)))), ((int)(((byte)(121)))));
             this.btnSave.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnSave.ForeColor = System.Drawing.Color.White;
             this.btnSave.Location = new System.Drawing.Point(358, 11);
@@ -93,9 +100,9 @@
             this.btnSave.Text = "💾 Lưu";
             this.btnSave.UseVisualStyleBackColor = false;
             this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
-            //
+            // 
             // btnCancel
-            //
+            // 
             this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.btnCancel.Location = new System.Drawing.Point(466, 11);
@@ -104,34 +111,38 @@
             this.btnCancel.TabIndex = 1;
             this.btnCancel.Text = "Hủy";
             this.btnCancel.UseVisualStyleBackColor = true;
-            //
+            // 
             // pnlBody
-            //
+            // 
             this.pnlBody.AutoScroll = true;
             this.pnlBody.Controls.Add(this.tblFields);
             this.pnlBody.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnlBody.Location = new System.Drawing.Point(0, 58);
             this.pnlBody.Name = "pnlBody";
+            this.pnlBody.Size = new System.Drawing.Size(580, 406);
             this.pnlBody.TabIndex = 1;
-            //
+            // 
             // tblFields
-            //
+            // 
             this.tblFields.AutoSize = true;
             this.tblFields.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.tblFields.ColumnCount = 2;
             this.tblFields.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 38F));
             this.tblFields.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 62F));
             this.tblFields.Dock = System.Windows.Forms.DockStyle.Top;
+            this.tblFields.Location = new System.Drawing.Point(0, 0);
             this.tblFields.Name = "tblFields";
             this.tblFields.Padding = new System.Windows.Forms.Padding(14, 12, 18, 6);
+            this.tblFields.Size = new System.Drawing.Size(580, 18);
             this.tblFields.TabIndex = 0;
-            //
+            // 
             // epMain
-            //
+            // 
             this.epMain.BlinkStyle = System.Windows.Forms.ErrorBlinkStyle.NeverBlink;
             this.epMain.ContainerControl = this;
-            //
+            // 
             // EntityEditForm
-            //
+            // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnCancel;
@@ -147,6 +158,7 @@
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "EntityEditForm";
+            this.Load += new System.EventHandler(this.EntityEditForm_Load);
             this.pnlHeader.ResumeLayout(false);
             this.pnlHeader.PerformLayout();
             this.pnlFooter.ResumeLayout(false);
@@ -155,6 +167,7 @@
             this.pnlBody.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.epMain)).EndInit();
             this.ResumeLayout(false);
+
         }
 
         #endregion

@@ -46,7 +46,7 @@ namespace SmartHRM.GUI
                 if (f == null || f.Hidden) continue;
 
                 var ctl = CreateControl(f);
-                var lbl = new Label
+                var lbl = new System.Windows.Forms.Label
                 {
                     Text = f.Label + (f.Required ? " *" : ""),
                     AutoSize = true,
@@ -152,6 +152,7 @@ namespace SmartHRM.GUI
             }
         }
 
+        private void EntityEditForm_Load(object sender, EventArgs e) { }
         static bool IsEmpty(Item it)
         {
             var c = it.Ctl;

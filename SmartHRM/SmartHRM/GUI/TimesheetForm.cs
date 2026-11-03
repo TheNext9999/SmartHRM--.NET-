@@ -1,11 +1,10 @@
-﻿using SmartHRM.BUS;
-using SmartHRM.DTO;
-using System;
+﻿using System;
 using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.TextBox;
+using SmartHRM.BUS;
+using SmartHRM.DTO;
 
 namespace SmartHRM.GUI
 {
@@ -148,7 +147,7 @@ namespace SmartHRM.GUI
             {
                 var g = Ui.NewGrid(); g.DataSource = issues; Ui.FormatGrid(g);
                 var bar = new Panel { Dock = DockStyle.Bottom, Height = 48, BackColor = Color.FromArgb(240, 243, 247) };
-                var lbl = new Label { Text = issues.Rows.Count + " vấn đề cần xem lại" + (askToContinue ? " trước khi chốt." : "."), AutoSize = true, Left = 12, Top = 15, ForeColor = Color.Firebrick };
+                var lbl = new System.Windows.Forms.Label { Text = issues.Rows.Count + " vấn đề cần xem lại" + (askToContinue ? " trước khi chốt." : "."), AutoSize = true, Left = 12, Top = 15, ForeColor = Color.Firebrick };
                 var export = new Button { Text = "📊 Xuất Excel", Width = 110, Height = 30, Top = 9, Anchor = AnchorStyles.Top | AnchorStyles.Right };
                 var close = new Button { Text = askToContinue ? "Quay lại xử lý" : "Đóng", Width = 130, Height = 30, Top = 9, DialogResult = DialogResult.Cancel, Anchor = AnchorStyles.Top | AnchorStyles.Right };
                 Button go = null;

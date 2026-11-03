@@ -1,12 +1,10 @@
-﻿using SmartHRM.BUS;
-using SmartHRM.DTO;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using System.Reflection.Emit;
-using System.Security.Policy;
 using System.Windows.Forms;
+using SmartHRM.BUS;
+using SmartHRM.DTO;
 
 namespace SmartHRM.GUI
 {
@@ -227,7 +225,7 @@ namespace SmartHRM.GUI
             {
                 var cbo = new ComboBox { DropDownStyle = ComboBoxStyle.DropDownList, Left = 15, Top = 38, Width = 350, DisplayMember = "Name", DataSource = others };
                 var ok = new Button { Text = "Sao chép", Left = 265, Top = 80, Width = 100, Height = 32, DialogResult = DialogResult.OK };
-                f.Controls.AddRange(new Control[] { new Label { Text = "Lấy toàn bộ quyền từ nhóm:", Left = 15, Top = 14, AutoSize = true }, cbo, ok });
+                f.Controls.AddRange(new Control[] { new System.Windows.Forms.Label { Text = "Lấy toàn bộ quyền từ nhóm:", Left = 15, Top = 14, AutoSize = true }, cbo, ok });
                 f.AcceptButton = ok;
                 if (f.ShowDialog(this) != DialogResult.OK) return;
                 source = cbo.SelectedItem as RoleDTO;
