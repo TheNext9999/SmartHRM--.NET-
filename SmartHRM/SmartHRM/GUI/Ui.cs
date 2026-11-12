@@ -66,17 +66,39 @@ namespace SmartHRM.GUI
 
         public static string ExportDialog(string defaultName)
         {
-            using (var d = new SaveFileDialog { Filter = "Excel (*.xlsx)|*.xlsx", FileName = defaultName + "_" + DateTime.Now.ToString("yyyyMMdd_HHmm") + ".xlsx" })
-                return d.ShowDialog() == DialogResult.OK ? d.FileName : null;
+            bool crystal = CrystalExporter.IsAvailable;      // có mẫu Crystal thì cho phép xuất cả PDF
+            using (var d = new SaveFileDialog
+            {
+                Filter = crystal ? "Excel (*.xlsx)|*.xlsx|PDF (*.pdf)|*.pdf" : "Excel (*.xlsx)|*.xlsx",
+                FileName = defaultName + "_" + DateTime.Now.ToString("yyyyMMdd_HHmm") + ".xlsx"
+            })
+            {
+                if (d.ShowDialog() != DialogResult.OK) return null;
+                var path = d.FileName;
+                if (crystal && d.FilterIndex == 2) path = System.IO.Path.ChangeExtension(path, ".pdf");
+                return path;
+            }
         }
 
+        /// <summary>Xuất bảng dữ liệu ra Excel/PDF bằng Crystal Reports; nếu chưa có mẫu hoặc Crystal lỗi thì dùng xuất Excel thường (ClosedXML).</summary>
         public static void ExportTable(DataTable dt, string name)
         {
             var path = ExportDialog(name);
             if (path == null) return;
+            bool pdf = System.IO.Path.GetExtension(path).Equals(".pdf", StringComparison.OrdinalIgnoreCase);
             try
             {
-                ExcelHelper.Export(dt, path, name);
+                bool done = false;
+                if (CrystalExporter.IsAvailable)
+                {
+                    try { CrystalExporter.Export(dt, name, path); done = true; }
+                    catch (ValidationException) { throw; }
+                    catch (Exception ex)
+                    {
+                        if (pdf || !Confirm("Không xuất được bằng Crystal Reports:\n" + ex.Message + "\n\nXuất bằng chức năng Excel thông thường?")) throw;
+                    }
+                }
+                if (!done) ExcelHelper.Export(dt, path, name);
                 if (Confirm("Đã xuất file:\n" + path + "\n\nMở file ngay?")) System.Diagnostics.Process.Start(path);
             }
             catch (Exception ex) { Error(ex); }
@@ -96,10 +118,17 @@ namespace SmartHRM.GUI
         {
             var g = new DataGridView
             {
-                Dock = DockStyle.Fill, ReadOnly = true, AllowUserToAddRows = false, AllowUserToDeleteRows = false,
-                SelectionMode = DataGridViewSelectionMode.FullRowSelect, MultiSelect = false,
-                AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.DisplayedCells, BackgroundColor = System.Drawing.Color.White,
-                RowHeadersVisible = false, BorderStyle = BorderStyle.None, AlternatingRowsDefaultCellStyle = { BackColor = System.Drawing.Color.FromArgb(245, 248, 252) }
+                Dock = DockStyle.Fill,
+                ReadOnly = true,
+                AllowUserToAddRows = false,
+                AllowUserToDeleteRows = false,
+                SelectionMode = DataGridViewSelectionMode.FullRowSelect,
+                MultiSelect = false,
+                AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.DisplayedCells,
+                BackgroundColor = System.Drawing.Color.White,
+                RowHeadersVisible = false,
+                BorderStyle = BorderStyle.None,
+                AlternatingRowsDefaultCellStyle = { BackColor = System.Drawing.Color.FromArgb(245, 248, 252) }
             };
             g.EnableHeadersVisualStyles = false;
             g.ColumnHeadersDefaultCellStyle.BackColor = System.Drawing.Color.FromArgb(31, 78, 121);

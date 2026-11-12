@@ -23,6 +23,7 @@ namespace SmartHRM.GUI
 
         public EntityEditForm(BaseDTO entity, string title) : this()
         {
+            AppImages.Apply(this);
             this.entity = entity;
             bool isNew = entity.Id == 0;
             Text = (isNew ? "Thêm mới - " : "Cập nhật - ") + title;
@@ -152,7 +153,6 @@ namespace SmartHRM.GUI
             }
         }
 
-        private void EntityEditForm_Load(object sender, EventArgs e) { }
         static bool IsEmpty(Item it)
         {
             var c = it.Ctl;

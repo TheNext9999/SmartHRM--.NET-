@@ -21,6 +21,7 @@
             this.pnlBrand = new System.Windows.Forms.Panel();
             this.lblVersion = new System.Windows.Forms.Label();
             this.lblTagline = new System.Windows.Forms.Label();
+            this.picLogo = new System.Windows.Forms.PictureBox();
             this.lblBrand = new System.Windows.Forms.Label();
             this.pnlMain = new System.Windows.Forms.Panel();
             this.lblDb = new System.Windows.Forms.Label();
@@ -44,6 +45,7 @@
             this.lblTitle = new System.Windows.Forms.Label();
             this.tmrTick = new System.Windows.Forms.Timer(this.components);
             this.pnlBrand.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.picLogo)).BeginInit();
             this.pnlMain.SuspendLayout();
             this.tabLogin.SuspendLayout();
             this.tpPassword.SuspendLayout();
@@ -53,6 +55,7 @@
             // pnlBrand
             //
             this.pnlBrand.BackColor = System.Drawing.Color.FromArgb(31, 78, 121);
+            this.pnlBrand.Controls.Add(this.picLogo);
             this.pnlBrand.Controls.Add(this.lblVersion);
             this.pnlBrand.Controls.Add(this.lblTagline);
             this.pnlBrand.Controls.Add(this.lblBrand);
@@ -60,6 +63,16 @@
             this.pnlBrand.Name = "pnlBrand";
             this.pnlBrand.Size = new System.Drawing.Size(270, 420);
             this.pnlBrand.TabIndex = 1;
+            //
+            // picLogo
+            //
+            this.picLogo.BackColor = System.Drawing.Color.Transparent;
+            this.picLogo.Location = new System.Drawing.Point(15, 70);
+            this.picLogo.Name = "picLogo";
+            this.picLogo.Size = new System.Drawing.Size(240, 165);
+            this.picLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.picLogo.TabIndex = 3;
+            this.picLogo.TabStop = false;
             //
             // lblBrand
             //
@@ -73,8 +86,8 @@
             // lblTagline
             //
             this.lblTagline.Font = new System.Drawing.Font("Segoe UI", 11F);
-            this.lblTagline.ForeColor = System.Drawing.Color.FromArgb(200, 220, 240);
-            this.lblTagline.Location = new System.Drawing.Point(28, 180);
+            this.lblTagline.ForeColor = System.Drawing.Color.FromArgb(225, 236, 248);
+            this.lblTagline.Location = new System.Drawing.Point(28, 252);
             this.lblTagline.Name = "lblTagline";
             this.lblTagline.Size = new System.Drawing.Size(220, 90);
             this.lblTagline.Text = "Hệ thống quản lý nhân sự toàn diện:\r\nhồ sơ • chấm công • tiền lương • đánh giá";
@@ -314,12 +327,14 @@
             this.tpPassword.PerformLayout();
             this.tpOtp.ResumeLayout(false);
             this.tpOtp.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.picLogo)).EndInit();
             this.ResumeLayout(false);
         }
 
         #endregion
 
         private System.Windows.Forms.Panel pnlBrand;
+        private System.Windows.Forms.PictureBox picLogo;
         private System.Windows.Forms.Label lblBrand;
         private System.Windows.Forms.Label lblTagline;
         private System.Windows.Forms.Label lblVersion;

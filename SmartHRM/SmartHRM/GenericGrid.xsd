@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="GenericGridDataSet" targetNamespace="http://tempuri.org/GenericGridDataSet.xsd"
+           xmlns:mstns="http://tempuri.org/GenericGridDataSet.xsd" xmlns="http://tempuri.org/GenericGridDataSet.xsd"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata"
+           attributeFormDefault="qualified" elementFormDefault="qualified">
+  <xs:element name="GenericGridDataSet" msdata:IsDataSet="true" msdata:UseCurrentLocale="true">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="Grid">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="T" type="xs:string" minOccurs="0" />
+              <xs:element name="S" type="xs:string" minOccurs="0" />
+              <xs:element name="G" type="xs:string" minOccurs="0" />
+              <xs:element name="H1" type="xs:string" minOccurs="0" />
+              <xs:element name="H2" type="xs:string" minOccurs="0" />
+              <xs:element name="H3" type="xs:string" minOccurs="0" />
+              <xs:element name="H4" type="xs:string" minOccurs="0" />
+              <xs:element name="H5" type="xs:string" minOccurs="0" />
+              <xs:element name="H6" type="xs:string" minOccurs="0" />
+              <xs:element name="H7" type="xs:string" minOccurs="0" />
+              <xs:element name="H8" type="xs:string" minOccurs="0" />
+              <xs:element name="H9" type="xs:string" minOccurs="0" />
+              <xs:element name="H10" type="xs:string" minOccurs="0" />
+              <xs:element name="H11" type="xs:string" minOccurs="0" />
+              <xs:element name="H12" type="xs:string" minOccurs="0" />
+              <xs:element name="C1" type="xs:string" minOccurs="0" />
+              <xs:element name="C2" type="xs:string" minOccurs="0" />
+              <xs:element name="C3" type="xs:string" minOccurs="0" />
+              <xs:element name="C4" type="xs:string" minOccurs="0" />
+              <xs:element name="C5" type="xs:string" minOccurs="0" />
+              <xs:element name="C6" type="xs:string" minOccurs="0" />
+              <xs:element name="C7" type="xs:string" minOccurs="0" />
+              <xs:element name="C8" type="xs:string" minOccurs="0" />
+              <xs:element name="C9" type="xs:string" minOccurs="0" />
+              <xs:element name="C10" type="xs:string" minOccurs="0" />
+              <xs:element name="C11" type="xs:string" minOccurs="0" />
+              <xs:element name="C12" type="xs:string" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

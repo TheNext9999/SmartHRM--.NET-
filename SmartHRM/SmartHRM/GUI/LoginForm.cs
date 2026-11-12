@@ -26,6 +26,10 @@ namespace SmartHRM.GUI
         public LoginForm()
         {
             InitializeComponent();
+            AppImages.Apply(this);
+            var logo = AppImages.Logo;
+            if (logo != null) { picLogo.Image = logo; lblBrand.Visible = false; }   // không có logo thì hiện chữ SmartHRM
+            else picLogo.Visible = false;
             lblVersion.Text = "Phiên bản " + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString(2);
         }
 

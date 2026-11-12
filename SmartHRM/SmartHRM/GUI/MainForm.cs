@@ -24,6 +24,8 @@ namespace SmartHRM.GUI
         public MainForm()
         {
             InitializeComponent();
+            AppImages.Apply(this);
+            if (AppImages.Logo != null) picWelcome.Image = AppImages.Logo;
             RegisterModules();
             foreach (var b in tsQuick.Items.OfType<ToolStripButton>())
                 b.Visible = Session.Can(Convert.ToString(b.Tag), "view");        // ẩn nút nếu không có quyền

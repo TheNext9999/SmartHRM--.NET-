@@ -48,6 +48,7 @@
             this.cmsCloseOthers = new System.Windows.Forms.ToolStripMenuItem();
             this.cmsCloseAll = new System.Windows.Forms.ToolStripMenuItem();
             this.pnlWelcome = new System.Windows.Forms.Panel();
+            this.picWelcome = new System.Windows.Forms.PictureBox();
             this.lblWelcomeSub = new System.Windows.Forms.Label();
             this.lblWelcome = new System.Windows.Forms.Label();
             this.statusMain = new System.Windows.Forms.StatusStrip();
@@ -62,6 +63,7 @@
             this.splitMain.SuspendLayout();
             this.cmsTabs.SuspendLayout();
             this.pnlWelcome.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.picWelcome)).BeginInit();
             this.statusMain.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -345,6 +347,7 @@
             // pnlWelcome
             // 
             this.pnlWelcome.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(244)))), ((int)(((byte)(247)))), ((int)(((byte)(251)))));
+            this.pnlWelcome.Controls.Add(this.picWelcome);
             this.pnlWelcome.Controls.Add(this.lblWelcomeSub);
             this.pnlWelcome.Controls.Add(this.lblWelcome);
             this.pnlWelcome.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -352,6 +355,16 @@
             this.pnlWelcome.Name = "pnlWelcome";
             this.pnlWelcome.Size = new System.Drawing.Size(996, 643);
             this.pnlWelcome.TabIndex = 1;
+            // 
+            // picWelcome
+            // 
+            this.picWelcome.BackColor = System.Drawing.Color.Transparent;
+            this.picWelcome.Location = new System.Drawing.Point(44, 170);
+            this.picWelcome.Name = "picWelcome";
+            this.picWelcome.Size = new System.Drawing.Size(420, 290);
+            this.picWelcome.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.picWelcome.TabIndex = 2;
+            this.picWelcome.TabStop = false;
             // 
             // lblWelcomeSub
             // 
@@ -361,7 +374,7 @@
             this.lblWelcomeSub.Location = new System.Drawing.Point(44, 112);
             this.lblWelcomeSub.Name = "lblWelcomeSub";
             this.lblWelcomeSub.Size = new System.Drawing.Size(576, 20);
-            this.lblWelcomeSub.TabIndex = 0;
+            this.lblWelcomeSub.TabIndex = 3;
             this.lblWelcomeSub.Text = "Chọn một chức năng ở danh sách bên trái hoặc dùng các nút truy cập nhanh phía trê" +
     "n.";
             // 
@@ -373,7 +386,7 @@
             this.lblWelcome.Location = new System.Drawing.Point(40, 60);
             this.lblWelcome.Name = "lblWelcome";
             this.lblWelcome.Size = new System.Drawing.Size(136, 37);
-            this.lblWelcome.TabIndex = 1;
+            this.lblWelcome.TabIndex = 4;
             this.lblWelcome.Text = "Xin chào!";
             // 
             // statusMain
@@ -433,6 +446,7 @@
             this.cmsTabs.ResumeLayout(false);
             this.pnlWelcome.ResumeLayout(false);
             this.pnlWelcome.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.picWelcome)).EndInit();
             this.statusMain.ResumeLayout(false);
             this.statusMain.PerformLayout();
             this.ResumeLayout(false);
@@ -467,6 +481,7 @@
         private System.Windows.Forms.TreeView tvModules;
         private System.Windows.Forms.Label lblMenuTitle;
         private System.Windows.Forms.Panel pnlWelcome;
+        private System.Windows.Forms.PictureBox picWelcome;
         private System.Windows.Forms.Label lblWelcomeSub;
         private System.Windows.Forms.Label lblWelcome;
         private System.Windows.Forms.TabControl tabMain;
