@@ -80,26 +80,46 @@ namespace SmartHRM.GUI
             }
         }
 
-        /// <summary>Xuất bảng dữ liệu ra Excel/PDF bằng Crystal Reports; nếu chưa có mẫu hoặc Crystal lỗi thì dùng xuất Excel thường (ClosedXML).</summary>
-        public static void ExportTable(DataTable dt, string name)
+        /// <summary>
+        /// Xuất bảng dữ liệu ra Excel/PDF bằng Crystal Reports (nếu có mẫu), nếu không thì dùng ClosedXML.
+        /// File Excel luôn kèm sheet "Biểu đồ": dùng chartPng nếu truyền vào, ngược lại tự chọn biểu đồ phù hợp từ dữ liệu.
+        /// </summary>
+        public static void ExportTable(DataTable dt, string name, byte[] chartPng = null)
         {
             var path = ExportDialog(name);
             if (path == null) return;
             bool pdf = System.IO.Path.GetExtension(path).Equals(".pdf", StringComparison.OrdinalIgnoreCase);
+
+            byte[] png = chartPng;
+            if (png == null && !pdf)
+            {
+                try { png = ExportChart.RenderAuto(dt, name); } catch { png = null; }     // lỗi vẽ biểu đồ không được chặn việc xuất dữ liệu
+            }
+
             try
             {
                 bool done = false;
+                string note = "";
                 if (CrystalExporter.IsAvailable)
                 {
-                    try { CrystalExporter.Export(dt, name, path); done = true; }
+                    try
+                    {
+                        CrystalExporter.Export(dt, name, path); done = true;
+                        if (!pdf && png != null)
+                        {
+                            try { ExcelHelper.AppendChartSheet(path, png, name); }
+                            catch { note = "\n(Không chèn được biểu đồ vào file do Crystal Reports tạo.)"; }
+                        }
+                    }
                     catch (ValidationException) { throw; }
                     catch (Exception ex)
                     {
                         if (pdf || !Confirm("Không xuất được bằng Crystal Reports:\n" + ex.Message + "\n\nXuất bằng chức năng Excel thông thường?")) throw;
                     }
                 }
-                if (!done) ExcelHelper.Export(dt, path, name);
-                if (Confirm("Đã xuất file:\n" + path + "\n\nMở file ngay?")) System.Diagnostics.Process.Start(path);
+                if (!done) ExcelHelper.Export(dt, path, name, png, name);
+                string chartInfo = pdf ? "" : (png != null ? "\n(Có sheet \"Biểu đồ\".)" : "\n(Dữ liệu này không có biểu đồ phù hợp.)");
+                if (Confirm("Đã xuất file:\n" + path + chartInfo + note + "\n\nMở file ngay?")) System.Diagnostics.Process.Start(path);
             }
             catch (Exception ex) { Error(ex); }
         }

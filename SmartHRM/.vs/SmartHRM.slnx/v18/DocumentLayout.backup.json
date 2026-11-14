@@ -3,8 +3,12 @@
   "WorkspaceRootPath": "D:\\BT Classroom Lab\\SmartHRM (.NET)\\SmartHRM\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{C9F9ED6F-FFDF-4847-B5E9-2D17FC14A237}|SmartHRM\\SmartHRM.csproj|d:\\bt classroom lab\\smarthrm (.net)\\smarthrm\\smarthrm\\gui\\loginform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{C9F9ED6F-FFDF-4847-B5E9-2D17FC14A237}|SmartHRM\\SmartHRM.csproj|solutionrelative:smarthrm\\gui\\loginform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{C9F9ED6F-FFDF-4847-B5E9-2D17FC14A237}|SmartHRM\\SmartHRM.csproj|d:\\bt classroom lab\\smarthrm (.net)\\smarthrm\\smarthrm\\gui\\reportform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C9F9ED6F-FFDF-4847-B5E9-2D17FC14A237}|SmartHRM\\SmartHRM.csproj|solutionrelative:smarthrm\\gui\\reportform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C9F9ED6F-FFDF-4847-B5E9-2D17FC14A237}|SmartHRM\\SmartHRM.csproj|D:\\BT Classroom Lab\\SmartHRM (.NET)\\SmartHRM\\smarthrm\\gui\\ui.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C9F9ED6F-FFDF-4847-B5E9-2D17FC14A237}|SmartHRM\\SmartHRM.csproj|solutionrelative:smarthrm\\gui\\ui.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{C9F9ED6F-FFDF-4847-B5E9-2D17FC14A237}|SmartHRM\\SmartHRM.csproj|D:\\BT Classroom Lab\\SmartHRM (.NET)\\SmartHRM\\smarthrm\\gui\\crystalexporter.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -15,8 +19,8 @@
       "RelativeMoniker": "D:0:0:{C9F9ED6F-FFDF-4847-B5E9-2D17FC14A237}|SmartHRM\\SmartHRM.csproj|solutionrelative:smarthrm\\reports\\genericgrid.rpt||{C0EF7560-990E-4D61-B970-65A6096B6866}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{C9F9ED6F-FFDF-4847-B5E9-2D17FC14A237}|SmartHRM\\SmartHRM.csproj|D:\\BT Classroom Lab\\SmartHRM (.NET)\\SmartHRM\\smarthrm\\gui\\ui.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{C9F9ED6F-FFDF-4847-B5E9-2D17FC14A237}|SmartHRM\\SmartHRM.csproj|solutionrelative:smarthrm\\gui\\ui.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{C9F9ED6F-FFDF-4847-B5E9-2D17FC14A237}|SmartHRM\\SmartHRM.csproj|d:\\bt classroom lab\\smarthrm (.net)\\smarthrm\\smarthrm\\bus\\excelhelper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C9F9ED6F-FFDF-4847-B5E9-2D17FC14A237}|SmartHRM\\SmartHRM.csproj|solutionrelative:smarthrm\\bus\\excelhelper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -31,30 +35,44 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "LoginForm.cs",
-              "DocumentMoniker": "D:\\BT Classroom Lab\\SmartHRM (.NET)\\SmartHRM\\SmartHRM\\GUI\\LoginForm.cs",
-              "RelativeDocumentMoniker": "SmartHRM\\GUI\\LoginForm.cs",
-              "ToolTip": "D:\\BT Classroom Lab\\SmartHRM (.NET)\\SmartHRM\\SmartHRM\\GUI\\LoginForm.cs",
-              "RelativeToolTip": "SmartHRM\\GUI\\LoginForm.cs",
-              "ViewState": "AgIAAEsAAAAAAAAAAAAkwFIAAAAgAAAAAAAAAA==",
+              "Title": "ReportForm.cs",
+              "DocumentMoniker": "D:\\BT Classroom Lab\\SmartHRM (.NET)\\SmartHRM\\SmartHRM\\GUI\\ReportForm.cs",
+              "RelativeDocumentMoniker": "SmartHRM\\GUI\\ReportForm.cs",
+              "ToolTip": "D:\\BT Classroom Lab\\SmartHRM (.NET)\\SmartHRM\\SmartHRM\\GUI\\ReportForm.cs",
+              "RelativeToolTip": "SmartHRM\\GUI\\ReportForm.cs",
+              "ViewState": "AgIAALEAAAAAAAAAAAAmwNsAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-11-13T00:36:04.393Z",
+              "WhenOpened": "2026-11-14T12:43:13.804Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 4,
+              "Title": "ExcelHelper.cs",
+              "DocumentMoniker": "D:\\BT Classroom Lab\\SmartHRM (.NET)\\SmartHRM\\SmartHRM\\BUS\\ExcelHelper.cs",
+              "RelativeDocumentMoniker": "SmartHRM\\BUS\\ExcelHelper.cs",
+              "ToolTip": "D:\\BT Classroom Lab\\SmartHRM (.NET)\\SmartHRM\\SmartHRM\\BUS\\ExcelHelper.cs",
+              "RelativeToolTip": "SmartHRM\\BUS\\ExcelHelper.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAADcAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-11-14T12:40:48.006Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
               "Title": "GenericGrid.rpt",
               "DocumentMoniker": "D:\\BT Classroom Lab\\SmartHRM (.NET)\\SmartHRM\\SmartHRM\\Reports\\GenericGrid.rpt",
               "RelativeDocumentMoniker": "SmartHRM\\Reports\\GenericGrid.rpt",
               "ToolTip": "D:\\BT Classroom Lab\\SmartHRM (.NET)\\SmartHRM\\SmartHRM\\Reports\\GenericGrid.rpt",
               "RelativeToolTip": "SmartHRM\\Reports\\GenericGrid.rpt",
               "Icon": "00000000-0000-0000-0000-000000000000.000000|iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAIeSURBVDhPpZJNSFRRFMd/9973ZnIaswwiWvSFmyFNFyEUTlC4qDYptghaSOAmoY3QojZFVkLuIqZ2FhVCYGOLFhERRBs3MkP0IWmZ5geaOo06M76v28Ia581r1w/O4lzO\u002BZ9z7jnwP2itRamfGEzpUr\u002BczpYGX3yAxGBKu56nXc/T5SQGU/pfBWTgQQim5leYnFv2GcCF0/WBLgMCAFKKgAHce56GslF9Akquu0qKot3xepFC0BqvoTVeQ0tTDVXRcDHHJ/AnHyUlSkqSYoAH0/eJTzWgpMRQEtPwN\u002B3zTKUAMJTg5vwN2ORQKbew7GU5MnGw2FUpxt6OT61C6ONA9fBXj1O/LLpnryKlwciPMZbnsgBknSyNk3UMH/vgExD5vNW2Wlhrfj\u002Be23NrYOnkdEYSj4UZajhDxf4wM\u002BkZvj0Zg0XIDdgAJN\u002BNcq45JgBk5/X\u002B5KXbz7oMN3vlbsd2jsZCvEwVsPofExGVUNCQgULS8W0kwPnLD0Xy7YheyKzos73juvbiqD7U9UUf6K/Tq/k1bdmuth1XW7arn74ZCa6xr6ddh0MmVdEKmmIRtkYNTNPkUf0LLNtFqfXqSglMtfH3gUMqOJCe8KiuCrGr2qBg2TiOWx5WxDdQ36tJ/Xk2zOKqZHPI4/DuDAuLC\u002BzcsY1IZON4AE407hOUC\u002BTzVlvesq9lsrnan0src0Pp8e7hjxOvge99Pe250ti//Aa4Se8VLBKf0wAAAABJRU5ErkJggg==",
-              "WhenOpened": "2026-11-12T13:01:56.584Z"
+              "WhenOpened": "2026-11-12T13:01:56.584Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 2,
               "Title": "CrystalExporter.cs",
               "DocumentMoniker": "D:\\BT Classroom Lab\\SmartHRM (.NET)\\SmartHRM\\SmartHRM\\GUI\\CrystalExporter.cs",
               "RelativeDocumentMoniker": "SmartHRM\\GUI\\CrystalExporter.cs",
@@ -62,19 +80,21 @@
               "RelativeToolTip": "SmartHRM\\GUI\\CrystalExporter.cs",
               "ViewState": "AgIAAAMAAAAAAAAAAAAAABAAAAASAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-11-11T02:19:40.769Z"
+              "WhenOpened": "2026-11-11T02:19:40.769Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 1,
               "Title": "Ui.cs",
               "DocumentMoniker": "D:\\BT Classroom Lab\\SmartHRM (.NET)\\SmartHRM\\SmartHRM\\GUI\\Ui.cs",
               "RelativeDocumentMoniker": "SmartHRM\\GUI\\Ui.cs",
               "ToolTip": "D:\\BT Classroom Lab\\SmartHRM (.NET)\\SmartHRM\\SmartHRM\\GUI\\Ui.cs",
               "RelativeToolTip": "SmartHRM\\GUI\\Ui.cs",
-              "ViewState": "AgIAAIgAAAAAAAAAAAAUwAgAAAATAAAAAAAAAA==",
+              "ViewState": "AgIAAE4AAAAAAAAAAAAwwI0AAAAgAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-11-11T02:18:39.947Z"
+              "WhenOpened": "2026-11-11T02:18:39.947Z",
+              "EditorCaption": ""
             }
           ]
         },

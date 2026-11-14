@@ -203,7 +203,7 @@ namespace SmartHRM.GUI
         void btnExport_Click(object sender, EventArgs e)
         {
             if (table == null || table.Rows.Count == 0) { Ui.Warn("Không có dữ liệu để xuất."); return; }
-            Ui.ExportTable(table, current.Title);
+            Ui.ExportTable(table, current.Title, ExportChart.FromChart(chartMain));   // kèm đúng biểu đồ đang xem
         }
 
         void btnSaveImage_Click(object sender, EventArgs e)

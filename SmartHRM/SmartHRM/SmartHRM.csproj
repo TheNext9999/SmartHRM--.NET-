@@ -199,6 +199,7 @@
     <Compile Include="GUI\EntityEditForm.Designer.cs">
       <DependentUpon>EntityEditForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="GUI\ExportChart.cs" />
     <Compile Include="GUI\KpiCard.cs">
       <SubType>UserControl</SubType>
     </Compile>
