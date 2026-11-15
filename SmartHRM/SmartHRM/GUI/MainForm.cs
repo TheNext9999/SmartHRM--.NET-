@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using SmartHRM.BUS;
+using SmartHRM.Common;
 using SmartHRM.DTO;
 
 namespace SmartHRM.GUI
@@ -24,6 +25,7 @@ namespace SmartHRM.GUI
         public MainForm()
         {
             InitializeComponent();
+            EnsureLogMenu();
             AppImages.Apply(this);
             if (AppImages.Logo != null) picWelcome.Image = AppImages.Logo;
             RegisterModules();
@@ -271,10 +273,27 @@ namespace SmartHRM.GUI
         void mnuLogout_Click(object sender, EventArgs e) { LoggedOut = true; Close(); }
         void mnuExit_Click(object sender, EventArgs e) { Close(); }
 
+        /// <summary>Đảm bảo menu Trợ giúp có mục xem log, kể cả khi file Designer chưa được cập nhật.</summary>
+        void EnsureLogMenu()
+        {
+            if (mnuHelp.DropDownItems.Cast<ToolStripItem>().Any(i => i.Name == "mnuOpenLogFile")) return;
+            var file = new ToolStripMenuItem("Xem file log hôm nay") { Name = "mnuOpenLogFile" };
+            file.Click += mnuOpenLogFile_Click;
+            var folder = new ToolStripMenuItem("Mở thư mục log (gửi cho bộ phận hỗ trợ)") { Name = "mnuOpenLogFolder" };
+            folder.Click += mnuOpenLogFolder_Click;
+            mnuHelp.DropDownItems.Insert(0, file);
+            mnuHelp.DropDownItems.Insert(1, folder);
+            mnuHelp.DropDownItems.Insert(2, new ToolStripSeparator());
+        }
+
+        void mnuOpenLogFile_Click(object sender, EventArgs e) { AppLogger.OpenCurrentFile(); }
+        void mnuOpenLogFolder_Click(object sender, EventArgs e) { AppLogger.OpenFolder(); }
+
         void mnuAbout_Click(object sender, EventArgs e)
         {
-            Ui.Info("SmartHRM - Phần mềm quản lý nhân sự\nWinForms .NET Framework + MySQL\n\n" +
-                    "Nhân sự • Chấm công • Tiền lương • Tuyển dụng • Đánh giá & Đào tạo • Báo cáo");
+            Ui.Info("SmartHRM - Phần mềm quản lý nhân sự\nPhiên bản " + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version + "\nWinForms .NET Framework + MySQL\n\n" +
+                    "Nhân sự • Chấm công • Tiền lương • Tuyển dụng • Đánh giá & Đào tạo • Báo cáo\n\n" +
+                    "File log: " + AppLogger.CurrentFile);
         }
 
         // ------------------------------------------------------------ hộp thoại phụ

@@ -4,6 +4,7 @@ using System.DirectoryServices.AccountManagement;
 using System.Net;
 using System.Net.Mail;
 using System.Security.Cryptography;
+using SmartHRM.Common;
 using SmartHRM.DAL;
 using SmartHRM.DTO;
 
@@ -12,6 +13,12 @@ namespace SmartHRM.BUS
     public static class MailService
     {
         static string Cfg(string k) { return ConfigurationManager.AppSettings[k] ?? ""; }
+        static string MaskEmail(string email)
+        {
+            var at = (email ?? "").IndexOf('@');
+            return at <= 1 ? "***" : email.Substring(0, 1) + "***" + email.Substring(at);   // che bớt địa chỉ email trong log
+        }
+
         public static bool IsConfigured { get { return !string.IsNullOrWhiteSpace(Cfg("SmtpHost")); } }
 
         public static void Send(string to, string subject, string htmlBody)
@@ -24,10 +31,19 @@ namespace SmartHRM.BUS
                 client.EnableSsl = !string.Equals(Cfg("SmtpSsl"), "false", StringComparison.OrdinalIgnoreCase);
                 if (!string.IsNullOrWhiteSpace(Cfg("SmtpUser")))
                     client.Credentials = new NetworkCredential(Cfg("SmtpUser"), Cfg("SmtpPass"));
-                using (var msg = new MailMessage(Cfg("SmtpFrom"), to, subject, htmlBody))
+                try
                 {
-                    msg.IsBodyHtml = true;
-                    client.Send(msg);
+                    using (var msg = new MailMessage(Cfg("SmtpFrom"), to, subject, htmlBody))
+                    {
+                        msg.IsBodyHtml = true;
+                        client.Send(msg);
+                    }
+                    AppLogger.Info("Đã gửi email \"" + subject + "\" tới " + MaskEmail(to));
+                }
+                catch (Exception ex)
+                {
+                    AppLogger.Error("Gửi email thất bại tới " + MaskEmail(to) + " (SMTP " + Cfg("SmtpHost") + ":" + port + ")", ex);
+                    throw;
                 }
             }
         }
@@ -65,7 +81,11 @@ namespace SmartHRM.BUS
                 using (var ctx = new PrincipalContext(ContextType.Domain, domain))
                     return ctx.ValidateCredentials(username, password);
             }
-            catch (Exception ex) { throw new ValidationException("Không kết nối được AD: " + ex.Message); }
+            catch (Exception ex)
+            {
+                AppLogger.Warn("Lỗi kết nối AD (domain " + domain + ")", ex);
+                throw new ValidationException("Không kết nối được AD: " + ex.Message);
+            }
         }
 
         /// <summary>Gửi OTP 6 số (hiệu lực 5 phút). Trả về mã nếu chạy chế độ demo (chưa cấu hình SMTP), ngược lại trả null.</summary>
@@ -113,6 +133,7 @@ namespace SmartHRM.BUS
 
         AuthResult Fail(string username, string msg)
         {
+            AppLogger.Warn("Đăng nhập thất bại: tài khoản \"" + username + "\" - " + msg);
             try { new AuditDAL().Write(null, username, "Đăng nhập thất bại", "AUTH", msg); } catch { }
             return new AuthResult { Success = false, Message = msg };
         }

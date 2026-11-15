@@ -158,6 +158,7 @@
     <Compile Include="BUS\PerfBUS.cs" />
     <Compile Include="BUS\SystemBUS.cs" />
     <Compile Include="BUS\TimeBUS.cs" />
+    <Compile Include="Common\AppLogger.cs" />
     <Compile Include="DAL\DbHelper.cs" />
     <Compile Include="DAL\GenericDAL.cs" />
     <Compile Include="DAL\HrDALs.cs" />
