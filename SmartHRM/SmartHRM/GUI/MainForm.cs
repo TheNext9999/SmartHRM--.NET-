@@ -175,7 +175,7 @@ namespace SmartHRM.GUI
         public void OpenModule(string code)
         {
             TabPage page;
-            if (open.TryGetValue(code, out page)) { tabMain.SelectedTab = page; return; }
+            if (open.TryGetValue(code, out page)) { tabMain.SelectedTab = page; AppLogger.Debug("Chuyển tới tab: " + Modules.TitleOf(code)); return; }
             if (!factories.ContainsKey(code) || !Session.Can(code, "view")) { Ui.Warn("Bạn không có quyền truy cập chức năng này."); return; }
             try
             {
@@ -188,6 +188,7 @@ namespace SmartHRM.GUI
                 tabMain.SelectedTab = page;
                 SyncTabVisibility();
                 form.Show();
+                AppLogger.Info("Mở chức năng: " + Modules.TitleOf(code) + " [" + code + "]");
             }
             catch (Exception ex) { Ui.Error(ex); }
         }
@@ -196,6 +197,7 @@ namespace SmartHRM.GUI
         {
             if (p == null) return;
             foreach (var c in p.Controls.Cast<Control>().ToList()) c.Dispose();
+            AppLogger.Debug("Đóng tab: " + p.Text);
             open.Remove((string)p.Tag);
             tabMain.TabPages.Remove(p);
             SyncTabVisibility();
@@ -270,7 +272,7 @@ namespace SmartHRM.GUI
             if (Session.User != null) new AuthBUS().Logout();      // ghi nhật ký đăng xuất (dù đóng cửa sổ hay chọn Đăng xuất)
         }
 
-        void mnuLogout_Click(object sender, EventArgs e) { LoggedOut = true; Close(); }
+        void mnuLogout_Click(object sender, EventArgs e) { AppLogger.Info("Người dùng chọn Đăng xuất"); LoggedOut = true; Close(); }
         void mnuExit_Click(object sender, EventArgs e) { Close(); }
 
         /// <summary>Đảm bảo menu Trợ giúp có mục xem log, kể cả khi file Designer chưa được cập nhật.</summary>

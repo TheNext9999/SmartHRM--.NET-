@@ -3,20 +3,12 @@
   "WorkspaceRootPath": "D:\\BT Classroom Lab\\SmartHRM (.NET)\\SmartHRM\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{C9F9ED6F-FFDF-4847-B5E9-2D17FC14A237}|SmartHRM\\SmartHRM.csproj|d:\\bt classroom lab\\smarthrm (.net)\\smarthrm\\smarthrm\\gui\\mainform.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{C9F9ED6F-FFDF-4847-B5E9-2D17FC14A237}|SmartHRM\\SmartHRM.csproj|solutionrelative:smarthrm\\gui\\mainform.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{C9F9ED6F-FFDF-4847-B5E9-2D17FC14A237}|SmartHRM\\SmartHRM.csproj|D:\\BT Classroom Lab\\SmartHRM (.NET)\\SmartHRM\\smarthrm\\gui\\ui.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C9F9ED6F-FFDF-4847-B5E9-2D17FC14A237}|SmartHRM\\SmartHRM.csproj|solutionrelative:smarthrm\\gui\\ui.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{C9F9ED6F-FFDF-4847-B5E9-2D17FC14A237}|SmartHRM\\SmartHRM.csproj|D:\\BT Classroom Lab\\SmartHRM (.NET)\\SmartHRM\\smarthrm\\gui\\mainform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{C9F9ED6F-FFDF-4847-B5E9-2D17FC14A237}|SmartHRM\\SmartHRM.csproj|solutionrelative:smarthrm\\gui\\mainform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{C9F9ED6F-FFDF-4847-B5E9-2D17FC14A237}|SmartHRM\\SmartHRM.csproj|D:\\BT Classroom Lab\\SmartHRM (.NET)\\SmartHRM\\smarthrm\\app.config||{FA3CD31E-987B-443A-9B81-186104E8DAC1}",
-      "RelativeMoniker": "D:0:0:{C9F9ED6F-FFDF-4847-B5E9-2D17FC14A237}|SmartHRM\\SmartHRM.csproj|solutionrelative:smarthrm\\app.config||{FA3CD31E-987B-443A-9B81-186104E8DAC1}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{C9F9ED6F-FFDF-4847-B5E9-2D17FC14A237}|SmartHRM\\SmartHRM.csproj|D:\\BT Classroom Lab\\SmartHRM (.NET)\\SmartHRM\\smarthrm\\gui\\ui.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{C9F9ED6F-FFDF-4847-B5E9-2D17FC14A237}|SmartHRM\\SmartHRM.csproj|solutionrelative:smarthrm\\gui\\ui.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{C9F9ED6F-FFDF-4847-B5E9-2D17FC14A237}|SmartHRM\\SmartHRM.csproj|D:\\BT Classroom Lab\\SmartHRM (.NET)\\SmartHRM\\smarthrm\\gui\\crystalexporter.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -34,21 +26,8 @@
       "DocumentGroups": [
         {
           "DockedHeight": 225,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 3,
           "Children": [
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "MainForm.Designer.cs",
-              "DocumentMoniker": "D:\\BT Classroom Lab\\SmartHRM (.NET)\\SmartHRM\\SmartHRM\\GUI\\MainForm.Designer.cs",
-              "RelativeDocumentMoniker": "SmartHRM\\GUI\\MainForm.Designer.cs",
-              "ToolTip": "D:\\BT Classroom Lab\\SmartHRM (.NET)\\SmartHRM\\SmartHRM\\GUI\\MainForm.Designer.cs",
-              "RelativeToolTip": "SmartHRM\\GUI\\MainForm.Designer.cs",
-              "ViewState": "AgIAALkAAAAAAAAAAAAUwL8BAAABAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-11-15T09:43:14.705Z",
-              "EditorCaption": ""
-            },
             {
               "$type": "Document",
               "DocumentIndex": 1,
@@ -57,25 +36,14 @@
               "RelativeDocumentMoniker": "SmartHRM\\GUI\\MainForm.cs",
               "ToolTip": "D:\\BT Classroom Lab\\SmartHRM (.NET)\\SmartHRM\\SmartHRM\\GUI\\MainForm.cs",
               "RelativeToolTip": "SmartHRM\\GUI\\MainForm.cs",
-              "ViewState": "AgIAACQBAAAAAAAAAAAAAG0BAAABAAAAAAAAAA==",
+              "ViewState": "AgIAAFABAAAAAAAAAAAowG8BAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-11-15T09:43:00.869Z"
+              "WhenOpened": "2026-11-15T09:43:00.869Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "App.config",
-              "DocumentMoniker": "D:\\BT Classroom Lab\\SmartHRM (.NET)\\SmartHRM\\SmartHRM\\App.config",
-              "RelativeDocumentMoniker": "SmartHRM\\App.config",
-              "ToolTip": "D:\\BT Classroom Lab\\SmartHRM (.NET)\\SmartHRM\\SmartHRM\\App.config",
-              "RelativeToolTip": "SmartHRM\\App.config",
-              "ViewState": "AgIAAAwAAAAAAAAAAAAAAAwAAAAIAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000601|",
-              "WhenOpened": "2026-11-15T09:37:19.589Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 3,
               "Title": "GenericGrid.rpt",
               "DocumentMoniker": "D:\\BT Classroom Lab\\SmartHRM (.NET)\\SmartHRM\\SmartHRM\\Reports\\GenericGrid.rpt",
               "RelativeDocumentMoniker": "SmartHRM\\Reports\\GenericGrid.rpt",
@@ -86,7 +54,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 2,
               "Title": "CrystalExporter.cs",
               "DocumentMoniker": "D:\\BT Classroom Lab\\SmartHRM (.NET)\\SmartHRM\\SmartHRM\\GUI\\CrystalExporter.cs",
               "RelativeDocumentMoniker": "SmartHRM\\GUI\\CrystalExporter.cs",
@@ -98,15 +66,16 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 0,
               "Title": "Ui.cs",
               "DocumentMoniker": "D:\\BT Classroom Lab\\SmartHRM (.NET)\\SmartHRM\\SmartHRM\\GUI\\Ui.cs",
               "RelativeDocumentMoniker": "SmartHRM\\GUI\\Ui.cs",
               "ToolTip": "D:\\BT Classroom Lab\\SmartHRM (.NET)\\SmartHRM\\SmartHRM\\GUI\\Ui.cs",
               "RelativeToolTip": "SmartHRM\\GUI\\Ui.cs",
-              "ViewState": "AgIAAE4AAAAAAAAAAAAwwI0AAAAgAAAAAAAAAA==",
+              "ViewState": "AgIAAKoAAAAAAAAAAAAowLcAAAA4AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-11-11T02:18:39.947Z"
+              "WhenOpened": "2026-11-11T02:18:39.947Z",
+              "EditorCaption": ""
             }
           ]
         },

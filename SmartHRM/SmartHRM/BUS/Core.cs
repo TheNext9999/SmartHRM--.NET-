@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using SmartHRM.Common;
 using SmartHRM.DAL;
 using SmartHRM.DTO;
 
@@ -147,8 +148,9 @@ namespace SmartHRM.BUS
         static readonly AuditDAL dal = new AuditDAL();
         public static void Log(string action, string module, string detail)
         {
+            AppLogger.Info("[NHẬT KÝ] " + action + " | " + module + " | " + detail);       // ghi thêm ra file .log
             try { dal.Write(Session.User == null ? (int?)null : Session.User.Id, Session.User == null ? "(hệ thống)" : Session.User.Username, action, module, detail); }
-            catch { /* không để lỗi ghi nhật ký làm hỏng nghiệp vụ */ }
+            catch (Exception ex) { AppLogger.Warn("Không ghi được nhật ký hệ thống vào CSDL", ex); }   // không để lỗi ghi nhật ký làm hỏng nghiệp vụ
         }
         public static System.Data.DataTable SearchTable(DateTime from, DateTime to, string user, string module, string action, string keyword, int limit)
         {

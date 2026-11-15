@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using System.Windows.Forms;
 using SmartHRM.BUS;
+using SmartHRM.Common;
 using SmartHRM.DTO;
 
 namespace SmartHRM.GUI
@@ -76,6 +77,7 @@ namespace SmartHRM.GUI
             }
             catch (Exception ex) { Ui.Error(ex); items = new List<BaseDTO>(); }
             byId = items.ToDictionary(i => i.Id);
+            AppLogger.Debug("Tải danh sách \"" + svc.Title + "\": " + items.Count + " bản ghi");
             Rebind();
         }
 

@@ -6,6 +6,7 @@ using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
 using MySqlConnector;
 using SmartHRM.BUS;
+using SmartHRM.Common;
 using SmartHRM.DAL;
 using SmartHRM.DTO;
 
@@ -17,7 +18,19 @@ namespace SmartHRM.GUI
 
         public static void Info(string msg) { MessageBox.Show(msg, AppTitle, MessageBoxButtons.OK, MessageBoxIcon.Information); }
         public static void Warn(string msg) { MessageBox.Show(msg, AppTitle, MessageBoxButtons.OK, MessageBoxIcon.Warning); }
-        public static void Error(Exception ex) { MessageBox.Show(Describe(ex), AppTitle, MessageBoxButtons.OK, MessageBoxIcon.Error); }
+        public static void Error(Exception ex)
+        {
+            LogUiError(ex);
+            MessageBox.Show(Describe(ex), AppTitle, MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
+
+        /// <summary>Ghi lỗi hiển thị cho người dùng vào file log (lỗi nghiệp vụ: cảnh báo; lỗi bất ngờ: kèm chi tiết kỹ thuật).</summary>
+        static void LogUiError(Exception ex)
+        {
+            if (ex == null || AppLogger.WasLogged(ex)) return;       // đã được ghi ở tầng dưới (vd: lỗi CSDL)
+            if (ex is ValidationException || ex is UnauthorizedAccessException) AppLogger.Warn("Thông báo cho người dùng: " + ex.Message);
+            else AppLogger.Error("Lỗi hiển thị cho người dùng", ex);
+        }
         public static bool Confirm(string msg) { return MessageBox.Show(msg, AppTitle, MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes; }
 
         public static string Describe(Exception ex)
@@ -114,10 +127,12 @@ namespace SmartHRM.GUI
                     catch (ValidationException) { throw; }
                     catch (Exception ex)
                     {
+                        AppLogger.Warn("Xuất bằng Crystal Reports thất bại: " + name, ex);
                         if (pdf || !Confirm("Không xuất được bằng Crystal Reports:\n" + ex.Message + "\n\nXuất bằng chức năng Excel thông thường?")) throw;
                     }
                 }
                 if (!done) ExcelHelper.Export(dt, path, name, png, name);
+                AppLogger.Info("Xuất file " + (pdf ? "PDF" : "Excel") + ": " + path + " (" + (dt == null ? 0 : dt.Rows.Count) + " dòng" + (png != null ? ", kèm biểu đồ" : "") + ")");
                 string chartInfo = pdf ? "" : (png != null ? "\n(Có sheet \"Biểu đồ\".)" : "\n(Dữ liệu này không có biểu đồ phù hợp.)");
                 if (Confirm("Đã xuất file:\n" + path + chartInfo + note + "\n\nMở file ngay?")) System.Diagnostics.Process.Start(path);
             }
