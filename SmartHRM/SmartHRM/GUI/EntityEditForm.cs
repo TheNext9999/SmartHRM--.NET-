@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Reflection;
@@ -15,6 +16,14 @@ namespace SmartHRM.GUI
     public partial class EntityEditForm : Form
     {
         class Item { public PropertyInfo Prop; public FieldAttribute Attr; public Control Ctl; }
+
+        /// <summary>Một dòng trong ô chọn danh mục (Id = null là dòng trống).</summary>
+        class LookupItem
+        {
+            public int? Id; public string Text;
+            public LookupItem(int? id, string text) { Id = id; Text = text; }
+            public override string ToString() { return Text; }
+        }
 
         readonly List<Item> items = new List<Item>();
         BaseDTO entity;
@@ -103,8 +112,8 @@ namespace SmartHRM.GUI
                 case FieldKind.Lookup:
                     {
                         var cb = new ComboBox { DropDownStyle = ComboBoxStyle.DropDownList };
-                        cb.DataSource = Ui.Lookup(f.Source, true);
-                        cb.DisplayMember = "text"; cb.ValueMember = "id";
+                        foreach (DataRow r in Ui.Lookup(f.Source, true).Rows)
+                            cb.Items.Add(new LookupItem(r["id"] == DBNull.Value ? (int?)null : Convert.ToInt32(r["id"]), Convert.ToString(r["text"])));
                         return cb;
                     }
                 default: return new TextBox();   // Text, File
@@ -146,7 +155,11 @@ namespace SmartHRM.GUI
                 case FieldKind.Lookup:
                     {
                         var cb = (ComboBox)c;
-                        if (v == null || (v is int && (int)v == 0)) cb.SelectedIndex = 0; else cb.SelectedValue = Convert.ToInt32(v);
+                        int? target = v == null || (v is int && (int)v == 0) ? (int?)null : Convert.ToInt32(v);
+                        int idx = 0;                                           // 0 = dòng trống
+                        for (int i = 0; i < cb.Items.Count; i++)
+                            if (((LookupItem)cb.Items[i]).Id == target) { idx = i; break; }
+                        if (cb.Items.Count > 0) cb.SelectedIndex = idx;
                         break;
                     }
                 default: c.Text = Convert.ToString(v) ?? ""; break;
@@ -158,7 +171,7 @@ namespace SmartHRM.GUI
             var c = it.Ctl;
             switch (it.Attr.Kind)
             {
-                case FieldKind.Lookup: { var sv = ((ComboBox)c).SelectedValue; return sv == null || sv == DBNull.Value; }
+                case FieldKind.Lookup: { var li = ((ComboBox)c).SelectedItem as LookupItem; return li == null || !li.Id.HasValue; }
                 case FieldKind.Combo: return string.IsNullOrEmpty(Convert.ToString(((ComboBox)c).SelectedItem));
                 case FieldKind.Date:
                 case FieldKind.DateAndTime: { var d = (DateTimePicker)c; return d.ShowCheckBox && !d.Checked; }
@@ -195,8 +208,8 @@ namespace SmartHRM.GUI
                     case FieldKind.Combo: { var s = Convert.ToString(((ComboBox)c).SelectedItem); v = string.IsNullOrEmpty(s) ? null : s; break; }
                     case FieldKind.Lookup:
                         {
-                            var sv = ((ComboBox)c).SelectedValue;
-                            v = sv == null || sv == DBNull.Value ? null : (object)Convert.ToInt32(sv); break;
+                            var li = ((ComboBox)c).SelectedItem as LookupItem;
+                            v = li == null || !li.Id.HasValue ? null : (object)li.Id.Value; break;
                         }
                     case FieldKind.Password: v = string.IsNullOrEmpty(c.Text) ? null : c.Text; break;
                     default: v = string.IsNullOrWhiteSpace(c.Text) ? null : c.Text.Trim(); break;
