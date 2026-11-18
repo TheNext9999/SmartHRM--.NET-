@@ -1,0 +1,1291 @@
+====================================================================================================
+               BÁO CÁO TỔNG KẾT DỰ ÁN HỆ THỐNG QUẢN TRỊ NHÂN SỰ VÀ TIỀN LƯƠNG
+                                     SMARTHRM (.NET)
+====================================================================================================
+
+I. THÔNG TIN CHUNG DỰ ÁN
+----------------------------------------------------------------------------------------------------
+- Tên dự án: SmartHRM (.NET) - Hệ thống Quản trị Nhân sự, Chấm công & Tiền lương Doanh nghiệp.
+- Nền tảng phát triển: Microsoft .NET Framework 4.7.2 (Windows Forms Desktop Application).
+- Ngôn ngữ lập trình: C# (C-Sharp).
+- Cơ sở dữ liệu: MySQL Database (kết nối qua MySqlConnector).
+- Kiến trúc phần mềm: Mô hình 3 lớp chuẩn (3-Tier Architecture):
+  + Tầng giao diện người dùng (GUI - Graphical User Interface).
+  + Tầng xử lý nghiệp vụ (BUS - Business Logic Layer).
+  + Tầng truy xuất dữ liệu & Thực thể (DAL - Data Access Layer & DTO - Data Transfer Object).
+- Thư viện & Công nghệ tích hợp:
+  + MySqlConnector: Thư viện kết nối CSDL MySQL hiệu năng cao, hỗ trợ Parameterized Queries chống SQL Injection.
+  + BCrypt.Net-Next: Thuật toán mã hóa băm mật khẩu một chiều đạt tiêu chuẩn bảo mật.
+  + ClosedXML & DocumentFormat.OpenXml: Đọc/ghi và định dạng báo cáo Excel chuyên nghiệp, tự động nhúng biểu đồ thống kê.
+  + Crystal Reports (GenericGrid.rpt): Thiết kế và in ấn biểu mẫu báo cáo lưới dữ liệu tiêu chuẩn.
+  + System.Windows.Forms.DataVisualization.Charting: Trực quan hóa dữ liệu bằng đồ thị (Bar, Column, Pie, Line, Area...).
+  + System.Net.Mail: Dịch vụ gửi email thông báo và mã xác thực OTP qua giao thức SMTP.
+  + Haversine Formula: Thuật toán tính toán khoảng cách tọa độ GPS kiểm tra phạm vi chấm công hợp lệ.
+
+
+====================================================================================================
+II. CÁC CHỨC NĂNG TRONG HỆ THỐNG
+====================================================================================================
+Hệ thống SmartHRM được thiết kế hoàn chỉnh theo quy trình quản trị nguồn nhân lực hiện đại, bao gồm
+7 phân hệ chính và 25 phân hệ con:
+
+1. PHÂN HỆ QUẢN TRỊ HỆ THỐNG & BẢO MẬT (System & Security)
+   - Xác thực người dùng (Authentication): Đăng nhập an toàn bằng Username và Mật khẩu mã hóa BCrypt.
+   - Quên mật khẩu & Cấp lại mật khẩu qua Email: Sinh mã OTP ngẫu nhiên gửi về email người dùng, xác thực mã OTP có thời hạn để thiết lập lại mật khẩu mới.
+   - Phân quyền người dùng theo vai trò (Role-Based Access Control - RBAC):
+     + Quản lý các nhóm quyền (Roles): Quản trị viên (Admin), Quản lý nhân sự (HR), Nhân viên (Employee).
+     + Phân quyền chi tiết trên từng phân hệ với ma trận 4 quyền: Xem (View), Thêm (Add), Sửa (Edit), Xóa (Delete).
+     + Hỗ trợ chế độ "Self-Only": Nhân viên chỉ được xem và quản lý dữ liệu cá nhân của chính mình.
+   - Quản lý tài khoản người dùng (Users): Thêm mới, chỉnh sửa thông tin, đặt lại mật khẩu, kích hoạt hoặc khóa tài khoản, liên kết tài khoản hệ thống với hồ sơ nhân viên thực tế.
+   - Nhật ký kiểm toán hệ thống (Audit Log):
+     + Tự động ghi lại mọi thao tác quan trọng (thêm, sửa, xóa, duyệt đơn, tính lương, dọn dẹp dữ liệu) kèm thời gian, tài khoản, địa chỉ IP và chi tiết thay đổi.
+     + Tra cứu, lọc nhật ký đa tiêu chí (khoảng thời gian, người dùng, mô-đun, loại thao tác, từ khóa).
+     + Tính năng bảo trì dọn dẹp nhật ký cũ (tối thiểu lưu trữ 30 ngày) có ghi nhận audit.
+   - Tham số cấu hình hệ thống (System Settings): Quản lý tập trung các thông số vận hành (cấu hình mail SMTP, tọa độ GPS văn phòng, bán kính chấm công cho phép, tỷ lệ bảo hiểm xã hội, ngày công chuẩn...).
+   - Hệ thống ghi nhật ký kỹ thuật ứng dụng (AppLogger): Ghi log chi tiết ra file nội bộ theo ngày, hỗ trợ kiểm soát lỗi runtime, tự động che các thông tin nhạy cảm (mật khẩu kết nối CSDL, chuỗi nhạy cảm).
+
+2. PHÂN HỆ QUẢN LÝ TỔ CHỨC & HỒ SƠ NHÂN SỰ (Organization & Employees)
+   - Sơ đồ tổ chức doanh nghiệp (Org Chart): Trực quan hóa cấu trúc tổ chức phòng ban theo mô hình cây (TreeView) đa cấp, hiển thị rõ quan hệ trực thuộc và thông tin trưởng bộ phận.
+   - Quản lý danh mục phòng ban (Departments): Quản lý mã phòng, tên phòng, phòng ban cấp cha, thông tin trưởng đơn vị; kiểm tra ràng buộc không cho phép xóa đơn vị khi còn nhân sự đang làm việc.
+   - Quản lý danh mục chức danh / chức vụ (Positions): Định nghĩa chức vụ, mức phụ cấp chức vụ tương ứng và bản mô tả công việc.
+   - Quản lý hồ sơ nhân viên (Employees):
+     + Quản lý toàn diện lý lịch trích ngang: Mã nhân viên (tự động sinh), Họ tên, Giới tính, Ngày sinh, CCCD/CMND, Số điện thoại, Email, Địa chỉ thường trú.
+     + Quản lý thông tin công việc: Phòng ban, Chức danh, Quản lý trực tiếp, Ngày bắt đầu vào làm việc, Trạng thái nhân sự (Thử việc, Chính thức, Tạm hoãn, Nghỉ việc).
+     + Quản lý thông tin tài chính - bảo hiểm: Mức lương cơ bản, Số tài khoản ngân hàng, Tên ngân hàng, Mã số thuế cá nhân, Mã số sổ BHXH, Số người phụ thuộc giảm trừ gia cảnh, Quỹ phép năm.
+     + Ràng buộc nghiệp vụ bảo toàn lịch sử: Nghiêm cấm xóa vật lý hồ sơ nhân viên nhằm bảo vệ tính toàn vẹn dữ liệu chấm công và tính lương (chỉ chuyển đổi trạng thái sang "Nghỉ việc").
+   - Quản lý hợp đồng lao động (Contracts):
+     + Quản lý các loại hợp đồng: Thử việc, Hợp đồng xác định thời hạn (1 năm, 2 năm, 3 năm), Hợp đồng không xác định thời hạn, Hợp đồng cộng tác viên/mùa vụ.
+     + Quản lý ngày ký, ngày bắt đầu hiệu lực, ngày hết hạn hợp đồng, mức lương cam kết theo hợp đồng.
+     + Tự động quét và cập nhật trạng thái hợp đồng hết hạn (`MarkExpired`).
+
+3. PHÂN HỆ TUYỂN DỤNG & TIẾP NHẬN NHÂN VIÊN MỚI (Recruitment & Onboarding)
+   - Quản lý đề xuất tuyển dụng (Recruitment Requests): Các phòng ban lập yêu cầu bổ sung nhân sự (vị trí, số lượng, lý do, yêu cầu chuyên môn, ngày cần nhân sự); quy trình phê duyệt đề xuất (Chờ duyệt, Đã duyệt, Từ chối).
+   - Quản lý hồ sơ ứng viên (Candidates): Tiếp nhận thông tin ứng viên, liên kết với đề xuất tuyển dụng, quản lý file CV đính kèm, cập nhật lịch hẹn phỏng vấn và ghi nhận kết quả đánh giá.
+   - Quy trình Onboarding tự động: Tự động chuyển đổi ứng viên trúng tuyển sang hồ sơ nhân viên chính thức (ở trạng thái thử việc), tự động khởi tạo bản hợp đồng thử việc ban đầu mà không cần nhập liệu thủ công lại.
+
+4. PHÂN HỆ CHẤM CÔNG & CA LÀM VIỆC (Time & Attendance)
+   - Cấu hình ca làm việc (Shifts): Định nghĩa các ca (Ca sáng, Ca chiều, Ca hành chính, Ca đêm), thời gian bắt đầu, thời gian kết thúc, thời gian nghỉ giữa ca.
+   - Lập lịch phân ca làm việc (Work Schedules): Phân công ca làm việc linh hoạt cho từng nhân sự theo khoảng thời gian hoặc cố định lâu dài.
+   - Quản lý chấm công (Attendance):
+     + Ghi nhận giờ Check-in và Check-out hàng ngày của nhân viên.
+     + Hỗ trợ chấm công định vị GPS: Kiểm tra khoảng cách thực tế giữa vị trí nhân viên và tọa độ văn phòng (sử dụng công thức Haversine), cảnh báo hoặc từ chối khi vượt bán kính cho phép.
+     + Tự động tính toán số phút đi muộn (Late Minutes), số phút về sớm (Early Minutes), quy đổi công chuẩn (Work Days).
+     + Hỗ trợ import dữ liệu chấm công hàng loạt từ file Excel của máy chấm công vân tay/khuôn mặt.
+   - Quản lý đơn từ điện tử (Leave Requests):
+     + Nhân viên nộp đơn trực tuyến: Nghỉ phép năm, Nghỉ ốm đau, Nghỉ thai sản, Nghỉ việc riêng, Đăng ký làm thêm giờ (OT), Đi công tác.
+     + Tự động tính toán số ngày nghỉ trừ vào quỹ phép năm của nhân viên.
+     + Quy trình xét duyệt đơn trực tuyến nhiều cấp (Quản lý trực tiếp duyệt, HR duyệt).
+   - Chốt bảng chấm công tháng (Monthly Timesheet):
+     + Tự động tổng hợp dữ liệu từ chấm công hàng ngày và các đơn từ đã duyệt trong tháng.
+     + Tính toán tổng ngày công thực tế, ngày nghỉ hưởng lương/nghỉ phép, ngày nghỉ không lương, số lần và số phút đi muộn/về sớm, tổng số giờ làm thêm (OT).
+     + Cơ chế khóa bảng công (Lock Timesheet) để đảm bảo dữ liệu không bị sửa đổi sau khi chuyển sang tính lương.
+
+5. PHÂN HỆ TIỀN LƯƠNG & PHÚC LỢI (Payroll & Benefits)
+   - Cấu hình công thức lương động (Salary Formulas):
+     + Cho phép doanh nghiệp tự định nghĩa linh hoạt các khoản thu nhập (Lương theo ngày công, Phụ cấp ăn trưa, Phụ cấp xăng xe, Thưởng hiệu suất) và các khoản giảm trừ (Đi muộn, Giảm trừ BHXH, BHYT, BHTN, Thuế TNCN).
+     + Tích hợp bộ máy tính toán công thức `FormulaEngine` có khả năng biên dịch và tính toán biểu thức số học dựa trên các biến ngữ cảnh (`BASIC`, `WORKDAYS`, `STANDARDDAYS`, `ALLOWANCE`, `OTHOURS`...).
+   - Tính toán và chốt bảng lương định kỳ (Monthly Payroll):
+     + Tự động lấy dữ liệu từ Bảng chấm công đã chốt và mức lương cơ bản trong hợp đồng lao động.
+     + Tự động tính toán tỷ lệ đóng Bảo hiểm Xã hội (BHXH 8%), Bảo hiểm Y tế (BHYT 1.5%), Bảo hiểm Thất nghiệp (BHTN 1%) của người lao động và phần doanh nghiệp chi trả.
+     + Tự động tính Thuế Thu nhập Cá nhân (PIT) lũy tiến từng phần theo quy định của pháp luật Việt Nam (giảm trừ bản thân 11 triệu đồng/tháng, giảm trừ người phụ thuộc 4.4 triệu đồng/người/tháng).
+     + Tính toán lương thực lĩnh (Net Salary = Tổng thu nhập - Các khoản giảm trừ bảo hiểm, thuế, phạt).
+     + Chốt và lưu trữ lịch sử bảng lương hàng tháng, hỗ trợ xuất bảng thanh toán lương toàn công ty.
+   - Phiếu lương cá nhân (My Payslip): Cho phép nhân viên tự tra cứu chi tiết bảng kê lương từng tháng của chính mình một cách minh bạch và bảo mật.
+
+6. PHÂN HỆ ĐÁNH GIÁ HIỆU SUẤT & ĐÀO TẠO (Performance & Training)
+   - Quản lý kỳ đánh giá hiệu suất (KPI/OKR Periods): Thiết lập các đợt đánh giá định kỳ theo tháng, quý hoặc năm.
+   - Danh mục tiêu chí đánh giá KPI (KPI Criteria): Xây dựng bộ tiêu chí đo lường định lượng/định tính gán theo từng chức vụ công việc kèm trọng số phần trăm (%) tương ứng.
+   - Chấm điểm và xếp loại nhân viên (KPI Evaluations):
+     + Nhân viên tự chấm điểm và ghi chú giải trình kết quả (Self Evaluation).
+     + Quản lý trực tiếp chấm điểm và nhận xét (Manager Evaluation).
+     + Hệ thống tự động tính điểm trung bình có trọng số và xếp loại thi đua (Xuất sắc - A, Tốt - B, Đạt - C, Không đạt - D) làm căn cứ xét thưởng hoặc tăng lương.
+   - Quản lý khóa đào tạo nội bộ (Training Courses): Lập kế hoạch các khóa huấn luyện chuyên môn, chi phí đào tạo, giảng viên, thời gian bắt đầu và kết thúc.
+   - Quản lý học viên & Chứng chỉ đào tạo (Training Participants): Lập danh sách cử nhân viên tham gia khóa học, ghi nhận kết quả kiểm tra, cấp số hiệu chứng chỉ và lưu vết vào hồ sơ năng lực nhân viên.
+
+7. PHÂN HỆ BÁO CÁO, THỐNG KÊ & DASHBOARD (Reporting & Analytics)
+   - Dashboard tổng quan thời gian thực:
+     + Hệ thống thẻ chỉ số nhanh (KPI Cards): Tổng số nhân viên đang làm việc, Nhân viên tuyển mới trong tháng, Nhân viên nghỉ việc, Nhân sự đang thử việc, Đơn từ chờ duyệt, Ứng viên đang tuyển, Số nhân viên đi làm hôm nay, Tổng quỹ lương chi trả kỳ gần nhất.
+     + Biểu đồ tổng quan trực quan: Phân bổ nhân sự, biến động lương thưởng.
+   - Hệ thống báo cáo nhân sự chuyên sâu:
+     + Báo cáo phân bố nhân sự theo phòng ban.
+     + Báo cáo cơ cấu giới tính (Nam / Nữ / Khác).
+     + Báo cáo cơ cấu độ tuổi lao động (Dưới 25, 25-34, 35-44, 45-54, 55 trở lên).
+     + Báo cáo cơ cấu thâm niên làm việc (Dưới 1 năm, 1-3 năm, 3-5 năm, trên 5 năm).
+     + Báo cáo biến động nhân sự theo 12 tháng trong năm (tuyển mới, nghỉ việc, tỷ lệ luân chuyển lao động turnover rate).
+   - Hệ thống báo cáo chi phí lương & phúc lợi:
+     + Báo cáo chi phí tiền lương, thưởng và bảo hiểm phần người sử dụng lao động đóng theo từng tháng.
+     + Báo cáo so sánh quỹ lương qua các kỳ liên tiếp.
+   - Khả năng xuất dữ liệu đa định dạng:
+     + Xuất dữ liệu bảng và tự động vẽ biểu đồ trực quan ra file Microsoft Excel (.xlsx) thông qua ClosedXML và thư viện `ExportChart`.
+     + Xuất báo cáo in ấn chuyên nghiệp chuẩn mẫu qua Crystal Reports (`GenericGrid.rpt`).
+
+
+====================================================================================================
+III. LIỆT KÊ TÓM TẮT CÔNG VIỆC ĐÓNG GÓP CỦA MỖI THÀNH VIÊN TRONG DỰ ÁN
+====================================================================================================
+
+Dự án được xây dựng và hoàn thiện bởi nhóm 2 thành viên:
+
+----------------------------------------------------------------------------------------------------
+1. THÀNH VIÊN: NGUYỄN NHƯ AN (Mã SV: 24003689 - Trưởng nhóm / System Architect & Backend Lead)
+----------------------------------------------------------------------------------------------------
+- Vai trò & Trách nhiệm chính:
+  + Chịu trách nhiệm thiết kế kiến trúc tổng thể toàn bộ hệ thống phần mềm (3-Tier Architecture) và thiết kế hạ tầng kết nối CSDL MySQL.
+  + Xây dựng khung nền tảng dùng chung (Framework & Common Core): Xây dựng các lớp cơ sở mẫu Generic Repository Pattern (`GenericDAL<T>`, `GenericBUS<T>`), bộ cơ chế ánh xạ dữ liệu động từ CSDL vào đối tượng bằng Reflection và Custom Attributes (`TableAttribute`, `FieldAttribute`, `IgnoreAttribute`).
+  + Thiết kế và lập trình cơ chế bảo mật & phân quyền:
+    * Hiện thực hóa giải thuật băm mật khẩu bảo mật chuẩn BCrypt (`BCrypt.Net`).
+    * Thiết kế hệ thống phân quyền ma trận RBAC đa cấp độ (Module Permission Matrix) kiểm soát chặt chẽ 4 hành động (View, Add, Edit, Delete) và quản lý phiên người dùng toàn cục (`Session`).
+    * Xây dựng dịch vụ gửi email tự động và xác thực cấp lại mật khẩu qua mã OTP SMTP (`MailService`, `AuthBUS`).
+  + Phát triển hệ thống Báo cáo & Xuất bản tài liệu chuyên sâu:
+    * Tích hợp công cụ in ấn báo cáo Crystal Reports vào ứng dụng WinForms (`CrystalExporter`, `GenericGrid.rpt`).
+    * Xây dựng công cụ phân tích và vẽ biểu đồ tự động đưa vào báo cáo Excel bằng ClosedXML (`ExportChart.cs`, `ExcelHelper.cs`).
+  + Xây dựng hệ thống Logging ứng dụng:
+    * Phát triển thư viện ghi log chuyên dụng `AppLogger.cs` với cơ chế xoay vòng file log theo ngày, giới hạn kích thước file 10MB, tự động lọc/che dấu mật khẩu và thông tin nhạy cảm.
+    * Xây dựng mô-đun quản lý và kiểm toán vết hệ thống (`AuditBUS`, `AuditDAL`, `AuditLogForm`).
+  + Trực tiếp lập trình các phân hệ nghiệp vụ:
+    * Phân hệ Đánh giá hiệu suất KPI & Đào tạo nội bộ (`PerfBUS.cs`, `PerfDALs.cs`, `PerfDTOs.cs`).
+    * Phân hệ Quản trị hệ thống, Quản lý tài khoản và Phân quyền nhóm (`SystemBUS.cs`, `SystemDALs.cs`, `SystemDTOs.cs`, `RoleForm.cs`).
+    * Xây dựng bộ khởi tạo dữ liệu mẫu lần đầu (`DbInitializer.cs`).
+
+----------------------------------------------------------------------------------------------------
+2. THÀNH VIÊN: LÊ TUẤN THÀNH (Mã SV: 24003852 - Thành viên / Business Analyst & Module Developer)
+----------------------------------------------------------------------------------------------------
+- Vai trò & Trách nhiệm chính:
+  + Phân tích yêu cầu bài toán nghiệp vụ thực tế về quản trị nhân sự, quy trình tính công, tính lương và đóng bảo hiểm theo Luật Lao động Việt Nam.
+  + Tham gia thiết kế mô hình thực thể quan hệ cơ sở dữ liệu (ERD) cho các bảng dữ liệu cốt lõi: Phòng ban, Chức vụ, Nhân viên, Hợp đồng, Chấm công, Bảng lương, Đơn nghỉ phép.
+  + Trực tiếp lập trình các lớp nghiệp vụ và dữ liệu phân hệ Tổ chức & Nhân sự:
+    * Xây dựng lớp xử lý nghiệp vụ Phòng ban, Chức vụ, Hồ sơ nhân viên, Hợp đồng lao động (`HrBUS.cs`, `HrDALs.cs`, `HrDTOs.cs`).
+    * Cài đặt các quy tắc kiểm tra ràng buộc dữ liệu nhân sự (kiểm tra trùng lặp mã phòng, trùng CCCD, ngăn chặn xóa cứng hồ sơ nhân viên để bảo toàn lịch sử).
+    * Lập trình giao diện sơ đồ tổ chức phân cấp cây (`OrgChartForm.cs`).
+  + Phát triển phân hệ Tuyển dụng & Onboarding:
+    * Quản lý vòng đời đề xuất tuyển dụng và hồ sơ ứng viên phỏng vấn (`RecruitmentBUS`, `CandidateBUS`).
+    * Xây dựng quy trình tự động chuyển tiếp ứng viên trúng tuyển sang hồ sơ thử việc và ký hợp đồng lao động.
+  + Trực tiếp lập trình phân hệ Chấm công & Ca làm việc:
+    * Xây dựng nghiệp vụ quản lý ca làm việc, lập lịch phân ca nhân viên (`ShiftBUS`, `WorkScheduleBUS`).
+    * Cài đặt giải thuật kiểm tra vị trí chấm công GPS dựa trên công thức Haversine (`LocationService.cs`).
+    * Lập trình xử lý tính toán số phút đi muộn, về sớm, tổng hợp ngày công và khóa bảng chấm công tháng (`TimeBUS.cs`, `TimesheetBUS`, `TimesheetForm.cs`).
+    * Xử lý quy trình nộp và phê duyệt đơn xin nghỉ phép, trừ ngày phép năm tự động (`LeaveBUS`).
+  + Trực tiếp lập trình phân hệ Tiền lương & Phúc lợi:
+    * Tham gia xây dựng bộ máy phân tích biểu thức tính lương động (`FormulaEngine.cs`).
+    * Xây dựng thuật toán tính lương chi tiết theo công thực tế, tự động tính các mức khấu trừ bảo hiểm xã hội, bảo hiểm y tế, bảo hiểm thất nghiệp và thuế thu nhập cá nhân lũy tiến (`PayBUS.cs`, `PayrollBUS`).
+    * Thiết kế và xây dựng giao diện bảng tính lương và phiếu lương cá nhân (`PayrollForm.cs`).
+  + Thiết kế và hoàn thiện giao diện người dùng (UI/UX):
+    * Xây dựng và chuẩn hóa phong cách thiết kế giao diện Windows Forms hiện đại, đồng bộ màu sắc thương hiệu (`Ui.cs`, `ChartHelper`).
+    * Tham gia thiết kế các form giao diện chính: Màn hình đăng nhập (`LoginForm.cs`), Màn hình làm việc chính (`MainForm.cs`), Màn hình điều khiển tổng quan (`DashboardForm.cs`).
+
+
+====================================================================================================
+IV. LIỆT KÊ CÁC LỚP THỰC THỂ (DTO) VÀ LỚP TRUY XUẤT DỮ LIỆU (DAL)
+====================================================================================================
+
+1. KIẾN TRÚC TẦNG TRUY XUẤT DỮ LIỆU (DAL FRAMEWORK)
+   - `DbHelper` (static class):
+     + Quản lý chuỗi kết nối MySQL từ cấu hình `App.config`.
+     + Cung cấp các phương thức thực thi câu lệnh SQL an toàn: `ExecuteNonQuery`, `Query`, `QueryScalar`, `ScalarInt`, `ScalarDecimal`.
+     + Tạo và quản lý tham số `MySqlParameter` (`P(name, value)`), kiểm soát tự động giá trị `DBNull`.
+     + Hỗ trợ giao dịch (Transaction) đảm bảo tính toàn vẹn dữ liệu cho các nghiệp vụ phức tạp.
+   - `Naming` (static class):
+     + Cung cấp tiện ích chuẩn hóa quy ước đặt tên: chuyển đổi giữa tên thuộc tính C# (PascalCase) và tên cột/bảng trong MySQL (snake_case).
+   - `GenericDAL<T> where T : BaseDTO, new()`:
+     + Lớp cơ sở mẫu (Generic Repository) cung cấp đầy đủ các thao tác CRUD cơ bản mà không cần viết lại mã:
+       * `GetById(int id)`: Lấy thông tin bản ghi theo khóa chính.
+       * `GetAll(string condition, string orderBy, params MySqlParameter[] p)`: Lấy danh sách bản ghi theo điều kiện lọc và sắp xếp.
+       * `SearchTable(string keyword, int limit)`: Tìm kiếm dữ liệu trả về kiểu `DataTable` phục vụ hiển thị lưới.
+       * `Insert(T entity)`: Tự động ánh xạ các thuộc tính và sinh câu lệnh SQL `INSERT INTO...`, trả về Id vừa sinh.
+       * `Update(T entity)`: Tự động sinh câu lệnh SQL `UPDATE... WHERE id = @id`.
+       * `Delete(int id)`: Xóa bản ghi theo khóa chính `DELETE FROM... WHERE id = @id`.
+       * `Count(string condition, params MySqlParameter[] p)`: Đếm số lượng bản ghi thỏa mãn điều kiện.
+   - `ReportDAL`:
+     + Lớp DAL chuyên biệt thực thi các câu lệnh SQL tổng hợp phức tạp (GROUP BY, JOIN nhiều bảng, tính toán theo tháng/năm) phục vụ phân tích dữ liệu và vẽ biểu đồ.
+   - Các Custom Attributes ánh xạ metadata (trong namespace `SmartHRM.DTO`):
+     + `[TableAttribute(name)]`: Đánh dấu tên bảng tương ứng trong CSDL MySQL.
+     + `[FieldAttribute(label)]`: Đánh dấu tiêu đề hiển thị, tính chất trường (Required, ReadOnly, InGrid, Hidden, Kind, Source...).
+     + `[IgnoreAttribute]`: Bỏ qua thuộc tính không lưu trữ vào CSDL (ví dụ mật khẩu nhập mới).
+
+2. BẢNG LIỆT KÊ CHI TIẾT CÁC LỚP THỰC THỂ (DTO) VÀ LỚP TRUY XUẤT DỮ LIỆU (DAL)
+
+STT | Lớp Thực thể (DTO)       | Bảng CSDL (MySQL)       | Lớp DAL tương ứng        | Chức năng chính
+----+--------------------------+-------------------------+--------------------------+-------------------------------------------------------------
+1   | BaseDTO                  | (Lớp cơ sở)             | GenericDAL<T>            | Chứa thuộc tính khóa chính Id (int) dùng chung cho mọi entity
+2   | DepartmentDTO            | departments             | DepartmentDAL            | Lưu thông tin phòng ban, tổ đội, đơn vị trực thuộc, trưởng đơn vị
+3   | PositionDTO              | positions               | GenericDAL<PositionDTO>  | Lưu danh mục chức vụ, phụ cấp chức vụ, mô tả công việc
+4   | EmployeeDTO              | employees               | EmployeeDAL              | Lưu hồ sơ nhân viên đầy đủ: cá nhân, phòng ban, lương, bảo hiểm, phép
+5   | ContractDTO              | contracts               | ContractDAL              | Lưu hợp đồng lao động: loại HĐ, ngày ký, hạn hiệu lực, mức lương HĐ
+6   | RecruitmentRequestDTO    | recruitment_requests    | RecruitmentDAL           | Lưu đề xuất tuyển dụng nhân sự: số lượng, phòng ban, vị trí, lý do
+7   | CandidateDTO             | candidates              | CandidateDAL             | Lưu thông tin ứng viên: hồ sơ CV, lịch phỏng vấn, kết quả thi tuyển
+8   | ShiftDTO                 | shifts                  | ShiftDAL                 | Lưu thông tin ca làm việc: giờ bắt đầu, kết thúc, nghỉ giữa ca, ca đêm
+9   | WorkScheduleDTO          | work_schedules          | WorkScheduleDAL          | Lưu lịch phân ca làm việc của từng nhân viên theo khoảng thời gian
+10  | AttendanceDTO            | attendance              | AttendanceDAL            | Lưu dữ liệu chấm công: giờ vào, giờ ra, số phút đi muộn, về sớm, công
+11  | LeaveRequestDTO          | leave_requests          | LeaveDAL                 | Lưu đơn xin nghỉ phép/công tác/làm thêm giờ của nhân viên
+12  | TimesheetDTO             | monthly_timesheets      | TimesheetDAL             | Lưu bảng tổng hợp chấm công tháng: ngày công, số lần đi trễ, giờ OT
+13  | SalaryFormulaDTO         | salary_formulas         | SalaryFormulaDAL         | Lưu cấu hình công thức tính lương động và thứ tự tính toán
+14  | PayrollDTO               | payroll                 | PayrollDAL               | Lưu bảng tính lương tháng: thu nhập, thưởng, bảo hiểm, thuế, thực lĩnh
+15  | KpiPeriodDTO             | kpi_periods             | KpiPeriodDAL             | Lưu thông tin kỳ đánh giá hiệu suất (tháng, quý, năm)
+16  | KpiCriteriaDTO           | kpi_criteria            | KpiCriteriaDAL           | Lưu tiêu chí đánh giá KPI/OKR gắn với từng chức danh và trọng số
+17  | KpiEvaluationDTO         | kpi_evaluations         | KpiEvaluationDAL         | Lưu kết quả tự đánh giá và quản lý đánh giá KPI, điểm tổng, xếp loại
+18  | CourseDTO                | training_courses        | CourseDAL                | Lưu thông tin khóa đào tạo nội bộ: giảng viên, kinh phí, thời gian
+19  | TrainingParticipantDTO   | training_participants   | TrainingParticipantDAL   | Lưu danh sách học viên tham gia đào tạo, điểm số, chứng chỉ cấp
+20  | RoleDTO                  | roles                   | RoleDAL                  | Lưu danh mục nhóm vai trò / quyền hạn trong hệ thống
+21  | RolePermissionDTO        | role_permissions        | RoleDAL                  | Lưu chi tiết ma trận phân quyền (View, Add, Edit, Delete) theo mô-đun
+22  | UserDTO                  | users                   | UserDAL                  | Lưu tài khoản người dùng đăng nhập, mật khẩu băm, quyền, liên kết NV
+23  | AuditLogDTO              | audit_logs              | AuditDAL                 | Lưu nhật ký hoạt động hệ thống: người dùng, thao tác, mô-đun, chi tiết
+24  | SettingDTO               | system_settings         | SettingDAL               | Lưu các tham số cấu hình hệ thống dạng khóa - giá trị (Key - Value)
+
+
+====================================================================================================
+V. LIỆT KÊ CÁC LỚP NGHIỆP VỤ: BUS (BUSINESS LOGIC LAYER)
+====================================================================================================
+
+Tầng nghiệp vụ (BUS) đóng vai trò trung tâm điều phối logic, áp dụng các quy tắc kiểm tra (validation),
+kiểm soát quyền hạn (RBAC), tính toán số liệu và tương tác với tầng truy xuất dữ liệu (DAL).
+
+1. LỚP NGHIỆP VỤ CƠ SỞ & KHUNG DÙNG CHUNG
+   - `GenericBUS<T> where T : BaseDTO, new()`:
+     + Lớp cơ sở cung cấp toàn bộ quy trình nghiệp vụ chuẩn cho các thực thể CRUD.
+     + Tự động tích hợp kiểm tra quyền truy cập thông qua `Session.Require(ModuleCode, action)`.
+     + Tự động ghi nhận nhật ký hệ thống qua `AuditBUS.Log(...)` khi thêm, sửa, xóa bản ghi.
+     + Cung cấp các hàm ảo `Validate(T entity)`, `BeforeDelete(T entity)` để các lớp con ghi đè quy tắc riêng.
+
+2. CÁC LỚP NGHIỆP VỤ PHÂN HỆ TỔ CHỨC & NHÂN SỰ
+   - `DepartmentBUS`:
+     + Quản lý phòng ban, kiểm tra tính duy nhất của mã phòng ban.
+     + Quản lý cấu trúc cây phòng ban (tìm danh sách ID con cháu để phân cấp).
+     + Ràng buộc không cho phép xóa phòng ban nếu còn nhân viên đang trực thuộc.
+     + Lấy tên người quản lý/trưởng phòng ban.
+   - `PositionBUS`:
+     + Quản lý danh mục chức danh, chức vụ và mức phụ cấp tương ứng.
+   - `EmployeeBUS`:
+     + Quản lý hồ sơ nhân viên, tự động sinh mã nhân viên tuần tự (NV0001, NV0002...).
+     + Kiểm tra tính hợp lệ và chống trùng lặp số CCCD/CMND giữa các nhân viên.
+     + Ngăn chặn xóa vật lý hồ sơ nhân viên (yêu cầu chuyển trạng thái sang "Nghỉ việc" để lưu vết).
+   - `ContractBUS`:
+     + Quản lý hợp đồng lao động, kiểm tra ngày bắt đầu và kết thúc hợp đồng hợp lệ.
+     + Cung cấp hàm `MarkExpired()` tự động rà soát và chuyển trạng thái các hợp đồng quá hạn thành "Hết hạn".
+
+3. CÁC LỚP NGHIỆP VỤ PHÂN HỆ TUYỂN DỤNG & ONBOARDING
+   - `RecruitmentBUS`:
+     + Quản lý đề xuất tuyển dụng nhân sự từ các bộ phận.
+     + Kiểm tra số lượng tuyển dụng hợp lệ (> 0), kiểm soát quy trình phê duyệt đề xuất.
+   - `CandidateBUS`:
+     + Quản lý tiếp nhận ứng viên, kiểm tra lịch phỏng vấn khi trạng thái chuyển sang "Lên lịch PV".
+     + Quy trình Onboarding (`Onboard`): Tự động tạo hồ sơ nhân viên mới và khởi tạo hợp đồng thử việc tương ứng ngay khi ứng viên đạt trạng thái "Trúng tuyển".
+
+4. CÁC LỚP NGHIỆP VỤ PHÂN HỆ CHẤM CÔNG & CA LÀM VIỆC
+   - `ShiftBUS`:
+     + Quản lý các ca làm việc, kiểm tra định dạng giờ vào/ra hợp lệ (HH:mm).
+   - `WorkScheduleBUS`:
+     + Quản lý phân ca làm việc, kiểm tra khoảng thời gian phân ca không bị chồng chéo.
+   - `AttendanceBUS`:
+     + Xử lý ghi nhận chấm công Check-in và Check-out hàng ngày của nhân viên.
+     + Tự động tính toán số phút đi muộn (so với giờ bắt đầu ca) và về sớm (so với giờ kết thúc ca).
+     + Tự động quy đổi ngày công làm việc (0 công, 0.5 công, 1 công).
+     + Cung cấp tính năng `ImportExcel(...)` để nạp dữ liệu chấm công từ file Excel vào CSDL.
+   - `LeaveBUS`:
+     + Quản lý tiếp nhận và xử lý đơn xin nghỉ phép, công tác, làm thêm giờ.
+     + Tự động tính toán số ngày nghỉ loại trừ các ngày cuối tuần (thứ Bảy, Chủ nhật).
+     + Quy trình duyệt đơn: Khi đơn nghỉ phép năm được duyệt, tự động trừ số ngày nghỉ vào quỹ phép năm (`AnnualLeaveBalance`) của nhân viên.
+   - `TimesheetBUS`:
+     + Tính toán và chốt bảng chấm công tháng cho toàn bộ nhân sự trong công ty.
+     + Khóa bảng chấm công (`Lock`) để ngăn ngừa sửa đổi trái phép trước khi tính lương.
+
+5. CÁC LỚP NGHIỆP VỤ PHÂN HỆ TIỀN LƯƠNG & PHÚC LỢI
+   - `SalaryFormulaBUS`:
+     + Quản lý danh mục các khoản lương/thưởng/giảm trừ và công thức biểu thức toán học.
+   - `FormulaEngine` (static class):
+     + Bộ máy biên dịch biểu thức số học linh hoạt: Phân tích cú pháp, nạp các biến đầu vào từ thông tin nhân viên, ngày công, hợp đồng và đánh giá kết quả công thức.
+   - `PayrollBUS`:
+     + Tính toán bảng lương hàng tháng tự động (`Calculate`):
+       * Thu thập dữ liệu từ bảng công tháng và mức lương hợp đồng.
+       * Áp dụng các khoản thu nhập, thưởng và phụ cấp.
+       * Tính toán trích đóng bảo hiểm (BHXH 8%, BHYT 1.5%, BHTN 1%, bảo hiểm phần doanh nghiệp chi trả 21.5%).
+       * Tính thu nhập chịu thuế và thuế TNCN lũy tiến 7 bậc theo luật thuế Việt Nam.
+       * Tính lương thực nhận (Net Salary).
+     + Khóa và chốt bảng lương tháng (`Finalize`).
+     + Xuất và tra cứu phiếu lương cá nhân (`GetPayslip`).
+
+6. CÁC LỚP NGHIỆP VỤ PHÂN HỆ ĐÁNH GIÁ HIỆU SUẤT & ĐÀO TẠO
+   - `KpiPeriodBUS`: Quản lý các chu kỳ/kỳ đánh giá KPI/OKR.
+   - `KpiCriteriaBUS`: Quản lý tiêu chí đánh giá và trọng số phần trăm theo từng vị trí công việc.
+   - `KpiEvaluationBUS`:
+     + Xử lý quy trình đánh giá: Nhân viên tự chấm điểm -> Quản lý chấm điểm -> Tính điểm tổng kết.
+     + Tự động tính toán điểm trung bình có trọng số và gán xếp loại thi đua (A, B, C, D).
+   - `CourseBUS`: Quản lý các khóa đào tạo nâng cao kỹ năng cho nhân viên.
+   - `TrainingParticipantBUS`: Quản lý danh sách học viên tham gia, cập nhật kết quả đào tạo và cấp số chứng chỉ.
+
+7. CÁC LỚP NGHIỆP VỤ PHÂN HỆ QUẢN TRỊ HỆ THỐNG, BẢO MẬT & DỊCH VỤ HỖ TRỢ
+   - `UserBUS`:
+     + Quản lý tài khoản người dùng, tạo tài khoản mới với mật khẩu mã hóa BCrypt.
+     + Đổi mật khẩu, kích hoạt/vô hiệu hóa tài khoản.
+   - `RoleBUS`:
+     + Quản lý các nhóm quyền và cập nhật chi tiết ma trận phân quyền theo từng mô-đun chức năng.
+   - `AuditBUS` & `AuditLogBUS`:
+     + Cung cấp phương thức ghi nhật ký kiểm toán hệ thống an toàn không làm gián đoạn luồng nghiệp vụ chính (`Log`).
+     + Tìm kiếm, thống kê nhật ký và thực hiện dọn dẹp nhật ký cũ (`Purge`).
+   - `SettingBUS` & `AppSettings`:
+     + Quản lý lưu trữ và nạp bộ nhớ cache các tham số cấu hình toàn cục của hệ thống (`Get`, `GetInt`, `GetDecimal`, `Reload`).
+   - `AuthBUS`:
+     + Xử lý đăng nhập tài khoản (`Login`), xác thực tính hợp lệ của mật khẩu thông qua BCrypt.
+     + Xử lý quy trình quên mật khẩu (`RequestPasswordResetOtp`, `VerifyOtpAndResetPassword`).
+   - `MailService` (static class):
+     + Dịch vụ gửi email thông báo và gửi mã OTP qua máy chủ SMTP.
+   - `LocationService` (static class):
+     + Dịch vụ xác thực vị trí địa lý chấm công: Sử dụng giải thuật Haversine tính toán khoảng cách giữa vị trí GPS của người dùng và trụ sở công ty.
+   - `ExcelHelper` (static class):
+     + Xuất dữ liệu `DataTable` ra định dạng bảng Excel chuyên nghiệp, tự động căn chỉnh độ rộng cột, định dạng số/ngày tháng và gọi công cụ vẽ biểu đồ tự động.
+   - `DbInitializer` (static class):
+     + Tự động khởi tạo tài khoản quản trị tối cao (`admin / admin123`), nhóm quyền và ma trận quyền mặc định khi khởi chạy hệ thống lần đầu tiên.
+   - `Session` (static class):
+     + Quản lý phiên đăng nhập hiện tại, lưu vết thông tin người dùng, nhóm quyền và cung cấp hàm kiểm tra quyền truy cập `Can(module, action)`, `Require(module, action)`.
+   - `Modules` (static class):
+     + Định nghĩa danh mục chuẩn hóa 25 phân hệ chức năng hệ thống được nhóm theo 7 nhóm lớn.
+   - `AppLogger` (static class - trong namespace `SmartHRM.Common`):
+     + Thư viện ghi log kỹ thuật đa cấp độ (Debug, Info, Warn, Error, Fatal) ra file .log luân phiên hàng ngày.
+
+
+====================================================================================================
+VI. LIỆT KÊ CÁC GIAO DIỆN HỆ THỐNG: GUI (GRAPHICAL USER INTERFACE)
+====================================================================================================
+
+Tầng giao diện (GUI) được xây dựng trên Windows Forms với thiết kế phẳng (Flat Design) hiện đại,
+bố cục khoa học, màu sắc hài hòa và tối ưu trải nghiệm người dùng:
+
+1. `LoginForm` (Màn hình Đăng nhập & Khôi phục Mật khẩu):
+   - Chức năng:
+     + Tiếp nhận thông tin tài khoản (Tên đăng nhập / Email) và Mật khẩu từ người dùng.
+     + Hỗ trợ tính năng hiển thị / ẩn mật khẩu.
+     + Tích hợp chức năng "Quên mật khẩu?": Hiển thị bảng điều khiển gửi mã OTP qua email và xác thực OTP để đặt lại mật khẩu mới.
+
+2. `MainForm` (Màn hình Làm việc Chính - Trung tâm Điều hướng):
+   - Chức năng:
+     + Đóng vai trò là cửa sổ mẹ (Main Shell) chứa thanh Sidebar điều hướng phân nhóm theo 7 phân hệ lớn.
+     + Tự động ẩn/hiện các mục menu dựa trên quyền hạn RBAC của người dùng đang đăng nhập.
+     + Hiển thị thông tin người dùng hiện tại, nhóm quyền và nút Đăng xuất an toàn.
+     + Tích hợp vùng chứa nội dung động (Content Panel) để nhúng trực tiếp các Form con mà không mở cửa sổ rời rạc.
+
+3. `DashboardForm` (Màn hình Điều khiển & Tổng quan Hệ thống):
+   - Chức năng:
+     + Hiển thị cụm thẻ chỉ số nhanh (KPI Cards): Số lượng nhân viên làm việc, nhân viên mới, nghỉ việc, thử việc, đơn chờ duyệt, ứng viên, số nhân viên đi làm hôm nay, quỹ lương gần nhất.
+     + Tích hợp biểu đồ trực quan hóa dữ liệu nhân sự và chi phí lương theo thời gian thực.
+
+4. `CrudForm` (Màn hình Danh sách & Thao tác Dữ liệu Dùng chung):
+   - Chức năng:
+     + Là giao diện động tổng quát được sử dụng cho hầu hết các danh mục thực thể (Nhân viên, Phòng ban, Chức vụ, Hợp đồng, Ca làm việc, Khóa học...).
+     + Tích hợp thanh công cụ chuẩn: Thêm mới, Chỉnh sửa, Xóa, Làm mới dữ liệu, Ô tìm kiếm nhanh đa trường, Bộ lọc nâng cao.
+     + Lưới hiển thị dữ liệu `DataGridView` được định dạng chuẩn, hỗ trợ phân trang dữ liệu (Pagination).
+     + Nút xuất file Excel định dạng chuẩn và nút in báo cáo lưới dữ liệu qua Crystal Reports.
+
+5. `EntityEditForm` (Màn hình Thêm mới & Chỉnh sửa Dữ liệu Chi tiết):
+   - Chức năng:
+     + Giao diện nhập liệu động thông minh, tự động sinh các điều khiển nhập liệu (TextBox, ComboBox, DateTimePicker, CheckBox, NumericUpDown) dựa trên thuộc tính `[FieldAttribute]` của DTO.
+     + Tự động hiển thị các danh mục chọn lựa (Lookup) liên kết từ các bảng khác (chọn Phòng ban, Chức vụ, Quản lý...).
+     + Kiểm tra dữ liệu bắt buộc (Required Validation) ngay trên giao diện trước khi chuyển xuống tầng BUS.
+
+6. `OrgChartForm` (Màn hình Sơ đồ Tổ chức Doanh nghiệp):
+   - Chức năng:
+     + Sử dụng điều khiển `TreeView` kết hợp giao diện đồ họa hiển thị trực quan cây phân cấp các phòng ban trong công ty.
+     + Hiển thị thông tin chi tiết của phòng ban được chọn: Trưởng bộ phận, danh sách nhân viên trực thuộc và tổng số lượng nhân sự.
+
+7. `TimesheetForm` (Màn hình Quản lý Bảng chấm công & Chốt công):
+   - Chức năng:
+     + Lựa chọn kỳ chấm công theo Tháng và Năm.
+     + Hiển thị lưới tổng hợp công của toàn thể nhân sự: Ngày công chuẩn, Ngày công thực tế, Ngày nghỉ phép, Số lần/số phút đi muộn, về sớm, Giờ làm thêm (OT).
+     + Nút thực hiện chức năng "Chốt công" (Khóa bảng công tháng) để chuyển dữ liệu sang phân hệ tính lương.
+
+8. `PayrollForm` (Màn hình Quản lý & Tính toán Bảng lương):
+   - Chức năng:
+     + Quản lý bảng lương toàn công ty theo từng kỳ (Tháng/Năm).
+     + Nút thực hiện chức năng "Tính lương tự động" dựa trên bảng công và công thức lương.
+     + Hiển thị chi tiết bảng tính lương: Lương cơ bản, Các khoản phụ cấp, Thưởng, Trích nộp BHXH/BHYT/BHTN, Thuế TNCN và Lương thực lĩnh (Net Salary).
+     + Xem và in Phiếu lương cá nhân (Payslip) cho từng nhân viên.
+     + Nút "Chốt bảng lương" để khóa dữ liệu chi trả.
+
+9. `RoleForm` (Màn hình Quản lý Phân quyền RBAC Ma trận):
+   - Chức năng:
+     + Quản lý danh sách các vai trò / nhóm quyền trong hệ thống.
+     + Hiển thị ma trận phân quyền trực quan dạng bảng với các cột CheckBox tương ứng cho 4 quyền: Xem (View), Thêm (Add), Sửa (Edit), Xóa (Delete) trên 25 phân hệ chức năng.
+     + Cho phép Quản trị viên tùy biến và lưu nhanh quyền hạn cho từng nhóm.
+
+10. `AuditLogForm` (Màn hình Tra cứu & Kiểm toán Nhật ký Hệ thống):
+    - Chức năng:
+      + Tra cứu lịch sử thao tác của tất cả người dùng trong hệ thống.
+      + Hỗ trợ bộ lọc mạnh mẽ: Theo khoảng thời gian (Từ ngày - Đến ngày), Tên người dùng, Tên mô-đun, Loại thao tác, Từ khóa tìm kiếm trong chi tiết.
+      + Chức năng bảo trì: Dọn dẹp nhật ký cũ hơn N ngày (đảm bảo an toàn tối thiểu 30 ngày).
+
+11. `ReportForm` (Màn hình Trung tâm Báo cáo & Thống kê Chuyên sâu):
+    - Chức năng:
+      + Cung cấp danh mục cây báo cáo: Báo cáo nhân sự (Cơ cấu phòng ban, giới tính, độ tuổi, thâm niên, biến động nhân sự) và Báo cáo chi phí (Lương, thưởng, bảo hiểm).
+      + Khu vực hiển thị đồ thị động: Cho phép người dùng chuyển đổi linh hoạt các dạng biểu đồ (Cột, Thanh ngang, Tròn, Vành khuyên, Đường, Cột chồng).
+      + Bảng số liệu chi tiết kèm dòng tổng cộng (Summary Row).
+      + Nút "Xuất Excel" tự động vẽ biểu đồ tương ứng vào file Excel qua ClosedXML.
+      + Nút "In báo cáo" xuất biểu mẫu in ấn Crystal Reports.
+
+12. CÁC THÀNH PHẦN GIAO DIỆN PHỤ TRỢ (COMPONENTS & HELPERS)
+    - `KpiCard` (UserControl): Thẻ giao diện tái sử dụng hiển thị các chỉ số đo lường với tiêu đề, số liệu chính, biểu tượng và chú thích tỷ lệ biến động.
+    - `Ui` (static class): Thư viện chuẩn hóa giao diện: Định nghĩa bảng màu thương hiệu (Primary, Dark, Light, Accent, Danger, Success), chuẩn hóa phông chữ, định dạng lưới dữ liệu DataGridView.
+    - `ChartHelper` (static class): Bộ công cụ cấu hình biểu đồ tự động: Tạo Series, định dạng nhãn dữ liệu, màu sắc và kiểu dáng cho thư viện MS Charting.
+    - `ExportChart` (static class): Module chuyển đổi biểu đồ đang hiển thị thành file ảnh PNG hoặc tự động tạo biểu đồ phân tích dựa trên dữ liệu DataTable để nhúng vào bảng tính Excel.
+    - `CrystalExporter` (static class): Module kết nối dữ liệu DataTable với tệp báo cáo `GenericGrid.rpt` để xem trước và in ấn báo cáo chuẩn.
+    - `CrudService<T>`: Lớp dịch vụ tầng GUI trung gian kết nối giữa form giao diện dùng chung `CrudForm` và tầng nghiệp vụ `GenericBUS<T>`.
+    - `AppImages` & `LogoData`: Quản lý và cung cấp tài nguyên đồ họa, biểu tượng và logo hiển thị trong toàn bộ ứng dụng.
+
+
+====================================================================================================
+VII. THIẾT KẾ HƯỚNG ĐỐI TƯỢNG (OOP - OBJECT-ORIENTED PROGRAMMING)
+====================================================================================================
+
+Hệ thống SmartHRM được thiết kế và xây dựng tuân thủ chặt chẽ các nguyên lý lập trình hướng đối
+tượng (OOP) và các nguyên tắc thiết kế SOLID, đảm bảo tính mô-đun hóa, khả năng mở rộng, dễ bảo trì
+và tái sử dụng mã nguồn tối đa.
+
+----------------------------------------------------------------------------------------------------
+1. GIAO DIỆN HỆ THỐNG (INTERFACES - ĐẢM BẢO TỐI THIỂU 5 INTERFACES)
+----------------------------------------------------------------------------------------------------
+Nhằm giảm thiểu sự phụ thuộc trực tiếp (Decoupling) giữa các tầng kiến trúc và tuân thủ nguyên lý
+Dependency Inversion (DIP) & Interface Segregation (ISP), hệ thống xây dựng và áp dụng các Interface
+chuẩn mực đại diện cho các dịch vụ cốt lõi:
+
+1.1. `ICrudService` (Giao diện Cầu nối Dịch vụ CRUD Tầng Giao diện):
+     - Định vị: Namespace `SmartHRM.GUI`
+     - Mục đích: Trừu tượng hóa hoàn toàn việc thao tác dữ liệu giữa màn hình giao diện dùng chung
+       `CrudForm` (không thể dùng generic trực tiếp do hạn chế của Visual Studio WinForms Designer)
+       với tầng nghiệp vụ tổng quát `GenericBUS<T>`.
+     - Khai báo giao diện:
+       ```csharp
+       public interface ICrudService
+       {
+           string Module { get; }
+           string Title { get; }
+           Type EntityType { get; }
+           List<BaseDTO> GetAll();
+           BaseDTO CreateNew();
+           void Save(BaseDTO entity);
+           void Delete(BaseDTO entity);
+       }
+       ```
+     - Lớp triển khai (Implementation): `CrudService<T> : ICrudService where T : BaseDTO, new()`
+
+1.2. `IGenericDAL<T>` (Giao diện Hợp đồng Truy xuất Dữ liệu Tổng quát):
+     - Định vị: Namespace `SmartHRM.DAL`
+     - Mục đích: Định nghĩa chuẩn mực các hành vi truy xuất cơ sở dữ liệu CRUD của tầng Data Access,
+       cho phép tầng BUS phụ thuộc vào abstraction thay vì concrete class, phục vụ Unit Test và Mocking.
+     - Khai báo giao diện:
+       ```csharp
+       public interface IGenericDAL<T> where T : BaseDTO, new()
+       {
+           T GetById(int id);
+           List<T> GetAll(string condition = null, string orderBy = null, params MySqlParameter[] p);
+           DataTable SearchTable(string keyword, int limit = 200);
+           int Insert(T entity);
+           bool Update(T entity);
+           bool Delete(int id);
+           int Count(string condition = null, params MySqlParameter[] p);
+       }
+       ```
+     - Lớp triển khai (Implementation): `GenericDAL<T>` và toàn bộ các lớp DAL kế thừa:
+       `DepartmentDAL`, `EmployeeDAL`, `ContractDAL`, `RecruitmentDAL`, `CandidateDAL`, `ShiftDAL`,
+       `WorkScheduleDAL`, `AttendanceDAL`, `LeaveDAL`, `TimesheetDAL`, `SalaryFormulaDAL`,
+       `PayrollDAL`, `KpiPeriodDAL`, `KpiCriteriaDAL`, `KpiEvaluationDAL`, `CourseDAL`,
+       `TrainingParticipantDAL`, `UserDAL`, `RoleDAL`, `AuditDAL`, `SettingDAL`.
+
+1.3. `IGenericBUS<T>` (Giao diện Hợp đồng Xử lý Nghiệp vụ & Xác thực):
+     - Định vị: Namespace `SmartHRM.BUS`
+     - Mục đích: Chuẩn hóa toàn bộ các luồng nghiệp vụ kiểm tra phân quyền (RBAC), kiểm tra dữ liệu
+       (Validation) và tương tác dữ liệu cho tất cả các mô-đun trong doanh nghiệp.
+     - Khai báo giao diện:
+       ```csharp
+       public interface IGenericBUS<T> where T : BaseDTO, new()
+       {
+           string Module { get; }
+           List<T> GetAll();
+           T CreateNew();
+           void Save(T entity);
+           void Delete(T entity);
+           void DeleteById(int id);
+       }
+       ```
+     - Lớp triển khai (Implementation): `GenericBUS<T>` và các lớp nghiệp vụ chuyên biệt:
+       `DepartmentBUS`, `PositionBUS`, `EmployeeBUS`, `ContractBUS`, `RecruitmentBUS`,
+       `CandidateBUS`, `ShiftBUS`, `WorkScheduleBUS`, `AttendanceBUS`, `LeaveBUS`,
+       `SalaryFormulaBUS`, `KpiPeriodBUS`, `KpiCriteriaBUS`, `KpiEvaluationBUS`,
+       `CourseBUS`, `TrainingParticipantBUS`, `UserBUS`, `RoleBUS`, `AuditLogBUS`, `SettingBUS`.
+
+1.4. `IAuthService` (Giao diện Dịch vụ Xác thực & Bảo mật Tài khoản):
+     - Định vị: Namespace `SmartHRM.BUS`
+     - Mục đích: Định nghĩa các hợp đồng bảo mật hệ thống bao gồm đăng nhập, kiểm tra mật khẩu băm,
+       sinh mã OTP qua email, khôi phục mật khẩu và đổi mật khẩu an toàn.
+     - Khai báo giao diện:
+       ```csharp
+       public interface IAuthService
+       {
+           AuthResult Login(string username, string password);
+           void RequestPasswordResetOtp(string email);
+           void VerifyOtpAndResetPassword(string email, string otp, string newPassword);
+           void ChangePassword(int userId, string oldPassword, string newPassword);
+       }
+       ```
+     - Lớp triển khai (Implementation): `AuthBUS` (kết hợp với `MailService` và `BCrypt.Net`).
+
+1.5. `IReportExporter` (Giao diện Dịch vụ Xuất bản Báo cáo & Kết xuất Tài liệu):
+     - Định vị: Namespace `SmartHRM.BUS` / `SmartHRM.GUI`
+     - Mục đích: Chuẩn hóa hành vi trích xuất dữ liệu ra các định dạng tệp khác nhau (Excel qua
+       ClosedXML, Biểu mẫu in ấn Crystal Reports, PDF) mà không làm ràng buộc code giao diện với
+       thư viện thứ ba cụ thể.
+     - Khai báo giao diện:
+       ```csharp
+       public interface IReportExporter
+       {
+           string SupportedExtension { get; }
+           void Export(DataTable data, string filePath, string title);
+       }
+       ```
+     - Lớp triển khai (Implementation): `ExcelHelper` / `ExportChart` (xuất Excel .xlsx kèm biểu đồ)
+       và `CrystalExporter` (kết xuất Crystal Reports .rpt / in ấn).
+
+1.6. `IAppLogger` (Giao diện Dịch vụ Ghi Nhật ký Kỹ thuật Ứng dụng - Bổ sung):
+     - Định vị: Namespace `SmartHRM.Common`
+     - Mục đích: Trừu tượng hóa việc ghi vết lỗi, cảnh báo, thông tin hoạt động ứng dụng ra file,
+       hỗ trợ làm sạch các thông tin nhạy cảm.
+     - Khai báo giao diện:
+       ```csharp
+       public interface IAppLogger
+       {
+           void Debug(string message);
+           void Info(string message);
+           void Warn(string message);
+           void Error(string message, Exception ex = null);
+           void Fatal(string message, Exception ex = null);
+       }
+       ```
+     - Lớp triển khai (Implementation): Lớp dịch vụ `AppLogger`.
+
+1.7. `ILocationService` (Giao diện Dịch vụ Định vị & Xác thực Tọa độ GPS - Bổ sung):
+     - Định vị: Namespace `SmartHRM.BUS`
+     - Mục đích: Cung cấp phương thức đo khoảng cách giữa vị trí chấm công thực tế của nhân viên và
+       tọa độ trụ sở văn phòng theo công thức lượng giác Haversine.
+     - Khai báo giao diện:
+       ```csharp
+       public interface ILocationService
+       {
+           double CalculateDistanceMeters(double lat1, double lon1, double lat2, double lon2);
+           bool IsWithinAllowedRadius(double currentLat, double currentLon, double officeLat, double officeLon, double maxRadiusMeters);
+       }
+       ```
+     - Lớp triển khai (Implementation): Lớp dịch vụ `LocationService`.
+
+
+----------------------------------------------------------------------------------------------------
+2. CLASS VÀ MÔ HÌNH KẾ THỪA (INHERITANCE & 4 TRỤ CỘT OOP)
+----------------------------------------------------------------------------------------------------
+
+2.1. TÍNH KẾ THỪA (INHERITANCE) TRONG KIẾN TRÚC HỆ THỐNG:
+     Hệ thống tổ chức cây phân cấp kế thừa chặt chẽ và nhất quán qua 4 tầng:
+
+     a) Cây kế thừa Tầng Thực thể (DTO Hierarchy):
+        - Lớp cha gốc: `BaseDTO` (chứa thuộc tính định danh duy nhất `public int Id { get; set; }`).
+        - Toàn bộ 23 lớp thực thể nghiệp vụ kế thừa trực tiếp từ `BaseDTO`:
+          * Nhóm Nhân sự - Tổ chức: `DepartmentDTO`, `PositionDTO`, `EmployeeDTO`, `ContractDTO`,
+            `RecruitmentRequestDTO`, `CandidateDTO`.
+          * Nhóm Chấm công - Ca làm: `ShiftDTO`, `WorkScheduleDTO`, `AttendanceDTO`, `LeaveRequestDTO`,
+            `TimesheetDTO`.
+          * Nhóm Tiền lương: `SalaryFormulaDTO`, `PayrollDTO`.
+          * Nhóm Đánh giá - Đào tạo: `KpiPeriodDTO`, `KpiCriteriaDTO`, `KpiEvaluationDTO`, `CourseDTO`,
+            `TrainingParticipantDTO`.
+          * Nhóm Quản trị - Hệ thống: `RoleDTO`, `RolePermissionDTO`, `UserDTO`, `AuditLogDTO`, `SettingDTO`.
+        - Lợi ích: Tái sử dụng thuộc tính định danh `Id`, đồng nhất kiểu dữ liệu cho toàn bộ các hàm
+          generic `GenericDAL<T>` và `GenericBUS<T>`.
+
+     b) Cây kế thừa Tầng Truy xuất dữ liệu (DAL Hierarchy):
+        - Lớp cha gốc mẫu: `GenericDAL<T> where T : BaseDTO, new()`
+        - Các lớp con kế thừa mở rộng các truy vấn nghiệp vụ đặc thù:
+          * `DepartmentDAL : GenericDAL<DepartmentDTO>`: Bổ sung truy vấn cây cha - con và trưởng đơn vị.
+          * `EmployeeDAL : GenericDAL<EmployeeDTO>`: Bổ sung sinh mã nhân viên tự động, tìm theo CCCD/Email.
+          * `ContractDAL : GenericDAL<ContractDTO>`: Bổ sung quét và đánh dấu hợp đồng hết hạn (`MarkExpired`).
+          * `AttendanceDAL : GenericDAL<AttendanceDTO>`: Bổ sung lọc bảng công theo nhân viên và khoảng ngày.
+          * `LeaveDAL : GenericDAL<LeaveRequestDTO>`: Bổ sung duyệt đơn và cập nhật người duyệt.
+          * `TimesheetDAL : GenericDAL<TimesheetDTO>`: Bổ sung chốt công và khóa bảng công tháng.
+          * `PayrollDAL : GenericDAL<PayrollDTO>`: Bổ sung tổng hợp chi phí lương và chốt lương.
+          * `UserDAL : GenericDAL<UserDTO>`: Bổ sung tìm theo Username/Email và đổi mật khẩu.
+          * `RoleDAL : GenericDAL<RoleDTO>`: Bổ sung lấy và lưu chi tiết bảng ma trận phân quyền.
+          * `AuditDAL : GenericDAL<AuditLogDTO>`: Bổ sung ghi log nhanh, tìm kiếm đa tiêu chí, dọn dẹp log cũ.
+          * `RecruitmentDAL`, `CandidateDAL`, `ShiftDAL`, `WorkScheduleDAL`, `SalaryFormulaDAL`,
+            `KpiPeriodDAL`, `KpiCriteriaDAL`, `KpiEvaluationDAL`, `CourseDAL`, `TrainingParticipantDAL`,
+            `SettingDAL`: Kế thừa nguyên vẹn toàn bộ các hàm CRUD từ `GenericDAL<T>`.
+
+     c) Cây kế thừa Tầng Nghiệp vụ (BUS Hierarchy):
+        - Lớp cha gốc mẫu: `GenericBUS<T> where T : BaseDTO, new()`
+        - Các lớp nghiệp vụ con kế thừa và ghi đè (override) các quy tắc xác thực (Business Rules):
+          * `DepartmentBUS : GenericBUS<DepartmentDTO>`: Kiểm tra trùng mã, kiểm tra phòng ban con khi xóa.
+          * `PositionBUS : GenericBUS<PositionDTO>`: Kiểm tra hợp lệ phụ cấp chức vụ.
+          * `EmployeeBUS : GenericBUS<EmployeeDTO>`: Kiểm tra định dạng/trùng lặp CCCD, chặn xóa hồ sơ.
+          * `ContractBUS : GenericBUS<ContractDTO>`: Kiểm tra thời hạn bắt đầu/kết thúc hợp đồng.
+          * `RecruitmentBUS : GenericBUS<RecruitmentRequestDTO>`: Kiểm tra số lượng tuyển dụng > 0.
+          * `CandidateBUS : GenericBUS<CandidateDTO>`: Bổ sung phương thức nghiệp vụ chuyển ứng viên trúng tuyển
+            thành nhân viên thử việc (`Onboard`).
+          * `ShiftBUS : GenericBUS<ShiftDTO>`: Kiểm tra tính hợp lệ giờ bắt đầu/kết thúc ca.
+          * `WorkScheduleBUS : GenericBUS<WorkScheduleDTO>`: Kiểm tra xung đột lịch phân ca.
+          * `AttendanceBUS : GenericBUS<AttendanceDTO>`: Bổ sung xử lý tính giờ đi muộn, về sớm, công thực tế.
+          * `LeaveBUS : GenericBUS<LeaveRequestDTO>`: Kiểm tra số ngày phép còn lại, trừ quỹ phép năm tự động.
+          * `SalaryFormulaBUS : GenericBUS<SalaryFormulaDTO>`: Kiểm tra cú pháp biểu thức toán học.
+          * `KpiPeriodBUS`, `KpiCriteriaBUS`, `KpiEvaluationBUS`, `CourseBUS`, `TrainingParticipantBUS`,
+            `UserBUS`, `RoleBUS`, `AuditLogBUS`, `SettingBUS`: Kế thừa và kiểm soát quyền hạn phân hệ.
+
+     d) Cây kế thừa Tầng Giao diện người dùng (GUI Hierarchy):
+        - Lớp cha .NET: `System.Windows.Forms.Form`
+          * Tất cả 11 cửa sổ giao diện kế thừa từ `Form`: `LoginForm`, `MainForm`, `DashboardForm`,
+            `CrudForm`, `EntityEditForm`, `OrgChartForm`, `TimesheetForm`, `PayrollForm`, `RoleForm`,
+            `AuditLogForm`, `ReportForm`.
+        - Lớp cha .NET: `System.Windows.Forms.UserControl`
+          * `KpiCard` kế thừa từ `UserControl` tạo thành thành phần giao diện tái sử dụng.
+        - Triển khai Interface:
+          * `CrudService<T> : ICrudService where T : BaseDTO, new()`
+
+2.2. TÍNH ĐA HÌNH (POLYMORPHISM):
+     - Ghi đè phương thức (Method Overriding - Runtime Polymorphism):
+       Lớp cơ sở `GenericBUS<T>` định nghĩa các phương thức ảo (`virtual`):
+       * `virtual void Validate(T entity)`: Cho phép từng lớp con cài đặt quy tắc xác thực dữ liệu riêng.
+       * `virtual void BeforeSave(T entity, bool isNew)`: Thực hiện tiền xử lý dữ liệu trước khi lưu.
+       * `virtual void BeforeDelete(T entity)`: Kiểm tra điều kiện ràng buộc trước khi xóa bản ghi.
+       * `virtual T CreateNew()`: Khởi tạo giá trị mặc định cho bản ghi mới.
+       * `virtual List<T> GetAll()`: Cho phép ghi đè phương thức lấy dữ liệu theo ngữ cảnh.
+     - Nạp chồng phương thức (Method Overloading - Compile-time Polymorphism):
+       * `DbHelper.P(string name, object value)` và các biến thể tạo tham số truy vấn an toàn.
+       * `DbHelper.Query(string sql, params MySqlParameter[] p)` và `DbHelper.Query(string sql, CommandType type, ...)`.
+       * `AppSettings.Get(string key, string def)` và `AppSettings.GetDecimal(string key, decimal def)`, `AppSettings.GetInt(string key, int def)`.
+       * `AuditBUS.Search(...)` và `AuditBUS.SearchTable(...)`.
+
+2.3. TÍNH ĐÓNG GÓI (ENCAPSULATION):
+     - Toàn bộ các trường dữ liệu nội tại (fields) của các lớp đều được bảo vệ bằng phạm vi truy cập
+       `private` hoặc `protected`, chỉ cho phép truy xuất/thay đổi thông qua Properties có kiểm soát.
+     - Ví dụ: `Session.User` và `Session.Role` có setter là `private`, chỉ cho phép gán thông qua hàm
+       `Session.Start(u)` sau khi xác thực thành công; `Session.End()` dọn dẹp sạch phiên làm việc.
+     - Ẩn giấu thông tin nhạy cảm: `PasswordHash` được ẩn trong lưới dữ liệu bằng `[Field(Hidden = true)]`,
+       chuỗi mật khẩu trong chuỗi kết nối CSDL và log file được tự động phát hiện và bôi đen (Regex Masking)
+       thông qua `AppLogger`.
+
+2.4. TÍNH TRỪU TƯỢNG (ABSTRACTION):
+     - Người dùng tầng giao diện GUI chỉ cần gọi các phương thức mức cao của tầng BUS như `bus.Save(entity)`,
+       `bus.Delete(entity)`, `payrollBus.Calculate(month, year)` mà hoàn toàn không cần biết chi tiết câu lệnh
+       SQL hay kết nối cơ sở dữ liệu bên dưới.
+     - Tầng DAL trừu tượng hóa toàn bộ việc sinh câu lệnh SQL `INSERT`, `UPDATE`, `DELETE` bằng Reflection
+       dựa trên metadata của DTO, giải phóng lập trình viên khỏi việc viết các câu lệnh SQL lặp đi lặp lại.
+
+
+----------------------------------------------------------------------------------------------------
+3. HOÀN THIỆN CLASS - THỐNG KÊ VÀ PHÂN LOẠI CHI TIẾT TOÀN BỘ SỐ LƯỢNG LỚP
+----------------------------------------------------------------------------------------------------
+Hệ thống SmartHRM được xây dựng hoàn thiện với cấu trúc mã nguồn đồ sộ, được kiểm chứng với:
+- TỔNG SỐ LỚP (CLASSES): 116 LỚP
+- TỔNG SỐ GIAO DIỆN (INTERFACES): 7 GIAO DIỆN
+- TỔNG SỐ KIỂU LIỆT KÊ (ENUMS): 3 ENUMS (`FieldKind`, `LogLevel`, `GridRowAction`)
+
+BẢNG THỐNG KÊ ĐỊNH LƯỢNG THEO TẦNG KIẾN TRÚC:
++-------------------------------------------------------+---------------+
+| Tầng Kiến trúc / Phân loại                            | Số lượng Lớp  |
++-------------------------------------------------------+---------------+
+| 1. Tầng Thực thể & Thuộc tính (DTO & Attributes)       | 28 lớp        |
+| 2. Tầng Truy xuất dữ liệu (DAL & Data Access)         | 25 lớp         |
+| 4. Tầng Giao diện người dùng (GUI Forms & Components) |       |
+| 3. Tầng Xử lý nghiệp vụ & Dịch vụ (BUS & Services)    | 38 lớp 22 lớp        |
+| 5. Báo cáo Crystal Reports & Khởi chạy (Reports & App) | 3 lớp         |
++-------------------------------------------------------+---------------+
+| TỔNG CỘNG                                             | 116 LỚP       |
++-------------------------------------------------------+---------------+
+
+BẢNG CHI TIẾT DANH MỤC TOÀN BỘ CÁC LỚP TRONG HỆ THỐNG:
+
+STT | Tên Lớp (Class Name)      | Tầng Kiến trúc | Kế thừa từ (Inherits / Implements) | Vai trò & Mục đích sử dụng
+----+---------------------------+----------------+------------------------------------+---------------------------------------------------------------
+1   | BaseDTO                   | DTO            | Object                             | Lớp cơ sở chứa khóa chính Id cho toàn bộ thực thể hệ thống
+2   | DepartmentDTO             | DTO            | BaseDTO                            | Thực thể lưu thông tin phòng ban, tổ đội và quản lý trực thuộc
+3   | PositionDTO               | DTO            | BaseDTO                            | Thực thể lưu danh mục chức danh, chức vụ và mức phụ cấp
+4   | EmployeeDTO               | DTO            | BaseDTO                            | Thực thể lưu thông tin đầy đủ hồ sơ lý lịch nhân sự
+5   | ContractDTO               | DTO            | BaseDTO                            | Thực thể lưu hợp đồng lao động, thời hạn và mức lương cam kết
+6   | RecruitmentRequestDTO     | DTO            | BaseDTO                            | Thực thể lưu kế hoạch và đề xuất tuyển dụng nhân sự
+7   | CandidateDTO              | DTO            | BaseDTO                            | Thực thể lưu hồ sơ ứng viên, lịch phỏng vấn và kết quả tuyển
+8   | ShiftDTO                  | DTO            | BaseDTO                            | Thực thể lưu ca làm việc, thời gian bắt đầu, kết thúc, nghỉ
+9   | WorkScheduleDTO           | DTO            | BaseDTO                            | Thực thể lưu lịch phân ca công tác của nhân viên theo kỳ
+10  | AttendanceDTO             | DTO            | BaseDTO                            | Thực thể lưu dữ liệu chấm công: vào, ra, đi muộn, về sớm
+11  | LeaveRequestDTO           | DTO            | BaseDTO                            | Thực thể lưu đơn từ xin nghỉ phép, làm thêm, công tác
+12  | TimesheetDTO              | DTO            | BaseDTO                            | Thực thể lưu bảng tổng hợp ngày công và giờ làm thêm tháng
+13  | SalaryFormulaDTO          | DTO            | BaseDTO                            | Thực thể lưu cấu hình công thức toán học tính lương
+14  | PayrollDTO                | DTO            | BaseDTO                            | Thực thể lưu bảng tính chi tiết lương và thu nhập tháng
+15  | KpiPeriodDTO              | DTO            | BaseDTO                            | Thực thể lưu chu kỳ đánh giá hiệu suất (tháng, quý, năm)
+16  | KpiCriteriaDTO            | DTO            | BaseDTO                            | Thực thể lưu tiêu chí đánh giá KPI/OKR và trọng số theo vị trí
+17  | KpiEvaluationDTO          | DTO            | BaseDTO                            | Thực thể lưu điểm tự chấm, điểm quản lý chấm và xếp loại KPI
+18  | CourseDTO                 | DTO            | BaseDTO                            | Thực thể lưu khóa đào tạo chuyên môn nội bộ
+19  | TrainingParticipantDTO    | DTO            | BaseDTO                            | Thực thể lưu danh sách học viên tham gia và kết quả cấp chứng chỉ
+20  | RoleDTO                   | DTO            | BaseDTO                            | Thực thể lưu danh mục nhóm vai trò quyền hạn người dùng
+21  | RolePermissionDTO         | DTO            | BaseDTO                            | Thực thể lưu chi tiết ma trận phân quyền Xem/Thêm/Sửa/Xóa
+22  | UserDTO                   | DTO            | BaseDTO                            | Thực thể lưu tài khoản người dùng đăng nhập hệ thống
+23  | AuditLogDTO               | DTO            | BaseDTO                            | Thực thể lưu vết kiểm toán các thao tác trên hệ thống
+24  | SettingDTO                | DTO            | BaseDTO                            | Thực thể lưu tham số cấu hình hệ thống dạng Key-Value
+25  | TableAttribute            | DTO / Meta     | Attribute                          | Attribute định danh bảng CSDL MySQL tương ứng
+26  | FieldAttribute            | DTO / Meta     | Attribute                          | Attribute định danh nhãn, ràng buộc và quy cách nhập liệu
+27  | IgnoreAttribute           | DTO / Meta     | Attribute                          | Attribute bỏ qua thuộc tính khi lưu vào CSDL MySQL
+28  | Const                     | DTO / Helper   | (static)                           | Định nghĩa hằng số phân loại trạng thái, quyền hạn, mã mô-đun
+29  | DbHelper                  | DAL            | (static)                           | Quản lý kết nối MySQL, tham số hóa và thực thi SQL an toàn
+30  | Naming                    | DAL            | (static)                           | Tiện ích chuyển đổi định dạng tên cột (PascalCase <-> snake_case)
+31  | GenericDAL<T>             | DAL            | IGenericDAL<T>                     | Lớp cơ sở truy xuất dữ liệu tự động ánh xạ bằng Reflection
+32  | DepartmentDAL             | DAL            | GenericDAL<DepartmentDTO>          | Truy xuất dữ liệu phòng ban, quản lý cây và trưởng bộ phận
+33  | EmployeeDAL               | DAL            | GenericDAL<EmployeeDTO>            | Truy xuất dữ liệu hồ sơ nhân sự, sinh mã tự động
+34  | ContractDAL               | DAL            | GenericDAL<ContractDTO>            | Truy xuất dữ liệu hợp đồng và quét hợp đồng hết hạn
+35  | RecruitmentDAL            | DAL            | GenericDAL<RecruitmentRequestDTO>  | Truy xuất dữ liệu đề xuất kế hoạch tuyển dụng nhân sự
+36  | CandidateDAL              | DAL            | GenericDAL<CandidateDTO>           | Truy xuất dữ liệu ứng viên và kết quả phỏng vấn
+37  | ShiftDAL                  | DAL            | GenericDAL<ShiftDTO>               | Truy xuất dữ liệu ca làm việc
+38  | WorkScheduleDAL           | DAL            | GenericDAL<WorkScheduleDTO>        | Truy xuất dữ liệu lịch phân ca làm việc của nhân sự
+39  | AttendanceDAL             | DAL            | GenericDAL<AttendanceDTO>          | Truy xuất dữ liệu chấm công hàng ngày
+40  | LeaveDAL                  | DAL            | GenericDAL<LeaveRequestDTO>         | Truy xuất dữ liệu đơn từ nghỉ phép và phê duyệt
+41  | TimesheetDAL              | DAL            | GenericDAL<TimesheetDTO>           | Truy xuất và chốt bảng tổng hợp công tháng
+42  | SalaryFormulaDAL          | DAL            | GenericDAL<SalaryFormulaDTO>       | Truy xuất dữ liệu cấu hình các công thức tính lương
+43  | PayrollDAL                | DAL            | GenericDAL<PayrollDTO>             | Truy xuất dữ liệu bảng tính lương và khóa lương
+44  | KpiPeriodDAL              | DAL            | GenericDAL<KpiPeriodDTO>           | Truy xuất dữ liệu kỳ đánh giá hiệu suất
+45  | KpiCriteriaDAL            | DAL            | GenericDAL<KpiCriteriaDTO>         | Truy xuất dữ liệu tiêu chí đánh giá KPI
+46  | KpiEvaluationDAL          | DAL            | GenericDAL<KpiEvaluationDTO>       | Truy xuất dữ liệu kết quả chấm điểm đánh giá nhân viên
+47  | CourseDAL                 | DAL            | GenericDAL<CourseDTO>              | Truy xuất dữ liệu khóa học đào tạo
+48  | TrainingParticipantDAL    | DAL            | GenericDAL<TrainingParticipantDTO> | Truy xuất dữ liệu học viên tham gia đào tạo
+49  | UserDAL                   | DAL            | GenericDAL<UserDTO>                | Truy xuất dữ liệu tài khoản đăng nhập và đổi mật khẩu
+50  | RoleDAL                   | DAL            | GenericDAL<RoleDTO>                | Truy xuất dữ liệu vai trò và chi tiết phân quyền ma trận
+51  | AuditDAL                  | DAL            | GenericDAL<AuditLogDTO>            | Truy xuất, tìm kiếm nâng cao và dọn dẹp nhật ký hệ thống
+52  | SettingDAL                | DAL            | GenericDAL<SettingDTO>             | Truy xuất tham số cấu hình hệ thống
+53  | ReportDAL                 | DAL            | Object                             | Truy vấn dữ liệu thống kê, báo cáo tổng hợp đa tiêu chí
+54  | ValidationException       | BUS            | Exception                          | Ngoại lệ nghiệp vụ chứa thông báo lỗi cho người dùng
+55  | ModuleInfo                | BUS            | Object                             | Chứa thông tin mô-đun chức năng: mã, tên, phân nhóm
+56  | Modules                   | BUS            | (static)                           | Danh mục chuẩn hóa 25 phân hệ chức năng hệ thống
+57  | Session                   | BUS            | (static)                           | Quản lý phiên làm việc hiện tại và kiểm soát phân quyền RBAC
+58  | AppSettings               | BUS            | (static)                           | Bộ nhớ cache quản lý đọc/ghi các tham số cấu hình
+59  | AuditBUS                  | BUS            | (static)                           | Cung cấp hàm ghi nhật ký hệ thống toàn cục an toàn
+60  | GenericBUS<T>             | BUS            | IGenericBUS<T>                     | Lớp nghiệp vụ cơ sở kiểm soát RBAC, xác thực và gọi DAL
+61  | DepartmentBUS             | BUS            | GenericBUS<DepartmentDTO>          | Nghiệp vụ phòng ban, kiểm tra mã trùng, ràng buộc khi xóa
+62  | PositionBUS               | BUS            | GenericBUS<PositionDTO>            | Nghiệp vụ danh mục chức danh, chức vụ
+63  | EmployeeBUS               | BUS            | GenericBUS<EmployeeDTO>            | Nghiệp vụ hồ sơ nhân sự, kiểm tra CCCD, ngăn xóa cứng
+64  | ContractBUS               | BUS            | GenericBUS<ContractDTO>            | Nghiệp vụ hợp đồng, tự động cập nhật hết hạn
+65  | RecruitmentBUS            | BUS            | GenericBUS<RecruitmentRequestDTO>  | Nghiệp vụ đề xuất tuyển dụng nhân sự
+66  | CandidateBUS              | BUS            | GenericBUS<CandidateDTO>           | Nghiệp vụ ứng viên, onboarding tự động sang nhân viên
+67  | ShiftBUS                  | BUS            | GenericBUS<ShiftDTO>               | Nghiệp vụ ca làm việc, kiểm tra giờ vào ra
+68  | WorkScheduleBUS           | BUS            | GenericBUS<WorkScheduleDTO>        | Nghiệp vụ lập lịch phân ca làm việc
+69  | ImportResult              | BUS            | Object                             | Chứa kết quả import dữ liệu chấm công từ Excel
+70  | AttendanceBUS             | BUS            | GenericBUS<AttendanceDTO>          | Nghiệp vụ chấm công, tính giờ muộn, về sớm, công thực
+71  | LocationService           | BUS            | ILocationService, (static)         | Dịch vụ định vị GPS chấm công theo thuật toán Haversine
+72  | LeaveBUS                  | BUS            | GenericBUS<LeaveRequestDTO>        | Nghiệp vụ duyệt đơn nghỉ phép, tính ngày phép năm
+73  | TimesheetBUS              | BUS            | Object                             | Nghiệp vụ tổng hợp và khóa bảng công tháng
+74  | FormulaEngine             | BUS            | (static)                           | Bộ máy biên dịch và tính toán biểu thức công thức lương
+75  | SalaryFormulaBUS          | BUS            | GenericBUS<SalaryFormulaDTO>       | Nghiệp vụ quản lý các công thức tính lương
+76  | PayrollBUS                | BUS            | Object                             | Nghiệp vụ tính toán lương, trích bảo hiểm, thuế, phiếu lương
+77  | KpiPeriodBUS              | BUS            | GenericBUS<KpiPeriodDTO>           | Nghiệp vụ kỳ đánh giá hiệu suất KPI
+78  | KpiCriteriaBUS            | BUS            | GenericBUS<KpiCriteriaDTO>         | Nghiệp vụ tiêu chí đánh giá KPI theo vị trí
+79  | KpiEvaluationBUS          | BUS            | GenericBUS<KpiEvaluationDTO>       | Nghiệp vụ chấm điểm, tính điểm tổng kết và xếp loại
+80  | CourseBUS                 | BUS            | GenericBUS<CourseDTO>              | Nghiệp vụ khóa đào tạo nội bộ
+81  | TrainingParticipantBUS    | BUS            | GenericBUS<TrainingParticipantDTO> | Nghiệp vụ danh sách học viên và cấp chứng chỉ
+82  | UserBUS                   | BUS            | GenericBUS<UserDTO>                | Nghiệp vụ tài khoản người dùng, đổi mật khẩu băm BCrypt
+83  | RoleBUS                   | BUS            | GenericBUS<RoleDTO>                | Nghiệp vụ phân quyền nhóm người dùng ma trận
+84  | AuditLogBUS               | BUS            | GenericBUS<AuditLogDTO>            | Nghiệp vụ quản lý và tìm kiếm nhật ký kiểm toán
+85  | SettingBUS                | BUS            | GenericBUS<SettingDTO>             | Nghiệp vụ tham số hệ thống
+86  | ReportBUS                 | BUS            | Object                             | Nghiệp vụ tổng hợp số liệu báo cáo nhân sự, chi phí
+87  | AuthResult                | BUS            | Object                             | Chứa kết quả xác thực đăng nhập (thành công/lỗi, user)
+88  | AuthBUS                   | BUS            | IAuthService                       | Nghiệp vụ xác thực đăng nhập, quên mật khẩu và OTP
+89  | MailService               | BUS            | (static)                           | Dịch vụ gửi email thông báo và mã OTP qua SMTP
+90  | ExcelHelper               | BUS / Helper   | IReportExporter, (static)          | Tiện ích xuất dữ liệu bảng và biểu đồ ra file Excel
+91  | DbInitializer             | BUS / Helper   | (static)                           | Tự động khởi tạo tài khoản quản trị và nhóm quyền ban đầu
+92  | AppLogger                 | Common / Log   | IAppLogger, (static)               | Thư viện ghi nhật ký kỹ thuật ra file log hàng ngày
+93  | LoginForm                 | GUI            | Form                               | Màn hình đăng nhập tài khoản và khôi phục mật khẩu OTP
+94  | MainForm                  | GUI            | Form                               | Cửa sổ chính điều hướng chức năng theo phân quyền RBAC
+95  | DashboardForm             | GUI            | Form                               | Màn hình hiển thị thẻ chỉ số nhanh và biểu đồ tổng quan
+96  | CrudForm                  | GUI            | Form                               | Màn hình danh sách dữ liệu dùng chung (lọc, phân trang, CRUD)
+97  | EntityEditForm            | GUI            | Form                               | Màn hình động thêm mới / chỉnh sửa thông tin chi tiết
+98  | Item                      | GUI (nested)   | Object                             | Lưu liên kết giữa PropertyInfo, FieldAttribute và Control
+99  | LookupItem                | GUI (nested)   | Object                             | Đối tượng lưu cặp giá trị Id - Tên cho ComboBox tra cứu
+100 | OrgChartForm              | GUI            | Form                               | Màn hình hiển thị sơ đồ tổ chức phòng ban dạng cây
+101 | TimesheetForm             | GUI            | Form                               | Màn hình quản lý tổng hợp công và chốt bảng công tháng
+102 | PayrollForm               | GUI            | Form                               | Màn hình tính toán bảng lương tự động và xem phiếu lương
+103 | RoleForm                  | GUI            | Form                               | Màn hình phân quyền người dùng theo ma trận 4 quyền
+104 | AuditLogForm              | GUI            | Form                               | Màn hình tra cứu, lọc và dọn dẹp nhật ký hệ thống
+105 | ReportForm                | GUI            | Form                               | Màn hình trung tâm báo cáo, biểu đồ, xuất Excel và in ấn
+106 | ReportDef                 | GUI (nested)   | Object                             | Định nghĩa cấu hình báo cáo: tiêu đề, loại biểu đồ, hàm nạp
+107 | KpiCard                   | GUI / Control  | UserControl                        | Điều khiển hiển thị thẻ đo lường chỉ số KPI
+108 | Ui                        | GUI / Helper   | (static)                           | Định nghĩa màu sắc thương hiệu, phông chữ, định dạng bảng
+109 | ChartHelper               | GUI / Helper   | (static)                           | Tiện ích cấu hình và hiển thị biểu đồ đồ họa MS Charting
+110 | ExportChart               | GUI / Helper   | (static)                           | Chụp ảnh biểu đồ và tự động render đồ thị vào tệp Excel
+111 | CrystalExporter           | GUI / Helper   | IReportExporter, (static)          | Kết xuất dữ liệu ra báo cáo chuẩn in ấn Crystal Reports
+112 | CrudService<T>            | GUI / Service  | ICrudService                       | Cầu nối dịch vụ generic giữa CrudForm và GenericBUS<T>
+113 | AppImages                 | GUI / Resource | (static)                           | Cung cấp tài nguyên icon, hình ảnh vẽ bằng vector GDI+
+114 | LogoData                  | GUI / Resource | (static)                           | Lưu trữ dữ liệu biểu trưng SmartHRM
+115 | Program                   | App            | (static)                           | Điểm khởi chạy ứng dụng (Main entry point)
+116 | GenericGrid               | Report         | ReportClass                        | Lớp điều khiển tài liệu báo cáo in ấn Crystal Report
+
+
+====================================================================================================
+VIII. TRUY VẤN CƠ SỞ DỮ LIỆU (DATABASE QUERIES & STORED PROCEDURES)
+====================================================================================================
+
+Cơ chế truy vấn và thao tác cơ sở dữ liệu trong hệ thống SmartHRM được thiết kế theo 2 phương thức
+bổ trợ lẫn nhau:
+1. Truy vấn trực tiếp từ tầng ứng dụng / Form (Inline / Dynamic Parameterized SQL Queries):
+   Linh hoạt, tối ưu cho các thao tác hiển thị danh mục, tìm kiếm đa điều kiện, phân trang và báo cáo động.
+2. Truy vấn thông qua Thủ tục lưu trữ (Stored Procedures):
+   Tối ưu hiệu năng, bảo mật cao, đảm bảo tính toàn vẹn giao dịch (ACID Transactions) cho các nghiệp vụ
+   tính toán phức tạp và xử lý hàng loạt (chấm công, tính lương, duyệt phép, onboarding).
+
+----------------------------------------------------------------------------------------------------
+1. TRUY VẤN TRONG FORM (INLINE / DYNAMIC PARAMETERIZED SQL IN APPLICATION FORMS)
+----------------------------------------------------------------------------------------------------
+Tại tầng giao diện và các lớp DAL/BUS tương ứng, mọi câu truy vấn đều được thực thi thông qua lớp
+tiện ích `DbHelper` với cơ chế tham số hóa (`MySqlParameter`) 100%, tuyệt đối không cộng chuỗi
+trực tiếp nhằm triệt tiêu hoàn toàn nguy cơ tấn công SQL Injection.
+
+1.1. CÁC DẠNG TRUY VẤN TIÊU BIỂU TRONG HỆ THỐNG:
+     - Truy vấn tra cứu nguồn ComboBox / Lookup:
+       Tự động sinh câu lệnh SQL nạp danh mục liên kết với định dạng cú pháp:
+       `SELECT id, [display_column] FROM [table] ORDER BY [display_column]`
+       Ví dụ nạp nhân viên:
+       ```sql
+       SELECT id, CONCAT(code, ' - ', full_name) AS label FROM employees WHERE status <> 'Nghỉ việc' ORDER BY code;
+       ```
+     - Truy vấn tìm kiếm toàn văn đa trường (SearchTable):
+       Tự động quét qua tất cả các cột kiểu chuỗi của thực thể để lọc dữ liệu:
+       ```sql
+       SELECT * FROM employees 
+       WHERE (code LIKE @kw OR full_name LIKE @kw OR id_card LIKE @kw OR phone LIKE @kw OR email LIKE @kw)
+       ORDER BY id DESC LIMIT 200;
+       ```
+     - Truy vấn phân cấp cây phòng ban (Org Chart):
+       ```sql
+       SELECT d.*, CONCAT(e.code, ' - ', e.full_name) AS manager_name 
+       FROM departments d
+       LEFT JOIN employees e ON d.manager_id = e.id
+       ORDER BY d.parent_id, d.code;
+       ```
+
+1.2. CHI TIẾT CÁC CÂU TRUY VẤN THEO TỪNG MÀN HÌNH FORM CỤ THỂ:
+
+     a) Giao diện Đăng nhập & Xác thực (`LoginForm`):
+        - Kiểm tra tài khoản người dùng:
+          ```sql
+          SELECT * FROM users WHERE (username = @u OR email = @u) AND is_active = 1 LIMIT 1;
+          ```
+        - Lưu mã OTP khôi phục mật khẩu vào tham số hệ thống:
+          ```sql
+          INSERT INTO system_settings (setting_key, setting_value, description) 
+          VALUES (@k, @v, @d) 
+          ON DUPLICATE KEY UPDATE setting_value = @v;
+          ```
+        - Cập nhật mật khẩu băm mới sau khi xác thực OTP thành công:
+          ```sql
+          UPDATE users SET password_hash = @hash WHERE email = @email;
+          ```
+
+     b) Giao diện Điều khiển & Tổng quan (`DashboardForm`):
+        Thực thi tập hợp các truy vấn thống kê chỉ số nhanh (KPI Cards) thời gian thực:
+        - Đếm số nhân viên đang làm việc:
+          ```sql
+          SELECT COUNT(*) FROM employees WHERE status <> 'Nghỉ việc';
+          ```
+        - Đếm số nhân viên mới gia nhập trong tháng hiện tại:
+          ```sql
+          SELECT COUNT(*) FROM employees WHERE YEAR(join_date) = YEAR(CURDATE()) AND MONTH(join_date) = MONTH(CURDATE());
+          ```
+        - Đếm số nhân viên nghỉ việc trong tháng:
+          ```sql
+          SELECT COUNT(*) FROM employees WHERE YEAR(leave_date) = YEAR(CURDATE()) AND MONTH(leave_date) = MONTH(CURDATE());
+          ```
+        - Đếm số nhân sự đang trong giai đoạn thử việc:
+          ```sql
+          SELECT COUNT(*) FROM employees WHERE status = 'Thử việc';
+          ```
+        - Đếm số đơn xin nghỉ phép đang chờ phê duyệt:
+          ```sql
+          SELECT COUNT(*) FROM leave_requests WHERE status = 'Chờ duyệt';
+          ```
+        - Đếm số hồ sơ ứng viên đang trong quá trình tuyển dụng:
+          ```sql
+          SELECT COUNT(*) FROM candidates WHERE status IN ('Mới', 'Lên lịch PV', 'Đạt');
+          ```
+        - Đếm số nhân viên đã thực hiện check-in đi làm hôm nay:
+          ```sql
+          SELECT COUNT(*) FROM attendance WHERE work_date = CURDATE() AND check_in IS NOT NULL;
+          ```
+        - Lấy tổng quỹ lương thực lĩnh của kỳ chi trả gần nhất:
+          ```sql
+          SELECT IFNULL(SUM(net_salary), 0) FROM payroll 
+          WHERE (year, month) = (SELECT year, month FROM payroll ORDER BY year DESC, month DESC LIMIT 1);
+          ```
+
+     c) Giao diện Báo cáo & Thống kê Chuyên sâu (`ReportForm` / `ReportDAL`):
+        - Báo cáo số lượng nhân sự theo từng phòng ban:
+          ```sql
+          SELECT d.name AS `Phòng ban`, COUNT(e.id) AS `Số nhân viên` 
+          FROM departments d 
+          LEFT JOIN employees e ON e.department_id = d.id AND e.status <> 'Nghỉ việc' 
+          GROUP BY d.id, d.name ORDER BY d.code;
+          ```
+        - Báo cáo cơ cấu giới tính nhân viên toàn công ty:
+          ```sql
+          SELECT IFNULL(e.gender, 'Chưa rõ') AS `Giới tính`, COUNT(*) AS `Số lượng` 
+          FROM employees e WHERE e.status <> 'Nghỉ việc' GROUP BY e.gender;
+          ```
+        - Báo cáo cơ cấu độ tuổi lao động:
+          ```sql
+          SELECT g AS `Nhóm tuổi`, COUNT(*) AS `Số lượng` FROM (
+              SELECT CASE 
+                  WHEN e.birth_date IS NULL THEN 'Chưa rõ' 
+                  WHEN TIMESTAMPDIFF(YEAR, e.birth_date, CURDATE()) < 25 THEN 'Dưới 25' 
+                  WHEN TIMESTAMPDIFF(YEAR, e.birth_date, CURDATE()) < 35 THEN '25 - 34' 
+                  WHEN TIMESTAMPDIFF(YEAR, e.birth_date, CURDATE()) < 45 THEN '35 - 44' 
+                  WHEN TIMESTAMPDIFF(YEAR, e.birth_date, CURDATE()) < 55 THEN '45 - 54' 
+                  ELSE '55 trở lên' 
+              END g 
+              FROM employees e WHERE e.status <> 'Nghỉ việc'
+          ) x GROUP BY g ORDER BY g;
+          ```
+        - Báo cáo thâm niên công tác:
+          ```sql
+          SELECT g AS `Thâm niên`, COUNT(*) AS `Số lượng` FROM (
+              SELECT CASE 
+                  WHEN e.join_date IS NULL THEN 'Chưa rõ' 
+                  WHEN TIMESTAMPDIFF(MONTH, e.join_date, CURDATE()) < 12 THEN 'Dưới 1 năm' 
+                  WHEN TIMESTAMPDIFF(MONTH, e.join_date, CURDATE()) < 36 THEN '1 - 3 năm' 
+                  WHEN TIMESTAMPDIFF(MONTH, e.join_date, CURDATE()) < 60 THEN '3 - 5 năm' 
+                  ELSE 'Trên 5 năm' 
+              END g 
+              FROM employees e WHERE e.status <> 'Nghỉ việc'
+          ) x GROUP BY g ORDER BY g;
+          ```
+        - Báo cáo biến động nhân sự (Turnover Rate) 12 tháng trong năm:
+          ```sql
+          SELECT 
+              CONCAT('T', m.n) AS `Tháng`,
+              (SELECT COUNT(*) FROM employees WHERE MONTH(join_date) = m.n AND YEAR(join_date) = @y) AS `Nhân viên mới`,
+              (SELECT COUNT(*) FROM employees WHERE MONTH(leave_date) = m.n AND YEAR(leave_date) = @y) AS `Nghỉ việc`
+          FROM (SELECT 1 n UNION SELECT 2 UNION SELECT 3 UNION SELECT 4 UNION SELECT 5 UNION SELECT 6 
+                UNION SELECT 7 UNION SELECT 8 UNION SELECT 9 UNION SELECT 10 UNION SELECT 11 UNION SELECT 12) m;
+          ```
+        - Báo cáo tổng hợp chi phí lương - thưởng - bảo hiểm phần doanh nghiệp chi trả theo tháng:
+          ```sql
+          SELECT 
+              CONCAT('T', m.n) AS `Tháng`, 
+              IFNULL(SUM(p.gross_income - p.bonus), 0) AS `Lương`, 
+              IFNULL(SUM(p.bonus), 0) AS `Thưởng`, 
+              IFNULL(SUM(p.employer_insurance), 0) AS `Bảo hiểm (DN)` 
+          FROM (SELECT 1 n UNION SELECT 2 UNION SELECT 3 UNION SELECT 4 UNION SELECT 5 UNION SELECT 6 
+                UNION SELECT 7 UNION SELECT 8 UNION SELECT 9 UNION SELECT 10 UNION SELECT 11 UNION SELECT 12) m 
+          LEFT JOIN payroll p ON p.month = m.n AND p.year = @y 
+          GROUP BY m.n ORDER BY m.n;
+          ```
+
+     d) Giao diện Quản lý Phân quyền (`RoleForm`):
+        - Lấy ma trận chi tiết quyền theo vai trò:
+          ```sql
+          SELECT id, role_id, module_code, can_view, can_add, can_edit, can_delete 
+          FROM role_permissions WHERE role_id = @roleId;
+          ```
+        - Cập nhật quyền trên từng ô kiểm tra (CheckBox):
+          ```sql
+          INSERT INTO role_permissions (role_id, module_code, can_view, can_add, can_edit, can_delete) 
+          VALUES (@roleId, @module, @v, @a, @e, @d) 
+          ON DUPLICATE KEY UPDATE can_view = @v, can_add = @a, can_edit = @e, can_delete = @d;
+          ```
+
+     e) Giao diện Nhật ký Kiểm toán Hệ thống (`AuditLogForm`):
+        - Truy vấn tìm kiếm lọc nhật ký đa điều kiện:
+          ```sql
+          SELECT id, created_at AS `Thời gian`, username AS `Người dùng`, 
+                 action AS `Thao tác`, module AS `Mô-đun`, detail AS `Chi tiết` 
+          FROM audit_logs 
+          WHERE created_at BETWEEN @from AND @to 
+            AND (@u = '' OR username = @u) 
+            AND (@m = '' OR module = @m) 
+            AND (@a = '' OR action = @a) 
+            AND (@kw = '' OR detail LIKE @kwPattern) 
+          ORDER BY id DESC LIMIT @limit;
+          ```
+        - Dọn dẹp nhật ký cũ hơn N ngày:
+          ```sql
+          DELETE FROM audit_logs WHERE created_at < @cutoffDate;
+          ```
+
+
+----------------------------------------------------------------------------------------------------
+2. TRUY VẤN TRONG STORED PROCEDURE (DATABASE STORED PROCEDURES)
+----------------------------------------------------------------------------------------------------
+Stored Procedure (Thủ tục lưu trữ) là tập hợp các câu lệnh SQL được biên dịch sẵn và lưu trữ trực tiếp
+trong máy chủ MySQL Server.
+
+2.1. ƯU ĐIỂM VÀ TẦM QUAN TRỌNG KHI ÁP DỤNG STORED PROCEDURE:
+     - Tối ưu hóa hiệu năng vượt trội: Được MySQL phân tích cú pháp và lập kế hoạch thực thi (Execution Plan)
+       sẵn, giúp giảm thiểu thời gian biên dịch lại câu lệnh ở mỗi lần gọi.
+     - Bảo mật cấp cơ sở dữ liệu: Cho phép phân quyền thực thi chi tiết cho người dùng CSDL mà không cần
+       cấp quyền truy cập trực tiếp vào các bảng dữ liệu gốc (`GRANT EXECUTE ON PROCEDURE`).
+     - Bảo vệ toàn vẹn giao dịch (Transaction Integrity): Gom nhóm các thao tác ghi dữ liệu liên hoàn vào
+       khối `START TRANSACTION` ... `COMMIT` / `ROLLBACK`, ngăn chặn lỗi dữ liệu dở dang khi xảy ra sự cố.
+     - Giảm lưu lượng đường truyền (Network Traffic): Ứng dụng chỉ cần gửi tên thủ tục và danh sách tham số
+       ngắn gọn thay vì truyền tải các đoạn mã SQL dài qua mạng.
+
+2.2. DANH SÁCH 10 STORED PROCEDURES TIÊU BIỂU TRONG HỆ THỐNG SMARTHRM:
+
+STT | Tên Stored Procedure          | Tham số đầu vào (IN / OUT)                | Mục đích & Nghiệp vụ đảm nhiệm
+----+-------------------------------+-------------------------------------------+---------------------------------------------------------------
+1   | sp_AuthenticateUser           | IN p_username, OUT p_status, OUT p_role   | Xác thực tài khoản đăng nhập, kiểm tra khóa tài khoản, trả về vai trò
+2   | sp_GetDashboardOverview       | OUT p_active, OUT p_new, OUT p_left, ...  | Lấy toàn bộ 8 chỉ số KPI thống kê Dashboard trong 1 lần gọi duy nhất
+3   | sp_ProcessAttendanceCheckIn   | IN p_emp_id, IN p_check_time, IN p_method | Ghi nhận giờ Check-in, so khớp ca làm, tự động tính số phút đi muộn
+4   | sp_ProcessAttendanceCheckOut  | IN p_emp_id, IN p_check_time              | Ghi nhận giờ Check-out, tính số phút về sớm, số giờ làm và công thực tế
+5   | sp_CalculateMonthlyTimesheet  | IN p_month, IN p_year                     | Tổng hợp và chốt bảng chấm công tháng của toàn công ty
+6   | sp_CalculateMonthlyPayroll    | IN p_month, IN p_year                     | Tự động tính toán bảng lương tháng, trích nộp bảo hiểm, thuế TNCN lũy tiến
+7   | sp_OnboardCandidate           | IN p_candidate_id, OUT p_new_emp_id       | Chuyển ứng viên trúng tuyển sang hồ sơ nhân viên và tạo hợp đồng thử việc
+8   | sp_ApproveLeaveRequest        | IN p_request_id, IN p_approver_id         | Phê duyệt đơn nghỉ phép và tự động trừ số ngày nghỉ vào quỹ phép năm
+9   | sp_PurgeAuditLogs             | IN p_keep_days, OUT p_deleted_count       | Dọn dẹp nhật ký hệ thống cũ hơn N ngày với kiểm tra ngưỡng an toàn >= 30
+10  | sp_GetTurnoverReport          | IN p_year                                 | Thống kê chi tiết biến động nhân sự và tỷ lệ nghỉ việc 12 tháng trong năm
+
+2.3. MÃ NGUỒN ĐỊNH NGHĨA SQL (DDL) CÁC STORED PROCEDURE CHỦ CHỐT:
+
+     a) Thủ tục xác thực đăng nhập (`sp_AuthenticateUser`):
+     ```sql
+     DELIMITER $$
+     CREATE PROCEDURE sp_AuthenticateUser(
+         IN  p_username VARCHAR(50),
+         OUT p_user_id   INT,
+         OUT p_full_name VARCHAR(100),
+         OUT p_role_id   INT,
+         OUT p_hash      VARCHAR(255),
+         OUT p_is_active TINYINT(1)
+     )
+     BEGIN
+         SELECT id, full_name, role_id, password_hash, is_active
+         INTO   p_user_id, p_full_name, p_role_id, p_hash, p_is_active
+         FROM   users
+         WHERE  (username = p_username OR email = p_username)
+         LIMIT  1;
+     END $$
+     DELIMITER ;
+     ```
+
+     b) Thủ tục xử lý chấm công Check-in (`sp_ProcessAttendanceCheckIn`):
+     ```sql
+     DELIMITER $$
+     CREATE PROCEDURE sp_ProcessAttendanceCheckIn(
+         IN  p_employee_id INT,
+         IN  p_check_in    DATETIME,
+         IN  p_method      VARCHAR(20),
+         OUT p_late_mins   INT,
+         OUT p_att_id      INT
+     )
+     BEGIN
+         DECLARE v_work_date DATE;
+         DECLARE v_shift_start TIME;
+         DECLARE v_check_time TIME;
+
+         SET v_work_date  = DATE(p_check_in);
+         SET v_check_time = TIME(p_check_in);
+
+         -- Lấy giờ bắt đầu ca làm việc của nhân viên
+         SELECT s.start_time INTO v_shift_start
+         FROM work_schedules ws
+         JOIN shifts s ON ws.shift_id = s.id
+         WHERE ws.employee_id = p_employee_id 
+           AND v_work_date >= ws.from_date 
+           AND (ws.to_date IS NULL OR v_work_date <= ws.to_date)
+         LIMIT 1;
+
+         IF v_shift_start IS NULL THEN
+             SET v_shift_start = '08:00:00'; -- Ca mặc định hành chính
+         END IF;
+
+         -- Tính số phút đi muộn (nếu check-in sau giờ bắt đầu ca)
+         IF v_check_time > v_shift_start THEN
+             SET p_late_mins = TIMESTAMPDIFF(MINUTE, v_shift_start, v_check_time);
+         ELSE
+             SET p_late_mins = 0;
+         END IF;
+
+         -- Ghi nhận hoặc cập nhật bản ghi chấm công trong ngày
+         INSERT INTO attendance (employee_id, work_date, check_in, method, late_minutes, work_days)
+         VALUES (p_employee_id, v_work_date, p_check_in, p_method, p_late_mins, 0.5)
+         ON DUPLICATE KEY UPDATE 
+             check_in     = p_check_in,
+             method       = p_method,
+             late_minutes = p_late_mins;
+
+         SET p_att_id = LAST_INSERT_ID();
+     END $$
+     DELIMITER ;
+     ```
+
+     c) Thủ tục tiếp nhận ứng viên trúng tuyển tự động (`sp_OnboardCandidate`):
+     ```sql
+     DELIMITER $$
+     CREATE PROCEDURE sp_OnboardCandidate(
+         IN  p_candidate_id INT,
+         OUT p_employee_id  INT
+     )
+     BEGIN
+         DECLARE v_full_name VARCHAR(100);
+         DECLARE v_email VARCHAR(100);
+         DECLARE v_phone VARCHAR(20);
+         DECLARE v_birth_date DATE;
+         DECLARE v_pos_id INT;
+         DECLARE v_dept_id INT;
+         DECLARE v_emp_code VARCHAR(20);
+         DECLARE v_contract_no VARCHAR(50);
+
+         DECLARE EXIT HANDLER FOR SQLEXCEPTION
+         BEGIN
+             ROLLBACK;
+             RESIGNAL;
+         END;
+
+         START TRANSACTION;
+
+         -- Lấy thông tin ứng viên và vị trí tuyển dụng
+         SELECT c.full_name, c.email, c.phone, c.birth_date, r.position_id, r.department_id
+         INTO   v_full_name, v_email, v_phone, v_birth_date, v_pos_id, v_dept_id
+         FROM candidates c
+         LEFT JOIN recruitment_requests r ON c.request_id = r.id
+         WHERE c.id = p_candidate_id AND c.status = 'Đạt';
+
+         -- Sinh mã nhân viên tự động tuần tự
+         SELECT CONCAT('NV', LPAD(IFNULL(MAX(id), 0) + 1, 4, '0')) INTO v_emp_code FROM employees;
+
+         -- Tạo hồ sơ nhân viên mới ở trạng thái Thử việc
+         INSERT INTO employees (code, full_name, email, phone, birth_date, department_id, position_id, status, join_date, basic_salary)
+         VALUES (v_emp_code, v_full_name, v_email, v_phone, v_birth_date, v_dept_id, v_pos_id, 'Thử việc', CURDATE(), 5000000);
+
+         SET p_employee_id = LAST_INSERT_ID();
+
+         -- Sinh số hợp đồng và tạo hợp đồng thử việc 2 tháng
+         SET v_contract_no = CONCAT('HDTV-', v_emp_code, '-', DATE_FORMAT(CURDATE(), '%Y%m'));
+         INSERT INTO contracts (employee_id, contract_no, type, start_date, end_date, salary, status, note)
+         VALUES (p_employee_id, v_contract_no, 'Thử việc', CURDATE(), DATE_ADD(CURDATE(), INTERVAL 2 MONTH), 5000000, 'Hiệu lực', 'Tự động tạo từ Onboarding ứng viên');
+
+         -- Cập nhật liên kết trong bảng ứng viên
+         UPDATE candidates SET employee_id = p_employee_id, status = 'Đã tuyển dụng' WHERE id = p_candidate_id;
+
+         COMMIT;
+     END $$
+     DELIMITER ;
+     ```
+
+     d) Thủ tục tính bảng lương tự động hàng tháng (`sp_CalculateMonthlyPayroll`):
+     ```sql
+     DELIMITER $$
+     CREATE PROCEDURE sp_CalculateMonthlyPayroll(
+         IN p_month INT,
+         IN p_year  INT
+     )
+     BEGIN
+         DECLARE v_done INT DEFAULT FALSE;
+         DECLARE v_emp_id INT;
+         DECLARE v_work_days DECIMAL(5,2);
+         DECLARE v_basic_salary DECIMAL(15,2);
+         DECLARE v_gross DECIMAL(15,2);
+         DECLARE v_bhxh DECIMAL(15,2);
+         DECLARE v_bhyt DECIMAL(15,2);
+         DECLARE v_bhtn DECIMAL(15,2);
+         DECLARE v_emp_ins DECIMAL(15,2);
+         DECLARE v_taxable DECIMAL(15,2);
+         DECLARE v_pit DECIMAL(15,2);
+         DECLARE v_net DECIMAL(15,2);
+         DECLARE v_dependents INT;
+
+         -- Con trỏ duyệt qua toàn bộ nhân viên có dữ liệu chấm công tháng
+         DECLARE cur CURSOR FOR 
+             SELECT t.employee_id, t.work_days, IFNULL(e.basic_salary, 0), IFNULL(e.dependents, 0)
+             FROM monthly_timesheets t
+             JOIN employees e ON t.employee_id = e.id
+             WHERE t.month = p_month AND t.year = p_year;
+
+         DECLARE CONTINUE HANDLER FOR NOT FOUND SET v_done = TRUE;
+
+         START TRANSACTION;
+
+         OPEN cur;
+         read_loop: LOOP
+             FETCH cur INTO v_emp_id, v_work_days, v_basic_salary, v_dependents;
+             IF v_done THEN
+                 LEAVE read_loop;
+             END IF;
+
+             -- Tính tổng thu nhập theo tỷ lệ ngày công (chuẩn 22 ngày)
+             SET v_gross = ROUND((v_basic_salary / 22.0) * v_work_days, 0);
+
+             -- Tính các khoản trích nộp bảo hiểm bắt buộc theo luật lao động VN
+             SET v_bhxh = ROUND(v_basic_salary * 0.08, 0);   -- BHXH người lao động: 8%
+             SET v_bhyt = ROUND(v_basic_salary * 0.015, 0);  -- BHYT người lao động: 1.5%
+             SET v_bhtn = ROUND(v_basic_salary * 0.01, 0);   -- BHTN người lao động: 1%
+             SET v_emp_ins = ROUND(v_basic_salary * 0.215, 0); -- Doanh nghiệp đóng: 21.5%
+
+             -- Tính thu nhập chịu thuế (giảm trừ bản thân 11tr, người phụ thuộc 4.4tr/người)
+             SET v_taxable = v_gross - (v_bhxh + v_bhyt + v_bhtn) - 11000000 - (v_dependents * 4400000);
+             IF v_taxable < 0 THEN 
+                 SET v_taxable = 0; 
+             END IF;
+
+             -- Tính thuế thu nhập cá nhân (PIT) lũy tiến (Bậc 1: <= 5tr thuế 5%)
+             IF v_taxable <= 5000000 THEN
+                 SET v_pit = ROUND(v_taxable * 0.05, 0);
+             ELSE
+                 SET v_pit = ROUND(250000 + (v_taxable - 5000000) * 0.10, 0);
+             END IF;
+
+             -- Tính lương thực lĩnh (Net Salary)
+             SET v_net = v_gross - (v_bhxh + v_bhyt + v_bhtn) - v_pit;
+
+             -- Lưu hoặc cập nhật bảng lương
+             INSERT INTO payroll (employee_id, month, year, work_days, gross_income, bonus,
+                                  bhxh, bhyt, bhtn, employer_insurance, taxable_income, pit, other_deduction, net_salary, status)
+             VALUES (v_emp_id, p_month, p_year, v_work_days, v_gross, 0,
+                     v_bhxh, v_bhyt, v_bhtn, v_emp_ins, v_taxable, v_pit, 0, v_net, 'Đã tính')
+             ON DUPLICATE KEY UPDATE
+                 work_days          = v_work_days,
+                 gross_income       = v_gross,
+                 bhxh               = v_bhxh,
+                 bhyt               = v_bhyt,
+                 bhtn               = v_bhtn,
+                 employer_insurance = v_emp_ins,
+                 taxable_income     = v_taxable,
+                 pit                = v_pit,
+                 net_salary         = v_net,
+                 status             = 'Đã tính';
+
+         END LOOP;
+         CLOSE cur;
+
+         COMMIT;
+     END $$
+     DELIMITER ;
+     ```
+
+2.4. CÁCH THỨC GỌI STORED PROCEDURE TỪ C# .NET:
+     Để gọi Stored Procedure từ code C# trong các lớp DAL/BUS, hệ thống sử dụng đối tượng `MySqlCommand`
+     thiết lập `CommandType.StoredProcedure` kèm các tham số rõ ràng:
+     ```csharp
+     public static DataTable ExecuteProcedure(string procName, params MySqlParameter[] parameters)
+     {
+         using (var conn = DbHelper.Open())
+         using (var cmd = new MySqlCommand(procName, conn))
+         {
+             cmd.CommandType = CommandType.StoredProcedure;
+             if (parameters != null)
+                 cmd.Parameters.AddRange(parameters);
+
+             var dt = new DataTable();
+             using (var da = new MySqlDataAdapter(cmd))
+             {
+                 da.Fill(dt);
+             }
+             return dt;
+         }
+     }
+     ```
+     Ví dụ gọi thủ tục tính lương tự động từ `PayrollBUS.cs`:
+     ```csharp
+     public void CalculateMonthlyPayroll(int month, int year)
+     {
+         Session.Require(Const.M_PAYROLL, "edit");
+         DbHelper.ExecuteProcedure("sp_CalculateMonthlyPayroll",
+             DbHelper.P("p_month", month),
+             DbHelper.P("p_year", year));
+         AuditBUS.Log("Tính bảng lương", Const.M_PAYROLL, $"Tính tự động bảng lương tháng {month}/{year} qua Stored Procedure");
+     }
+     ```
+
+====================================================================================================
+                                      HẾT BÁO CÁO
+====================================================================================================

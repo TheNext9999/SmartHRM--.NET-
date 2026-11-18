@@ -1,13 +1,13 @@
-﻿using SmartHRM.BUS;
-using SmartHRM.DTO;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.TextBox;
+using SmartHRM.BUS;
+using SmartHRM.Common;
+using SmartHRM.DTO;
 
 namespace SmartHRM.GUI
 {
@@ -18,6 +18,11 @@ namespace SmartHRM.GUI
     public partial class DashboardForm : Form
     {
         readonly ReportBUS bus = new ReportBUS();
+
+        // Dữ liệu của lần làm mới gần nhất - dùng để xuất báo cáo đúng như đang hiển thị
+        Dictionary<string, string> lastKpis;
+        DataTable tDept, tCost, tGender, tTurnover;
+        int lastYear;
 
         /// <summary>Yêu cầu mở một mô-đun (mã mô-đun) - MainForm xử lý.</summary>
         public event Action<string> NavigateRequested;
@@ -57,10 +62,15 @@ namespace SmartHRM.GUI
                 Set(cardCandidates, k["Ứng viên đang xử lý"], "mới / phỏng vấn / đạt");
                 Set(cardNet, k["Thực lĩnh kỳ gần nhất"], "đồng - tổng thực lĩnh");
 
-                ChartHelper.Fill(chartDept, bus.Headcount(), SeriesChartType.Bar, "Nhân sự theo phòng ban");
-                ChartHelper.Fill(chartCost, Reverse(bus.CostLastMonths()), SeriesChartType.StackedColumn, "Chi phí lương - thưởng - bảo hiểm (6 kỳ gần nhất)");
-                ChartHelper.Fill(chartGender, bus.DashGender(), SeriesChartType.Pie, "Cơ cấu giới tính");
-                ChartHelper.Fill(chartTurnover, bus.DashTurnover(DateTime.Today.Year), SeriesChartType.Column, "Biến động nhân sự năm " + DateTime.Today.Year);
+                lastKpis = k; lastYear = DateTime.Today.Year;
+                tDept = bus.Headcount();
+                tCost = Reverse(bus.CostLastMonths());
+                tGender = bus.DashGender();
+                tTurnover = bus.DashTurnover(lastYear);
+                ChartHelper.Fill(chartDept, tDept, SeriesChartType.Bar, "Nhân sự theo phòng ban");
+                ChartHelper.Fill(chartCost, tCost, SeriesChartType.StackedColumn, "Chi phí lương - thưởng - bảo hiểm (6 kỳ gần nhất)");
+                ChartHelper.Fill(chartGender, tGender, SeriesChartType.Pie, "Cơ cấu giới tính");
+                ChartHelper.Fill(chartTurnover, tTurnover, SeriesChartType.Column, "Biến động nhân sự năm " + lastYear);
                 lblUpdated.Text = "Cập nhật lúc " + DateTime.Now.ToString("HH:mm:ss dd/MM/yyyy");
             }
             catch (Exception ex)
@@ -83,6 +93,40 @@ namespace SmartHRM.GUI
 
         // ------------------------------------------------------------ sự kiện
         void btnRefresh_Click(object sender, EventArgs e) { Reload(); }
+
+        /// <summary>Xuất báo cáo tổng quan ra Excel: các chỉ số, 4 biểu đồ và bảng số liệu của từng biểu đồ.</summary>
+        void btnExport_Click(object sender, EventArgs e)
+        {
+            if (lastKpis == null) { Ui.Warn("Chưa có dữ liệu để xuất, hãy bấm Làm mới."); return; }
+            string path;
+            using (var d = new SaveFileDialog
+            {
+                Filter = "Excel (*.xlsx)|*.xlsx",
+                FileName = "BaoCao_TongQuan_" + DateTime.Now.ToString("yyyyMMdd_HHmm") + ".xlsx"
+            })
+            {
+                if (d.ShowDialog() != DialogResult.OK) return;
+                path = d.FileName;
+            }
+            try
+            {
+                Cursor = Cursors.WaitCursor;
+                var sections = new List<DashboardSection>
+                {
+                    new DashboardSection { Title = "Nhân sự theo phòng ban", Data = tDept, ChartPng = ExportChart.FromChart(chartDept) },
+                    new DashboardSection { Title = "Chi phí lương 6 kỳ", Data = tCost, ChartPng = ExportChart.FromChart(chartCost) },
+                    new DashboardSection { Title = "Cơ cấu giới tính", Data = tGender, ChartPng = ExportChart.FromChart(chartGender) },
+                    new DashboardSection { Title = "Biến động nhân sự " + lastYear, Data = tTurnover, ChartPng = ExportChart.FromChart(chartTurnover) }
+                };
+                var who = Session.User == null ? "" : (Session.User.FullName ?? Session.User.Username);
+                ExcelHelper.ExportDashboard(path, "BÁO CÁO TỔNG QUAN NHÂN SỰ", who, lastKpis.ToList(), sections);
+                AuditBUS.Log("Xuất báo cáo", Const.M_DASHBOARD, "Báo cáo tổng quan: " + path);
+                if (Ui.Confirm("Đã xuất báo cáo tổng quan (gồm 4 biểu đồ):\n" + path + "\n\nMở file ngay?"))
+                    System.Diagnostics.Process.Start(path);
+            }
+            catch (Exception ex) { Ui.Error(ex); }
+            finally { Cursor = Cursors.Default; }
+        }
         void tmrRefresh_Tick(object sender, EventArgs e) { Reload(); }
         void chkAuto_CheckedChanged(object sender, EventArgs e) { tmrRefresh.Enabled = chkAuto.Checked; }
 

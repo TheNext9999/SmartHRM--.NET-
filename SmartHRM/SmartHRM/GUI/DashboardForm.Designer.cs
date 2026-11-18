@@ -24,6 +24,7 @@
             System.Windows.Forms.DataVisualization.Charting.ChartArea area3 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
             this.pnlHeader = new System.Windows.Forms.Panel();
             this.chkAuto = new System.Windows.Forms.CheckBox();
+            this.btnExport = new System.Windows.Forms.Button();
             this.btnRefresh = new System.Windows.Forms.Button();
             this.lblUpdated = new System.Windows.Forms.Label();
             this.lblTitle = new System.Windows.Forms.Label();
@@ -56,6 +57,7 @@
             //
             this.pnlHeader.BackColor = System.Drawing.Color.White;
             this.pnlHeader.Controls.Add(this.chkAuto);
+            this.pnlHeader.Controls.Add(this.btnExport);
             this.pnlHeader.Controls.Add(this.btnRefresh);
             this.pnlHeader.Controls.Add(this.lblUpdated);
             this.pnlHeader.Controls.Add(this.lblTitle);
@@ -92,13 +94,27 @@
             this.btnRefresh.UseVisualStyleBackColor = true;
             this.btnRefresh.Click += new System.EventHandler(this.btnRefresh_Click);
             //
+            // btnExport
+            //
+            this.btnExport.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnExport.BackColor = System.Drawing.Color.FromArgb(31, 78, 121);
+            this.btnExport.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnExport.ForeColor = System.Drawing.Color.White;
+            this.btnExport.Location = new System.Drawing.Point(896, 14);
+            this.btnExport.Name = "btnExport";
+            this.btnExport.Size = new System.Drawing.Size(154, 32);
+            this.btnExport.TabIndex = 3;
+            this.btnExport.Text = "📊 Xuất báo cáo";
+            this.btnExport.UseVisualStyleBackColor = false;
+            this.btnExport.Click += new System.EventHandler(this.btnExport_Click);
+            //
             // chkAuto
             //
             this.chkAuto.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.chkAuto.AutoSize = true;
             this.chkAuto.Checked = true;
             this.chkAuto.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkAuto.Location = new System.Drawing.Point(880, 20);
+            this.chkAuto.Location = new System.Drawing.Point(720, 20);
             this.chkAuto.Name = "chkAuto";
             this.chkAuto.TabIndex = 2;
             this.chkAuto.Text = "Tự làm mới (30 giây)";
@@ -318,6 +334,7 @@
         private System.Windows.Forms.Panel pnlHeader;
         private System.Windows.Forms.Label lblTitle;
         private System.Windows.Forms.Label lblUpdated;
+        private System.Windows.Forms.Button btnExport;
         private System.Windows.Forms.Button btnRefresh;
         private System.Windows.Forms.CheckBox chkAuto;
         private System.Windows.Forms.FlowLayoutPanel flpCards;
