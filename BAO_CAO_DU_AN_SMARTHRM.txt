@@ -1,4 +1,4 @@
-====================================================================================================
+﻿====================================================================================================
                BÁO CÁO TỔNG KẾT DỰ ÁN HỆ THỐNG QUẢN TRỊ NHÂN SỰ VÀ TIỀN LƯƠNG
                                      SMARTHRM (.NET)
 ====================================================================================================
@@ -1648,6 +1648,7 @@ STT | Tên Stored Procedure          | Tham số đầu vào (IN / OUT)         
      END $$
      DELIMITER ;
      ```
+
 
 2.4. CÁCH THỨC GỌI STORED PROCEDURE TỪ C# .NET:
      Để gọi Stored Procedure từ code C# trong các lớp DAL/BUS, hệ thống sử dụng đối tượng `MySqlCommand`
