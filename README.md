@@ -121,9 +121,9 @@ Hệ thống đã nạp sẵn các tài khoản demo tương ứng với từng 
 | Tên đăng nhập | Email | Mật khẩu mặc định | Nhóm quyền / Vai trò | Quyền hạn tiêu biểu |
 |:---|:---|:---:|:---|:---|
 | **`admin`** | `admin@congty.vn` | **`admin123`** | **Quản trị hệ thống (Admin)** | Toàn quyền toàn bộ 25 phân hệ, phân quyền, cấu hình hệ thống, xem nhật ký kiểm toán (Audit Log). |
-| **`hr`** | `hoa.dt@congty.vn` | **`admin123`** | **Quản lý Nhân sự (HR)** | Quản lý hồ sơ nhân viên, hợp đồng, tuyển dụng, đào tạo, KPI, duyệt phép. |
-| **`ketoan`** | `huy.tq@congty.vn` | **`admin123`** | **Kế toán tiền lương** | Chấm công, chốt bảng công, bảng lương tháng, trích nộp bảo hiểm, thuế TNCN, xuất báo cáo Excel. |
-| **`nv0007`** | `anh.vd@congty.vn` | **`admin123`** | **Nhân viên (Self-service)** | Xem thông tin cá nhân, gửi đơn xin nghỉ phép, tự đánh giá KPI, xem phiếu lương cá nhân. |
+| **`hr`** | `hoa.dt@congty.vn` | **`123456`** | **Quản lý Nhân sự (HR)** | Quản lý hồ sơ nhân viên, hợp đồng, tuyển dụng, đào tạo, KPI, duyệt phép. |
+| **`ketoan`** | `huy.tq@congty.vn` | **`123456`** | **Kế toán tiền lương** | Chấm công, chốt bảng công, bảng lương tháng, trích nộp bảo hiểm, thuế TNCN, xuất báo cáo Excel. |
+| **`nv0007`** | `anh.vd@congty.vn` | **`123456`** | **Nhân viên (Self-service)** | Xem thông tin cá nhân, gửi đơn xin nghỉ phép, tự đánh giá KPI, xem phiếu lương cá nhân. |
 
 > [!NOTE]
 > Hệ thống tích hợp sẵn cơ chế **`DbInitializer`**: Nếu cơ sở dữ liệu khởi tạo lần đầu mà chưa có tài khoản nào, chương trình sẽ tự động cấp phát tài khoản quản trị tối cao `admin` với mật khẩu mặc định `admin123` và tự động sinh ma trận phân quyền chuẩn.
