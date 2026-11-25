@@ -55,8 +55,17 @@ namespace SmartHRM.BUS
         public string Message;
     }
 
+    public interface IAuthService
+    {
+        AuthResult Login(string username, string password);
+        string SendOtp(string username);
+        AuthResult LoginWithOtp(string username, string otp);
+        void ChangePassword(string oldPassword, string newPassword);
+        void Logout();
+    }
+
     /// <summary>Xác thực: mật khẩu (BCrypt), OTP qua email, tài khoản doanh nghiệp AD. Ứng dụng desktop dùng phiên (Session) thay cho JWT/cookie.</summary>
-    public class AuthBUS
+    public class AuthBUS : IAuthService
     {
         readonly UserDAL dal = new UserDAL();
 

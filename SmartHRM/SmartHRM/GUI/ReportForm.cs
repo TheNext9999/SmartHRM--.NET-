@@ -7,6 +7,7 @@ using System.Linq;
 using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
 using SmartHRM.BUS;
+using SmartHRM.DTO;
 
 namespace SmartHRM.GUI
 {
@@ -32,15 +33,16 @@ namespace SmartHRM.GUI
             { SeriesChartType.StackedColumn, "Cột chồng" }
         };
 
-        readonly ReportBUS bus = new ReportBUS();
+        readonly ReportBUS bus;
         readonly List<ReportDef> defs = new List<ReportDef>();
         DataTable table;
         ReportDef current;
         bool loading;
 
-        public ReportForm()
+        public ReportForm(string moduleCode = Const.M_REPORT)
         {
             InitializeComponent();
+            bus = new ReportBUS(moduleCode);
             nudYear.Value = DateTime.Today.Year;
             BuildDefinitions();
             BuildTree();
@@ -108,6 +110,16 @@ namespace SmartHRM.GUI
                 Default = SeriesChartType.StackedColumn,
                 Allowed = new[] { SeriesChartType.StackedColumn, SeriesChartType.Column, SeriesChartType.Line, SeriesChartType.Area },
                 Load = y => bus.PayrollCost(y)
+            });
+            defs.Add(new ReportDef
+            {
+                Group = cost,
+                Title = "Theo dõi biến động lương",
+                NeedsYear = true,
+                Description = "Tổng thu nhập, thực lĩnh và mức tăng/giảm so với tháng trước",
+                Default = SeriesChartType.Line,
+                Allowed = time,
+                Load = y => bus.SalaryVariation(y)
             });
         }
 

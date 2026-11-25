@@ -10,6 +10,15 @@ using System.Threading;
 
 namespace SmartHRM.Common
 {
+    public interface IAppLogger
+    {
+        void Debug(string message);
+        void Info(string message);
+        void Warn(string message);
+        void Error(string message, Exception ex = null);
+        void Fatal(string message, Exception ex = null);
+    }
+
     public enum LogLevel { Debug = 0, Info = 1, Warn = 2, Error = 3, Fatal = 4 }
 
     /// <summary>
@@ -18,7 +27,7 @@ namespace SmartHRM.Common
     /// - Mặc định lưu tại %LocalAppData%\SmartHRM\Logs (người dùng thường luôn có quyền ghi), có thể đổi trong App.config.
     /// - Tự xóa file cũ hơn LogRetentionDays ngày. Mật khẩu (Pwd=...) tự bị che. Không bao giờ ném lỗi ra ngoài.
     /// </summary>
-    public static class AppLogger
+    public sealed class AppLogger : IAppLogger
     {
         public const string LoggedKey = "SmartHRM.Logged";
         const long MaxFileBytes = 10L * 1024 * 1024;
@@ -76,6 +85,12 @@ namespace SmartHRM.Common
         public static void Error(string message) { Write(LogLevel.Error, message, null); }
         public static void Error(string message, Exception ex) { Write(LogLevel.Error, message, ex); }
         public static void Fatal(string message, Exception ex) { Write(LogLevel.Fatal, message, ex); }
+
+        void IAppLogger.Debug(string message) { Debug(message); }
+        void IAppLogger.Info(string message) { Info(message); }
+        void IAppLogger.Warn(string message) { Warn(message); }
+        void IAppLogger.Error(string message, Exception ex) { Error(message, ex); }
+        void IAppLogger.Fatal(string message, Exception ex) { Fatal(message, ex); }
 
         /// <summary>Lỗi này đã được ghi log rồi (tránh ghi trùng khi lỗi đi qua nhiều tầng).</summary>
         public static bool WasLogged(Exception ex)

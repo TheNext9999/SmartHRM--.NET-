@@ -6,8 +6,8 @@ namespace SmartHRM.DTO
         public const string Male = "Nam", Female = "Nữ", Other = "Khác";
         public const string Genders = "Nam|Nữ|Khác";
 
-        public const string Probation = "Thử việc", Official = "Chính thức", Resigned = "Nghỉ việc";
-        public const string EmployeeStatuses = "Thử việc|Chính thức|Nghỉ việc";
+        public const string Working = "Đang làm việc", Retired = "Nghỉ hưu", Resigned = "Nghỉ việc", OnLeave = "Nghỉ phép";
+        public const string EmployeeStatuses = "Đang làm việc|Nghỉ hưu|Nghỉ việc|Nghỉ phép";
 
         public const string ContractTypes = "Thử việc|1 năm|2 năm|3 năm|Không thời hạn";
         public const string ContractStatuses = "Hiệu lực|Hết hạn|Chấm dứt";
@@ -25,6 +25,7 @@ namespace SmartHRM.DTO
         public const string Income = "Thu nhập", Deduction = "Khấu trừ";
         public const string FormulaKinds = "Thu nhập|Khấu trừ";
         public const string PeriodTypes = "Tháng|Quý|Năm";
+        public const string PolicyStatuses = "Dự thảo|Đang áp dụng|Ngừng áp dụng";
         public const string KpiStatuses = "Chờ tự đánh giá|Chờ duyệt|Hoàn thành";
         public const string CourseStatuses = "Kế hoạch|Đang diễn ra|Hoàn thành|Hủy";
         public const string TrainResults = "Đang học|Hoàn thành|Không đạt";
@@ -34,7 +35,7 @@ namespace SmartHRM.DTO
             M_ORG = "ORG", M_POSITION = "POSITION", M_EMPLOYEE = "EMPLOYEE", M_CONTRACT = "CONTRACT",
             M_RECREQ = "REC_REQ", M_CANDIDATE = "CANDIDATE",
             M_SHIFT = "SHIFT", M_SCHEDULE = "SCHEDULE", M_ATTENDANCE = "ATTENDANCE", M_LEAVE = "LEAVE", M_TIMESHEET = "TIMESHEET",
-            M_FORMULA = "SALARY_FORMULA", M_PAYROLL = "PAYROLL", M_MYPAYSLIP = "MY_PAYSLIP",
+            M_FORMULA = "SALARY_FORMULA", M_PAYROLL = "PAYROLL", M_MYPAYSLIP = "MY_PAYSLIP", M_SALARY_VARIATION = "SALARY_VARIATION", M_POLICY = "COMPANY_POLICY",
             M_KPIPERIOD = "KPI_PERIOD", M_KPICRITERIA = "KPI_CRITERIA", M_KPIEVAL = "KPI_EVAL", M_COURSE = "COURSE", M_TRAINING = "TRAINING",
             M_DASHBOARD = "DASHBOARD", M_REPORT = "REPORT";
     }

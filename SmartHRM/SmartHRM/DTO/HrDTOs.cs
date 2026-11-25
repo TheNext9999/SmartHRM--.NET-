@@ -33,7 +33,7 @@ namespace SmartHRM.DTO
         [Field("Địa chỉ", InGrid = false)] public string Address { get; set; }
         [Field("Phòng ban", Kind = FieldKind.Lookup, Source = "departments|id|name")] public int? DepartmentId { get; set; }
         [Field("Chức vụ", Kind = FieldKind.Lookup, Source = "positions|id|name")] public int? PositionId { get; set; }
-        [Field("Trạng thái", Kind = FieldKind.Combo, Source = Const.EmployeeStatuses, Required = true)] public string Status { get; set; } = Const.Probation;
+        [Field("Trạng thái", Kind = FieldKind.Combo, Source = Const.EmployeeStatuses, Required = true)] public string Status { get; set; } = Const.Working;
         [Field("Ngày vào làm", Kind = FieldKind.Date)] public DateTime? JoinDate { get; set; }
         [Field("Ngày nghỉ việc", Kind = FieldKind.Date, InGrid = false)] public DateTime? LeaveDate { get; set; }
         [Field("Lương cơ bản", Kind = FieldKind.Decimal)] public decimal BasicSalary { get; set; }

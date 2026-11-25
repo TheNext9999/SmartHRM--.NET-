@@ -8,6 +8,12 @@ using ClosedXML.Excel;
 
 namespace SmartHRM.BUS
 {
+    public interface IReportExporter
+    {
+        string SupportedExtension { get; }
+        void Export(DataTable data, string filePath, string title);
+    }
+
     /// <summary>Một phần của báo cáo tổng quan: tên, bảng số liệu và ảnh biểu đồ tương ứng.</summary>
     public class DashboardSection
     {
@@ -16,9 +22,16 @@ namespace SmartHRM.BUS
         public byte[] ChartPng;
     }
 
-    public static class ExcelHelper
+    public sealed class ExcelHelper : IReportExporter
     {
         const string ChartSheetName = "Biểu đồ";
+
+        string IReportExporter.SupportedExtension { get { return ".xlsx"; } }
+
+        void IReportExporter.Export(DataTable data, string filePath, string title)
+        {
+            Export(data, filePath, title);
+        }
 
         /// <summary>Xuất DataTable ra file .xlsx (ẩn các cột kỹ thuật bắt đầu bằng "__"), có thể kèm sheet "Biểu đồ" chứa ảnh biểu đồ.</summary>
         public static void Export(DataTable source, string path, string sheetName, byte[] chartPng = null, string chartTitle = null)

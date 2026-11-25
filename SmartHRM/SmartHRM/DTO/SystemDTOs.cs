@@ -52,4 +52,15 @@ namespace SmartHRM.DTO
         [Field("Giá trị")] public string SettingValue { get; set; }
         [Field("Mô tả")] public string Description { get; set; }
     }
+
+    [Table("company_policies")]
+    public class CompanyPolicyDTO : BaseDTO
+    {
+        [Field("Tên chính sách", Required = true)] public string Title { get; set; }
+        [Field("Nội dung", Kind = FieldKind.MultiLine, Required = true)] public string Content { get; set; }
+        [Field("Trạng thái", Kind = FieldKind.Combo, Source = Const.PolicyStatuses, Required = true)] public string Status { get; set; } = "Dự thảo";
+        [Field("Ngày bắt đầu áp dụng", Kind = FieldKind.Date)] public DateTime? EffectiveDate { get; set; }
+        [Field("Ngày hết hạn", Kind = FieldKind.Date)] public DateTime? ExpiryDate { get; set; }
+        [Field("Ghi chú", Kind = FieldKind.MultiLine)] public string Note { get; set; }
+    }
 }

@@ -7,13 +7,23 @@ using SmartHRM.DTO;
 
 namespace SmartHRM.BUS
 {
-    /// <summary>BUS tổng quát: kiểm tra quyền RBAC, kiểm tra dữ liệu bắt buộc, ghi nhật ký hệ thống, gọi DAL.</summary>
-    public class GenericBUS<T> where T : BaseDTO, new()
+    public interface IGenericBUS<T> where T : BaseDTO, new()
     {
-        protected readonly GenericDAL<T> Dal;
+        string Module { get; }
+        List<T> GetAll();
+        T CreateNew();
+        void Save(T entity);
+        void Delete(T entity);
+        void DeleteById(int id);
+    }
+
+    /// <summary>BUS tổng quát: kiểm tra quyền RBAC, kiểm tra dữ liệu bắt buộc, ghi nhật ký hệ thống, gọi DAL.</summary>
+    public class GenericBUS<T> : IGenericBUS<T> where T : BaseDTO, new()
+    {
+        protected readonly IGenericDAL<T> Dal;
         public string Module { get; private set; }
 
-        public GenericBUS(string module, GenericDAL<T> dal = null)
+        public GenericBUS(string module, IGenericDAL<T> dal = null)
         {
             Module = module;
             Dal = dal ?? new GenericDAL<T>();
@@ -60,6 +70,15 @@ namespace SmartHRM.BUS
             BeforeDelete(e);
             Dal.Delete(e.Id);
             AuditBUS.Log("Xóa", Module, Describe(e));
+        }
+
+        public virtual void DeleteById(int id)
+        {
+            Session.Require(Module, "delete");
+            var entity = Dal.GetById(id);
+            if (entity == null)
+                throw new ValidationException("Không tìm thấy bản ghi cần xóa.");
+            Delete(entity);
         }
 
         protected virtual void BeforeDelete(T e) { }

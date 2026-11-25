@@ -1,0 +1,73 @@
+-- =====================================================
+-- DỮ LIỆU MẪU CHÍNH SÁCH NGHỈ LỄ, TẾT VIỆT NAM
+-- Chạy trong MySQL Workbench sau khi chọn database smarthrm
+-- =====================================================
+
+USE `smarthrm`;
+
+CREATE TABLE IF NOT EXISTS `company_policies` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `title` VARCHAR(200) NOT NULL,
+  `content` TEXT NOT NULL,
+  `status` VARCHAR(30) NOT NULL DEFAULT 'Dự thảo',
+  `effective_date` DATE NULL,
+  `expiry_date` DATE NULL,
+  `note` VARCHAR(500) NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+INSERT INTO `company_policies`
+(`title`, `content`, `status`, `effective_date`, `expiry_date`, `note`)
+VALUES
+(
+  'Chính sách nghỉ lễ, Tết Việt Nam năm 2026',
+  'Người lao động được nghỉ làm việc và hưởng nguyên lương theo quy định của pháp luật Việt Nam. Tổng số ngày nghỉ lễ, Tết tiêu chuẩn trong năm là 11 ngày, gồm: Tết Dương lịch 01 ngày; Tết Âm lịch 05 ngày; Giỗ Tổ Hùng Vương 01 ngày; Ngày Chiến thắng 30/4 01 ngày; Ngày Quốc tế Lao động 1/5 01 ngày; Quốc khánh 02 ngày. Lịch nghỉ cụ thể của Tết Âm lịch và Quốc khánh thực hiện theo thông báo chính thức của cơ quan có thẩm quyền từng năm.',
+  'Đang áp dụng',
+  '2026-01-01',
+  '2026-12-31',
+  'Nếu ngày nghỉ hằng tuần trùng ngày lễ, ngày nghỉ bù thực hiện theo quy định pháp luật hiện hành.'
+),
+(
+  'Lịch nghỉ Tết Dương lịch',
+  'Người lao động được nghỉ 01 ngày vào ngày 01 tháng 01 dương lịch và hưởng nguyên lương.',
+  'Đang áp dụng',
+  '2026-01-01',
+  '2026-12-31',
+  'Áp dụng theo Bộ luật Lao động hiện hành.'
+),
+(
+  'Lịch nghỉ Tết Âm lịch',
+  'Người lao động được nghỉ 05 ngày vào dịp Tết Âm lịch và hưởng nguyên lương. Ngày nghỉ cụ thể thực hiện theo lịch được công bố hằng năm.',
+  'Đang áp dụng',
+  '2026-01-01',
+  '2026-12-31',
+  'Có thể có ngày nghỉ bù nếu trùng ngày nghỉ hằng tuần.'
+),
+(
+  'Lịch nghỉ Giỗ Tổ Hùng Vương',
+  'Người lao động được nghỉ 01 ngày vào ngày 10 tháng 3 Âm lịch và hưởng nguyên lương.',
+  'Đang áp dụng',
+  '2026-01-01',
+  '2026-12-31',
+  'Ngày dương lịch thay đổi theo từng năm.'
+),
+(
+  'Lịch nghỉ Ngày Chiến thắng và Quốc tế Lao động',
+  'Người lao động được nghỉ ngày 30/4 và ngày 01/5, tổng cộng 02 ngày, hưởng nguyên lương.',
+  'Đang áp dụng',
+  '2026-01-01',
+  '2026-12-31',
+  'Thực hiện nghỉ bù nếu ngày nghỉ hằng tuần trùng ngày lễ theo quy định.'
+),
+(
+  'Lịch nghỉ Quốc khánh',
+  'Người lao động được nghỉ 02 ngày dịp Quốc khánh, gồm ngày 02/9 và 01 ngày liền kề trước hoặc sau theo thông báo chính thức hằng năm.',
+  'Đang áp dụng',
+  '2026-01-01',
+  '2026-12-31',
+  'Lịch cụ thể do cơ quan có thẩm quyền công bố.'
+);
+
+SELECT `id`, `title`, `status`, `effective_date`, `expiry_date`, `note`
+FROM `company_policies`
+ORDER BY `id`;

@@ -115,6 +115,8 @@ namespace SmartHRM.GUI
             };
             factories[Const.M_PAYROLL] = () => new PayrollForm(false);
             factories[Const.M_MYPAYSLIP] = () => new PayrollForm(true);
+            factories[Const.M_SALARY_VARIATION] = () => new ReportForm(Const.M_SALARY_VARIATION);
+            factories[Const.M_POLICY] = () => CrudForm.For(new CompanyPolicyBUS(), "Chính sách công ty");
             factories[Const.M_KPIPERIOD] = () => CrudForm.For(new KpiPeriodBUS(), "Kỳ đánh giá");
             factories[Const.M_KPICRITERIA] = () => CrudForm.For(new KpiCriteriaBUS(), "Tiêu chí KPI");
             factories[Const.M_KPIEVAL] = () => CrudForm.For(new KpiEvaluationBUS(), "Đánh giá nhân viên");

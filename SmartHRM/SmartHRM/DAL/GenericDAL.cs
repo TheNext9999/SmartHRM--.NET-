@@ -9,6 +9,15 @@ using SmartHRM.DTO;
 
 namespace SmartHRM.DAL
 {
+    public interface IGenericDAL<T> where T : BaseDTO, new()
+    {
+        T GetById(int id);
+        List<T> GetAll(string where = null, string orderBy = "id DESC", params MySqlParameter[] ps);
+        int Insert(T entity);
+        bool Update(T entity);
+        bool Delete(int id);
+    }
+
     public static class Naming
     {
         /// <summary>DepartmentId -> department_id</summary>
@@ -26,7 +35,7 @@ namespace SmartHRM.DAL
     }
 
     /// <summary>DAL tổng quát: ánh xạ DTO &lt;-&gt; bảng MySQL bằng reflection (tên cột = snake_case của tên thuộc tính).</summary>
-    public class GenericDAL<T> where T : BaseDTO, new()
+    public class GenericDAL<T> : IGenericDAL<T> where T : BaseDTO, new()
     {
         public static readonly string Table =
             ((TableAttribute)typeof(T).GetCustomAttributes(typeof(TableAttribute), true)[0]).Name;

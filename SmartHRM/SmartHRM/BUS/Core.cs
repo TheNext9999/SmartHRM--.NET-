@@ -46,6 +46,8 @@ namespace SmartHRM.BUS
             new ModuleInfo(G5, Const.M_FORMULA, "Công thức lương"),
             new ModuleInfo(G5, Const.M_PAYROLL, "Bảng lương"),
             new ModuleInfo(G5, Const.M_MYPAYSLIP, "Phiếu lương của tôi"),
+            new ModuleInfo(G5, Const.M_SALARY_VARIATION, "Theo dõi biến động lương"),
+            new ModuleInfo(G5, Const.M_POLICY, "Chính sách công ty"),
             new ModuleInfo(G6, Const.M_KPIPERIOD, "Kỳ đánh giá KPI/OKR"),
             new ModuleInfo(G6, Const.M_KPICRITERIA, "Tiêu chí KPI theo vị trí"),
             new ModuleInfo(G6, Const.M_KPIEVAL, "Đánh giá nhân viên"),

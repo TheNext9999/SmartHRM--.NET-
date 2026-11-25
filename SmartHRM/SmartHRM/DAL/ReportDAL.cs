@@ -5,12 +5,12 @@ namespace SmartHRM.DAL
 {
     public class ReportDAL
     {
-        const string Active = "e.status<>'Nghỉ việc'";
+        const string Active = "e.status='Đang làm việc'";
 
         public DataTable HeadcountByDepartment()
         {
             return DbHelper.Query("SELECT d.name AS `Phòng ban`, COUNT(e.id) AS `Số nhân viên` FROM departments d " +
-                "LEFT JOIN employees e ON e.department_id=d.id AND e.status<>'Nghỉ việc' GROUP BY d.id, d.name ORDER BY d.code");
+                "LEFT JOIN employees e ON e.department_id=d.id AND e.status='Đang làm việc' GROUP BY d.id, d.name ORDER BY d.code");
         }
 
         public DataTable GenderRatio()
@@ -70,6 +70,30 @@ namespace SmartHRM.DAL
                 "LEFT JOIN payroll p ON p.month=m.n AND p.year=@y GROUP BY m.n ORDER BY m.n", DbHelper.P("@y", year));
         }
 
+        /// <summary>Tổng lương và mức tăng/giảm so với tháng trước trong năm.</summary>
+        public DataTable SalaryVariation(int year)
+        {
+            var dt = new DataTable();
+            dt.Columns.Add("Tháng", typeof(string));
+            dt.Columns.Add("Tổng thu nhập", typeof(decimal));
+            dt.Columns.Add("Thực lĩnh", typeof(decimal));
+            dt.Columns.Add("Tăng/giảm", typeof(decimal));
+            dt.Columns.Add("Tăng/giảm (%)", typeof(decimal));
+
+            decimal previous = 0m;
+            for (int month = 1; month <= 12; month++)
+            {
+                decimal gross = DbHelper.ScalarDecimal("SELECT IFNULL(SUM(gross_income),0) FROM payroll WHERE month=@m AND year=@y",
+                    DbHelper.P("@m", month), DbHelper.P("@y", year));
+                decimal net = DbHelper.ScalarDecimal("SELECT IFNULL(SUM(net_salary),0) FROM payroll WHERE month=@m AND year=@y",
+                    DbHelper.P("@m", month), DbHelper.P("@y", year));
+                decimal change = gross - previous;
+                dt.Rows.Add("T" + month, gross, net, change, previous == 0m ? 0m : Math.Round(change * 100m / previous, 2));
+                previous = gross;
+            }
+            return dt;
+        }
+
         public DataTable PayrollCostLastMonths(int count)
         {
             return DbHelper.Query(
@@ -78,7 +102,7 @@ namespace SmartHRM.DAL
         }
 
         // ----- Số liệu tổng quan Dashboard -----
-        public int ActiveEmployees() { return DbHelper.ScalarInt("SELECT COUNT(*) FROM employees WHERE status<>'Nghỉ việc'"); }
+        public int ActiveEmployees() { return DbHelper.ScalarInt("SELECT COUNT(*) FROM employees WHERE status='Đang làm việc'"); }
         public int NewThisMonth() { return DbHelper.ScalarInt("SELECT COUNT(*) FROM employees WHERE YEAR(join_date)=YEAR(CURDATE()) AND MONTH(join_date)=MONTH(CURDATE())"); }
         public int LeftThisMonth() { return DbHelper.ScalarInt("SELECT COUNT(*) FROM employees WHERE YEAR(leave_date)=YEAR(CURDATE()) AND MONTH(leave_date)=MONTH(CURDATE())"); }
         public int Probation() { return DbHelper.ScalarInt("SELECT COUNT(*) FROM employees WHERE status='Thử việc'"); }

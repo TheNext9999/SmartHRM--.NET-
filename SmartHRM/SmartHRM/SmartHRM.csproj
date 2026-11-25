@@ -153,6 +153,7 @@
     <Compile Include="BUS\ExcelHelper.cs" />
     <Compile Include="BUS\GenericBUS.cs" />
     <Compile Include="BUS\HrBUS.cs" />
+    <Compile Include="BUS\LocationService.cs" />
     <Compile Include="BUS\MailAndAuth.cs" />
     <Compile Include="BUS\PayBUS.cs" />
     <Compile Include="BUS\PerfBUS.cs" />

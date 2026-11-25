@@ -209,7 +209,7 @@ namespace SmartHRM.BUS
                 Email = c.Email,
                 Phone = c.Phone,
                 BirthDate = c.BirthDate,
-                Status = Const.Probation,
+                Status = Const.Working,
                 JoinDate = DateTime.Today,
                 DepartmentId = req == null ? null : req.DepartmentId,
                 PositionId = req == null ? null : req.PositionId

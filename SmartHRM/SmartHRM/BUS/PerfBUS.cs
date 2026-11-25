@@ -119,12 +119,16 @@ namespace SmartHRM.BUS
     public class ReportBUS
     {
         readonly ReportDAL dal = new ReportDAL();
-        public DataTable HeadcountByDepartment() { Session.Require(Const.M_REPORT, "view"); return dal.HeadcountByDepartment(); }
-        public DataTable GenderRatio() { Session.Require(Const.M_REPORT, "view"); return dal.GenderRatio(); }
-        public DataTable AgeGroups() { Session.Require(Const.M_REPORT, "view"); return dal.AgeGroups(); }
-        public DataTable Seniority() { Session.Require(Const.M_REPORT, "view"); return dal.Seniority(); }
-        public DataTable Turnover(int year) { Session.Require(Const.M_REPORT, "view"); return dal.Turnover(year); }
-        public DataTable PayrollCost(int year) { Session.Require(Const.M_REPORT, "view"); return dal.PayrollCost(year); }
+        readonly string module;
+        public ReportBUS(string moduleCode = Const.M_REPORT) { module = moduleCode; }
+        void RequireView() { Session.Require(module, "view"); }
+        public DataTable HeadcountByDepartment() { RequireView(); return dal.HeadcountByDepartment(); }
+        public DataTable GenderRatio() { RequireView(); return dal.GenderRatio(); }
+        public DataTable AgeGroups() { RequireView(); return dal.AgeGroups(); }
+        public DataTable Seniority() { RequireView(); return dal.Seniority(); }
+        public DataTable Turnover(int year) { RequireView(); return dal.Turnover(year); }
+        public DataTable PayrollCost(int year) { RequireView(); return dal.PayrollCost(year); }
+        public DataTable SalaryVariation(int year) { RequireView(); return dal.SalaryVariation(year); }
 
         // Dashboard
         public DataTable Headcount() { Session.Require(Const.M_DASHBOARD, "view"); return dal.HeadcountByDepartment(); }

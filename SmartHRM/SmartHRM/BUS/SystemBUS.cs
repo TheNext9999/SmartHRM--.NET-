@@ -93,4 +93,23 @@ namespace SmartHRM.BUS
         public override List<SettingDTO> GetAll() { Session.Require(Module, "view"); return Dal.GetAll(null, "setting_key"); }
         protected override void AfterSave(SettingDTO e, bool isNew) { AppSettings.Reload(); }
     }
+
+    public class CompanyPolicyBUS : GenericBUS<CompanyPolicyDTO>
+    {
+        public CompanyPolicyBUS() : base(Const.M_POLICY, new CompanyPolicyDAL()) { }
+
+        public override CompanyPolicyDTO CreateNew()
+        {
+            return new CompanyPolicyDTO { Status = "Dự thảo", EffectiveDate = DateTime.Today };
+        }
+
+        protected override void Validate(CompanyPolicyDTO e)
+        {
+            base.Validate(e);
+            if (e.EffectiveDate.HasValue && e.ExpiryDate.HasValue && e.ExpiryDate < e.EffectiveDate)
+                throw new ValidationException("Ngày hết hạn phải sau ngày bắt đầu áp dụng.");
+            if (e.Status == "Đang áp dụng" && !e.EffectiveDate.HasValue)
+                throw new ValidationException("Chính sách đang áp dụng phải có ngày bắt đầu áp dụng.");
+        }
+    }
 }

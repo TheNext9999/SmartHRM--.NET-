@@ -474,12 +474,15 @@ SmartHRM (.NET)/
 │       │   └── ReportDAL.cs             # DAL chuyên biệt thực thi các truy vấn SQL thống kê phức tạp vẽ biểu đồ
 │       │
 │       ├── BUS/                         # TẦNG XỬ LÝ NGHIỆP VỤ (BUSINESS LOGIC LAYER)
-│       │   ├── Core.cs                  # Interface IGenericBUS<T>, triển khai trừu tượng GenericBUS<T>
+│       │   ├── Core.cs                  # Các tiện ích BUS dùng chung: Session, Modules, AuditBUS, AppSettings
+│       │   ├── GenericBUS.cs            # Interface IGenericBUS<T> và triển khai GenericBUS<T>
 │       │   ├── HrBUSs.cs                # Xử lý quy tắc nghiệp vụ Phòng ban, Nhân viên, Hợp đồng, Tuyển dụng
 │       │   ├── TimePayBUSs.cs           # Nghiệp vụ phân ca, xử lý đi muộn/về sớm, chốt công, tính lương tự động
 │       │   ├── PerfBUSs.cs              # Nghiệp vụ quản lý chu kỳ đánh giá, xếp loại KPI, khóa đào tạo
 │       │   ├── SystemBUS.cs             # Nghiệp vụ tài khoản, đổi mật khẩu BCrypt, phân quyền ma trận, cấu hình
-│       │   ├── MailAndAuth.cs           # Dịch vụ gửi email SMTP, cấp phát và xác thực mã OTP quên mật khẩu
+│       │   ├── MailAndAuth.cs           # Dịch vụ gửi email SMTP, xác thực mật khẩu/OTP đăng nhập
+│       │   ├── LocationService.cs       # Interface ILocationService cho dịch vụ kiểm tra tọa độ GPS
+│       │   ├── TimeBUS.cs               # Nghiệp vụ chấm công và triển khai LocationService
 │       │   ├── DbInitializer.cs         # Khởi tạo tự động tài khoản admin và quyền mặc định khi CSDL trống
 │       │   └── ExcelHelper.cs           # Tiện ích xuất dữ liệu Excel định dạng chuyên nghiệp qua ClosedXML
 │       │
@@ -870,15 +873,14 @@ chuẩn mực đại diện cho các dịch vụ cốt lõi:
        public interface IGenericDAL<T> where T : BaseDTO, new()
        {
            T GetById(int id);
-           List<T> GetAll(string condition = null, string orderBy = null, params MySqlParameter[] p);
-           DataTable SearchTable(string keyword, int limit = 200);
+           List<T> GetAll(string where = null, string orderBy = "id DESC", params MySqlParameter[] ps);
            int Insert(T entity);
            bool Update(T entity);
            bool Delete(int id);
-           int Count(string condition = null, params MySqlParameter[] p);
        }
        ```
-     - Lớp triển khai (Implementation): `GenericDAL<T>` và toàn bộ các lớp DAL kế thừa:
+     - Lớp triển khai (Implementation): `GenericDAL<T>` và toàn bộ các lớp DAL kế thừa; lớp BUS nhận
+       phụ thuộc dưới dạng `IGenericDAL<T>`:
        `DepartmentDAL`, `EmployeeDAL`, `ContractDAL`, `RecruitmentDAL`, `CandidateDAL`, `ShiftDAL`,
        `WorkScheduleDAL`, `AttendanceDAL`, `LeaveDAL`, `TimesheetDAL`, `SalaryFormulaDAL`,
        `PayrollDAL`, `KpiPeriodDAL`, `KpiCriteriaDAL`, `KpiEvaluationDAL`, `CourseDAL`,
@@ -908,22 +910,23 @@ chuẩn mực đại diện cho các dịch vụ cốt lõi:
 
 1.4. `IAuthService` (Giao diện Dịch vụ Xác thực & Bảo mật Tài khoản):
      - Định vị: Namespace `SmartHRM.BUS`
-     - Mục đích: Định nghĩa các hợp đồng bảo mật hệ thống bao gồm đăng nhập, kiểm tra mật khẩu băm,
-       sinh mã OTP qua email, khôi phục mật khẩu và đổi mật khẩu an toàn.
+     - Mục đích: Trừu tượng hóa xác thực bằng mật khẩu/OTP, đổi mật khẩu và kết thúc phiên đăng nhập.
      - Khai báo giao diện:
        ```csharp
        public interface IAuthService
        {
            AuthResult Login(string username, string password);
-           void RequestPasswordResetOtp(string email);
-           void VerifyOtpAndResetPassword(string email, string otp, string newPassword);
-           void ChangePassword(int userId, string oldPassword, string newPassword);
+           string SendOtp(string username);
+           AuthResult LoginWithOtp(string username, string otp);
+           void ChangePassword(string oldPassword, string newPassword);
+           void Logout();
        }
        ```
      - Lớp triển khai (Implementation): `AuthBUS` (kết hợp với `MailService` và `BCrypt.Net`).
+       OTP hiện dùng cho đăng nhập; việc khôi phục mật khẩu qua email chưa nằm trong API hiện tại.
 
 1.5. `IReportExporter` (Giao diện Dịch vụ Xuất bản Báo cáo & Kết xuất Tài liệu):
-     - Định vị: Namespace `SmartHRM.BUS` / `SmartHRM.GUI`
+     - Định vị: Namespace `SmartHRM.BUS`
      - Mục đích: Chuẩn hóa hành vi trích xuất dữ liệu ra các định dạng tệp khác nhau (Excel qua
        ClosedXML, Biểu mẫu in ấn Crystal Reports, PDF) mà không làm ràng buộc code giao diện với
        thư viện thứ ba cụ thể.
@@ -935,13 +938,15 @@ chuẩn mực đại diện cho các dịch vụ cốt lõi:
            void Export(DataTable data, string filePath, string title);
        }
        ```
-     - Lớp triển khai (Implementation): `ExcelHelper` / `ExportChart` (xuất Excel .xlsx kèm biểu đồ)
-       và `CrystalExporter` (kết xuất Crystal Reports .rpt / in ấn).
+     - Lớp triển khai (Implementation): `ExcelHelper` (Excel .xlsx) và `CrystalExporter`
+       (Crystal Reports; mặc định .xlsx, hỗ trợ thêm .pdf). `ExportChart` tạo ảnh biểu đồ và
+       không tự triển khai hợp đồng xuất file.
 
 1.6. `IAppLogger` (Giao diện Dịch vụ Ghi Nhật ký Kỹ thuật Ứng dụng - Bổ sung):
      - Định vị: Namespace `SmartHRM.Common`
      - Mục đích: Trừu tượng hóa việc ghi vết lỗi, cảnh báo, thông tin hoạt động ứng dụng ra file,
-       hỗ trợ làm sạch các thông tin nhạy cảm.
+       hỗ trợ làm sạch các thông tin nhạy cảm. `AppLogger` giữ các phương thức static để tương thích
+       với các lời gọi hiện hữu, đồng thời triển khai interface tường minh cho nơi cần inject dịch vụ.
      - Khai báo giao diện:
        ```csharp
        public interface IAppLogger
@@ -957,8 +962,8 @@ chuẩn mực đại diện cho các dịch vụ cốt lõi:
 
 1.7. `ILocationService` (Giao diện Dịch vụ Định vị & Xác thực Tọa độ GPS - Bổ sung):
      - Định vị: Namespace `SmartHRM.BUS`
-     - Mục đích: Cung cấp phương thức đo khoảng cách giữa vị trí chấm công thực tế của nhân viên và
-       tọa độ trụ sở văn phòng theo công thức lượng giác Haversine.
+     - Mục đích: Cung cấp phương thức đo khoảng cách giữa tọa độ hiện tại và tọa độ trụ sở văn phòng
+       theo công thức lượng giác Haversine; phần kiểm tra GPS hiện có vẫn được giữ nguyên.
      - Khai báo giao diện:
        ```csharp
        public interface ILocationService
@@ -967,7 +972,8 @@ chuẩn mực đại diện cho các dịch vụ cốt lõi:
            bool IsWithinAllowedRadius(double currentLat, double currentLon, double officeLat, double officeLon, double maxRadiusMeters);
        }
        ```
-     - Lớp triển khai (Implementation): Lớp dịch vụ `LocationService`.
+     - Lớp triển khai (Implementation): Lớp dịch vụ `LocationService` (dùng công thức Haversine,
+       kiểm tra miền hợp lệ của tọa độ và bán kính).
 
 
 ----------------------------------------------------------------------------------------------------
@@ -1162,7 +1168,7 @@ STT | Tên Lớp (Class Name)      | Tầng Kiến trúc | Kế thừa từ (Inh
 68  | WorkScheduleBUS           | BUS            | GenericBUS<WorkScheduleDTO>        | Nghiệp vụ lập lịch phân ca làm việc
 69  | ImportResult              | BUS            | Object                             | Chứa kết quả import dữ liệu chấm công từ Excel
 70  | AttendanceBUS             | BUS            | GenericBUS<AttendanceDTO>          | Nghiệp vụ chấm công, tính giờ muộn, về sớm, công thực
-71  | LocationService           | BUS            | ILocationService, (static)         | Dịch vụ định vị GPS chấm công theo thuật toán Haversine
+71  | LocationService           | BUS            | ILocationService                   | Dịch vụ định vị GPS chấm công theo thuật toán Haversine
 72  | LeaveBUS                  | BUS            | GenericBUS<LeaveRequestDTO>        | Nghiệp vụ duyệt đơn nghỉ phép, tính ngày phép năm
 73  | TimesheetBUS              | BUS            | Object                             | Nghiệp vụ tổng hợp và khóa bảng công tháng
 74  | FormulaEngine             | BUS            | (static)                           | Bộ máy biên dịch và tính toán biểu thức công thức lương
@@ -1179,11 +1185,11 @@ STT | Tên Lớp (Class Name)      | Tầng Kiến trúc | Kế thừa từ (Inh
 85  | SettingBUS                | BUS            | GenericBUS<SettingDTO>             | Nghiệp vụ tham số hệ thống
 86  | ReportBUS                 | BUS            | Object                             | Nghiệp vụ tổng hợp số liệu báo cáo nhân sự, chi phí
 87  | AuthResult                | BUS            | Object                             | Chứa kết quả xác thực đăng nhập (thành công/lỗi, user)
-88  | AuthBUS                   | BUS            | IAuthService                       | Nghiệp vụ xác thực đăng nhập, quên mật khẩu và OTP
+88  | AuthBUS                   | BUS            | IAuthService                       | Nghiệp vụ xác thực đăng nhập bằng mật khẩu/OTP và đổi mật khẩu
 89  | MailService               | BUS            | (static)                           | Dịch vụ gửi email thông báo và mã OTP qua SMTP
-90  | ExcelHelper               | BUS / Helper   | IReportExporter, (static)          | Tiện ích xuất dữ liệu bảng và biểu đồ ra file Excel
+90  | ExcelHelper               | BUS / Helper   | IReportExporter                   | Tiện ích xuất dữ liệu bảng và biểu đồ ra file Excel
 91  | DbInitializer             | BUS / Helper   | (static)                           | Tự động khởi tạo tài khoản quản trị và nhóm quyền ban đầu
-92  | AppLogger                 | Common / Log   | IAppLogger, (static)               | Thư viện ghi nhật ký kỹ thuật ra file log hàng ngày
+92  | AppLogger                 | Common / Log   | IAppLogger                         | Thư viện ghi nhật ký kỹ thuật ra file log hàng ngày
 93  | LoginForm                 | GUI            | Form                               | Màn hình đăng nhập tài khoản và khôi phục mật khẩu OTP
 94  | MainForm                  | GUI            | Form                               | Cửa sổ chính điều hướng chức năng theo phân quyền RBAC
 95  | DashboardForm             | GUI            | Form                               | Màn hình hiển thị thẻ chỉ số nhanh và biểu đồ tổng quan
@@ -1202,7 +1208,7 @@ STT | Tên Lớp (Class Name)      | Tầng Kiến trúc | Kế thừa từ (Inh
 108 | Ui                        | GUI / Helper   | (static)                           | Định nghĩa màu sắc thương hiệu, phông chữ, định dạng bảng
 109 | ChartHelper               | GUI / Helper   | (static)                           | Tiện ích cấu hình và hiển thị biểu đồ đồ họa MS Charting
 110 | ExportChart               | GUI / Helper   | (static)                           | Chụp ảnh biểu đồ và tự động render đồ thị vào tệp Excel
-111 | CrystalExporter           | GUI / Helper   | IReportExporter, (static)          | Kết xuất dữ liệu ra báo cáo chuẩn in ấn Crystal Reports
+111 | CrystalExporter           | GUI / Helper   | IReportExporter                   | Kết xuất dữ liệu ra báo cáo chuẩn in ấn Crystal Reports
 112 | CrudService<T>            | GUI / Service  | ICrudService                       | Cầu nối dịch vụ generic giữa CrudForm và GenericBUS<T>
 113 | AppImages                 | GUI / Resource | (static)                           | Cung cấp tài nguyên icon, hình ảnh vẽ bằng vector GDI+
 114 | LogoData                  | GUI / Resource | (static)                           | Lưu trữ dữ liệu biểu trưng SmartHRM

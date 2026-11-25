@@ -11,6 +11,10 @@ namespace SmartHRM.BUS
     {
         public static void Run()
         {
+            DbHelper.Execute("CREATE TABLE IF NOT EXISTS company_policies (" +
+                "id INT NOT NULL AUTO_INCREMENT, title VARCHAR(200) NOT NULL, content TEXT NOT NULL, " +
+                "status VARCHAR(30) NOT NULL DEFAULT 'Dự thảo', effective_date DATE NULL, expiry_date DATE NULL, " +
+                "note VARCHAR(500) NULL, PRIMARY KEY (id)) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4");
             var users = new UserDAL();
             if (users.Count() == 0)
             {
@@ -26,6 +30,7 @@ namespace SmartHRM.BUS
             }
 
             var roles = new RoleDAL();
+            DbHelper.Execute("UPDATE employees SET status='Đang làm việc' WHERE status IN ('Chính thức','Thử việc')");
             if (roles.PermissionCount() == 0)
             {
                 string[] sys = { Const.M_USER, Const.M_ROLE, Const.M_AUDIT, Const.M_SETTING };
@@ -45,6 +50,8 @@ namespace SmartHRM.BUS
                 emp(Const.M_COURSE, true, false, false);
                 emp(Const.M_TRAINING, true, false, false);
             }
+            if (DbHelper.ScalarInt("SELECT COUNT(*) FROM roles WHERE id=2") > 0)
+                roles.SavePermission(new RolePermissionDTO { RoleId = 2, ModuleCode = Const.M_POLICY, CanView = true, CanAdd = true, CanEdit = true, CanDelete = true });
             try { new ContractDAL().MarkExpired(); } catch { }
         }
     }

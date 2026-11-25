@@ -108,4 +108,6 @@ namespace SmartHRM.DAL
             return v == null ? null : Convert.ToString(v);
         }
     }
+
+    public class CompanyPolicyDAL : GenericDAL<CompanyPolicyDTO> { }
 }

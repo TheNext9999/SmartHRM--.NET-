@@ -198,8 +198,43 @@ namespace SmartHRM.BUS
     }
 
     /// <summary>Xác thực vị trí chấm công: Wi-Fi (SSID) hoặc GPS (bán kính quanh công ty).</summary>
-    public static class LocationService
+    public class LocationService : ILocationService
     {
+        const double EarthRadiusMeters = 6371000d;
+
+        public double CalculateDistanceMeters(double lat1, double lon1, double lat2, double lon2)
+        {
+            ValidateCoordinate(lat1, lon1, "lat1", "lon1");
+            ValidateCoordinate(lat2, lon2, "lat2", "lon2");
+
+            var latDelta = ToRadians(lat2 - lat1);
+            var lonDelta = ToRadians(lon2 - lon1);
+            var startLat = ToRadians(lat1);
+            var endLat = ToRadians(lat2);
+            var a = Math.Pow(Math.Sin(latDelta / 2d), 2d) +
+                    Math.Cos(startLat) * Math.Cos(endLat) * Math.Pow(Math.Sin(lonDelta / 2d), 2d);
+            var boundedA = Math.Min(1d, Math.Max(0d, a));
+            return 2d * EarthRadiusMeters * Math.Atan2(Math.Sqrt(boundedA), Math.Sqrt(1d - boundedA));
+        }
+
+        public bool IsWithinAllowedRadius(double currentLat, double currentLon, double officeLat, double officeLon, double maxRadiusMeters)
+        {
+            if (maxRadiusMeters < 0d || double.IsNaN(maxRadiusMeters) || double.IsInfinity(maxRadiusMeters))
+                throw new ArgumentOutOfRangeException("maxRadiusMeters", "Bán kính cho phép phải là số hữu hạn không âm.");
+
+            return CalculateDistanceMeters(currentLat, currentLon, officeLat, officeLon) <= maxRadiusMeters;
+        }
+
+        static double ToRadians(double degrees) { return degrees * (Math.PI / 180d); }
+
+        static void ValidateCoordinate(double latitude, double longitude, string latitudeName, string longitudeName)
+        {
+            if (double.IsNaN(latitude) || double.IsInfinity(latitude) || latitude < -90d || latitude > 90d)
+                throw new ArgumentOutOfRangeException(latitudeName, "Vĩ độ phải nằm trong khoảng -90 đến 90.");
+            if (double.IsNaN(longitude) || double.IsInfinity(longitude) || longitude < -180d || longitude > 180d)
+                throw new ArgumentOutOfRangeException(longitudeName, "Kinh độ phải nằm trong khoảng -180 đến 180.");
+        }
+
         public static string CurrentSsid()
         {
             try

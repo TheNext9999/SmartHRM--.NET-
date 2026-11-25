@@ -46,7 +46,7 @@ namespace SmartHRM.DAL
 
         public void Calculate(int month, int year)
         {
-            var employees = new EmployeeDAL().GetAll("status<>'Nghỉ việc'", "id");
+            var employees = new EmployeeDAL().GetAll("status='Đang làm việc'", "id");
             var att = DbHelper.Query(
                 "SELECT employee_id, SUM(work_days) wd, SUM(CASE WHEN late_minutes>0 THEN 1 ELSE 0 END) lc, SUM(late_minutes) lm, SUM(early_minutes) em " +
                 "FROM attendance WHERE MONTH(work_date)=@m AND YEAR(work_date)=@y GROUP BY employee_id",
@@ -98,7 +98,7 @@ namespace SmartHRM.DAL
                 "WHERE l.status='Chờ duyệt' AND MONTH(l.from_date)=@m AND YEAR(l.from_date)=@y " +
                 "UNION ALL " +
                 "SELECT e.code, e.full_name, NULL, 'Không có dữ liệu chấm công trong tháng' FROM employees e " +
-                "WHERE e.status<>'Nghỉ việc' AND (e.join_date IS NULL OR e.join_date <= LAST_DAY(STR_TO_DATE(CONCAT(@y,'-',@m,'-01'),'%Y-%m-%d'))) " +
+                "WHERE e.status='Đang làm việc' AND (e.join_date IS NULL OR e.join_date <= LAST_DAY(STR_TO_DATE(CONCAT(@y,'-',@m,'-01'),'%Y-%m-%d'))) " +
                 "AND NOT EXISTS (SELECT 1 FROM attendance a WHERE a.employee_id=e.id AND MONTH(a.work_date)=@m AND YEAR(a.work_date)=@y) " +
                 "ORDER BY 1, 3", DbHelper.P("@m", month), DbHelper.P("@y", year));
         }

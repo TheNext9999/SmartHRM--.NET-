@@ -15,10 +15,17 @@ namespace SmartHRM.GUI
     /// Mọi chức năng gọi Ui.ExportTable(...) đều đi qua lớp này.
     /// Lưu ý: chỉ lớp này tham chiếu tới Crystal Reports; nếu thiếu thư viện hoặc mẫu .rpt, Ui.ExportTable tự quay về xuất Excel thường.
     /// </summary>
-    public static class CrystalExporter
+    public sealed class CrystalExporter : IReportExporter
     {
         public const int MaxColumns = 12;
         static readonly CultureInfo VN = new CultureInfo("vi-VN");
+
+        string IReportExporter.SupportedExtension { get { return ".xlsx"; } }
+
+        void IReportExporter.Export(DataTable data, string filePath, string title)
+        {
+            Export(data, title, filePath);
+        }
 
         /// <summary>true: xuất .xlsx (ExcelWorkbook). Nếu Excel báo "sai định dạng", đặt false để xuất .xls (Excel 97-2003).</summary>
         static readonly bool UseXlsx = true;

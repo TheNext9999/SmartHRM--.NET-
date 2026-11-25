@@ -17,13 +17,13 @@ namespace SmartHRM.DAL
         /// <summary>Số nhân viên đang làm theo từng phòng ban (một truy vấn duy nhất).</summary>
         public Dictionary<int, int> CountAll()
         {
-            var dt = DbHelper.Query("SELECT department_id, COUNT(*) AS c FROM employees WHERE status<>'Nghỉ việc' AND department_id IS NOT NULL GROUP BY department_id");
+            var dt = DbHelper.Query("SELECT department_id, COUNT(*) AS c FROM employees WHERE status='Đang làm việc' AND department_id IS NOT NULL GROUP BY department_id");
             return dt.Rows.Cast<DataRow>().ToDictionary(r => Convert.ToInt32(r["department_id"]), r => Convert.ToInt32(r["c"]));
         }
 
         public int CountEmployees(int deptId)
         {
-            return DbHelper.ScalarInt("SELECT COUNT(*) FROM employees WHERE department_id=@d AND status<>'Nghỉ việc'", DbHelper.P("@d", deptId));
+            return DbHelper.ScalarInt("SELECT COUNT(*) FROM employees WHERE department_id=@d AND status='Đang làm việc'", DbHelper.P("@d", deptId));
         }
     }
 
@@ -67,7 +67,7 @@ namespace SmartHRM.DAL
             return DbHelper.Query(
                 "SELECT c.contract_no, e.code, e.full_name, c.type, c.end_date, DATEDIFF(c.end_date, CURDATE()) AS days_left " +
                 "FROM contracts c JOIN employees e ON e.id=c.employee_id " +
-                "WHERE c.status='Hiệu lực' AND c.end_date IS NOT NULL AND e.status<>'Nghỉ việc' " +
+                "WHERE c.status='Hiệu lực' AND c.end_date IS NOT NULL AND e.status='Đang làm việc' " +
                 "AND c.end_date BETWEEN CURDATE() AND DATE_ADD(CURDATE(), INTERVAL @d DAY) ORDER BY c.end_date", DbHelper.P("@d", days));
         }
         public int MarkExpired()
