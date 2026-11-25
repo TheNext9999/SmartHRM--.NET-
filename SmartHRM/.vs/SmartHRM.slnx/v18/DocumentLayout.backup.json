@@ -3,6 +3,10 @@
   "WorkspaceRootPath": "D:\\BT Classroom Lab\\SmartHRM (.NET)\\SmartHRM\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{C9F9ED6F-FFDF-4847-B5E9-2D17FC14A237}|SmartHRM\\SmartHRM.csproj|D:\\BT Classroom Lab\\SmartHRM (.NET)\\SmartHRM\\smarthrm\\gui\\loginform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C9F9ED6F-FFDF-4847-B5E9-2D17FC14A237}|SmartHRM\\SmartHRM.csproj|solutionrelative:smarthrm\\gui\\loginform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{C9F9ED6F-FFDF-4847-B5E9-2D17FC14A237}|SmartHRM\\SmartHRM.csproj|D:\\BT Classroom Lab\\SmartHRM (.NET)\\SmartHRM\\smarthrm\\gui\\dashboardform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{C9F9ED6F-FFDF-4847-B5E9-2D17FC14A237}|SmartHRM\\SmartHRM.csproj|solutionrelative:smarthrm\\gui\\dashboardform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -13,10 +17,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{C9F9ED6F-FFDF-4847-B5E9-2D17FC14A237}|SmartHRM\\SmartHRM.csproj|d:\\bt classroom lab\\smarthrm (.net)\\smarthrm\\smarthrm\\common\\applogger.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{C9F9ED6F-FFDF-4847-B5E9-2D17FC14A237}|SmartHRM\\SmartHRM.csproj|solutionrelative:smarthrm\\common\\applogger.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{C9F9ED6F-FFDF-4847-B5E9-2D17FC14A237}|SmartHRM\\SmartHRM.csproj|D:\\BT Classroom Lab\\SmartHRM (.NET)\\SmartHRM\\smarthrm\\gui\\loginform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{C9F9ED6F-FFDF-4847-B5E9-2D17FC14A237}|SmartHRM\\SmartHRM.csproj|solutionrelative:smarthrm\\gui\\loginform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{C9F9ED6F-FFDF-4847-B5E9-2D17FC14A237}|SmartHRM\\SmartHRM.csproj|d:\\bt classroom lab\\smarthrm (.net)\\smarthrm\\smarthrm\\gui\\reportform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -50,11 +50,11 @@
       "DocumentGroups": [
         {
           "DockedHeight": 225,
-          "SelectedChildIndex": 2,
+          "SelectedChildIndex": 4,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 2,
               "Title": "PayBUS.cs",
               "DocumentMoniker": "D:\\BT Classroom Lab\\SmartHRM (.NET)\\SmartHRM\\SmartHRM\\BUS\\PayBUS.cs",
               "RelativeDocumentMoniker": "SmartHRM\\BUS\\PayBUS.cs",
@@ -67,7 +67,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 3,
               "Title": "AppLogger.cs",
               "DocumentMoniker": "D:\\BT Classroom Lab\\SmartHRM (.NET)\\SmartHRM\\SmartHRM\\Common\\AppLogger.cs",
               "RelativeDocumentMoniker": "SmartHRM\\Common\\AppLogger.cs",
@@ -80,13 +80,13 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 1,
               "Title": "DashboardForm.cs",
               "DocumentMoniker": "D:\\BT Classroom Lab\\SmartHRM (.NET)\\SmartHRM\\SmartHRM\\GUI\\DashboardForm.cs",
               "RelativeDocumentMoniker": "SmartHRM\\GUI\\DashboardForm.cs",
               "ToolTip": "D:\\BT Classroom Lab\\SmartHRM (.NET)\\SmartHRM\\SmartHRM\\GUI\\DashboardForm.cs",
               "RelativeToolTip": "SmartHRM\\GUI\\DashboardForm.cs",
-              "ViewState": "AgIAAEQAAAAAAAAAAAAAwFUAAAAmAAAAAAAAAA==",
+              "ViewState": "AgIAAFAAAAAAAAAAAAAswFYAAAAvAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-11-17T10:01:08.234Z",
               "EditorCaption": ""
@@ -106,13 +106,13 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 0,
               "Title": "LoginForm.cs",
               "DocumentMoniker": "D:\\BT Classroom Lab\\SmartHRM (.NET)\\SmartHRM\\SmartHRM\\GUI\\LoginForm.cs",
               "RelativeDocumentMoniker": "SmartHRM\\GUI\\LoginForm.cs",
               "ToolTip": "D:\\BT Classroom Lab\\SmartHRM (.NET)\\SmartHRM\\SmartHRM\\GUI\\LoginForm.cs",
               "RelativeToolTip": "SmartHRM\\GUI\\LoginForm.cs",
-              "ViewState": "AgIAABcAAAAAAAAAAAAIwAAAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAAwAAAAAAAAAAAAAACAAAAAoAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-11-17T10:11:46.97Z",
               "EditorCaption": ""

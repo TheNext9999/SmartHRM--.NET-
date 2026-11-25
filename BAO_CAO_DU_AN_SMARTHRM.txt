@@ -121,7 +121,404 @@ Hệ thống SmartHRM được thiết kế hoàn chỉnh theo quy trình quản
 
 
 ====================================================================================================
-III. LIỆT KÊ TÓM TẮT CÔNG VIỆC ĐÓNG GÓP CỦA MỖI THÀNH VIÊN TRONG DỰ ÁN
+III. KIẾN TRÚC HỆ THỐNG (PHÂN TẦNG, PHÂN LỚP) VÀ CÂY HỆ THỐNG
+====================================================================================================
+
+1. KIẾN TRÚC HỆ THỐNG: MÔ HÌNH PHÂN TẦNG (TIERING) VÀ PHÂN LỚP (LAYERING)
+----------------------------------------------------------------------------------------------------
+Hệ thống SmartHRM (.NET) được thiết kế tuân thủ nghiêm ngặt theo các nguyên lý kiến trúc phần mềm
+hiện đại, kết hợp chặt chẽ giữa mô hình phân tầng vật lý (Physical 3-Tier Architecture) và mô hình
+phân lớp logic (Logical N-Layer Architecture) nhằm đạt được tính độc lập cao (Loose Coupling), tính
+gắn kết nội tại chặt chẽ (High Cohesion), bảo mật dữ liệu và khả năng mở rộng (Scalability) lâu dài.
+
+1.1. PHÂN BIỆT MÔ HÌNH PHÂN TẦNG (TIERS) VÀ PHÂN LỚP (LAYERS):
+     - Phân tầng (Tiers - Physical / Deployment Boundaries): Đề cập đến ranh giới phân bố vật lý
+       của các thành phần hệ thống trên các máy tính, tiến trình (process) hoặc môi trường phần cứng
+       khác nhau trong mạng doanh nghiệp.
+     - Phân lớp (Layers - Logical Software Boundaries): Đề cập đến ranh giới phân rã logic nội bộ
+       trong mã nguồn ứng dụng, chia tách các trách nhiệm lập trình (Separation of Concerns - SoC)
+       thành các tầng chuyên biệt: Trình diễn (GUI), Xử lý nghiệp vụ (BUS), Truy xuất dữ liệu (DAL),
+       Thực thể dữ liệu (DTO) và Tiện ích hạ tầng (Common/Cross-Cutting).
+
+1.2. MÔ HÌNH PHÂN TẦNG VẬT LÝ (3-TIER ARCHITECTURE):
+     Toàn bộ hệ thống vận hành trên kiến trúc 3 tầng chuẩn:
+     
+     a) Tầng 1: Tầng Trình diễn / Máy trạm (Presentation Tier / Client Tier):
+        - Môi trường: Máy tính người dùng (Desktop PC / Laptop chạy Windows 10/11 64-bit).
+        - Nền tảng: Ứng dụng desktop Windows Forms (.NET Framework 4.7.2).
+        - Trách nhiệm:
+          + Tiếp nhận tương tác người dùng qua chuột, bàn phím và màn hình cảm ứng.
+          + Render giao diện đồ họa thông qua công nghệ GDI+ (Giao diện phẳng hóa hiện đại,
+            tự động điều chỉnh kích thước responsive, phối màu hài hòa).
+          + Trực quan hóa dữ liệu bằng hệ thống biểu đồ động (System.Windows.Forms.DataVisualization.Charting).
+          + Hiển thị biểu mẫu in ấn và xuất báo cáo (Crystal Reports Viewer và ClosedXML Excel).
+          + Không lưu trữ logic nghiệp vụ nhạy cảm hoặc câu lệnh SQL trực tiếp.
+     
+     b) Tầng 2: Tầng Ứng dụng & Xử lý Nghiệp vụ (Application / Business Logic Tier):
+        - Môi trường: .NET Common Language Runtime (CLR) trên máy trạm hoặc máy chủ ứng dụng trung gian.
+        - Trách nhiệm:
+          + Xử lý toàn bộ các quy tắc nghiệp vụ nhân sự (Business Rules & Validation).
+          + Xác thực danh tính người dùng qua mã băm mật khẩu bảo mật chuẩn BCrypt.
+          + Kiểm soát phân quyền truy cập ma trận 4 quyền (View, Add, Edit, Delete) theo mô hình RBAC.
+          + Bộ máy phân tích và biên dịch biểu thức số học tính lương động (FormulaEngine).
+          + Giải thuật lượng giác Haversine đo khoảng cách tọa độ GPS định vị chấm công.
+          + Điều phối giao dịch dữ liệu (Transactions), đảm bảo tính nhất quán nghiệp vụ trước khi ghi xuống CSDL.
+          + Ghi vết nhật ký kiểm toán (Audit Trail) và nhật ký kỹ thuật ứng dụng (AppLogger).
+     
+     c) Tầng 3: Tầng Cơ sở Dữ liệu (Database Tier / Data Tier):
+        - Môi trường: Hệ quản trị cơ sở dữ liệu quan hệ MySQL Server 8.0 (triển khai trên Server nội bộ
+          hoặc máy chủ Cloud, giao tiếp qua giao thức TCP/IP chuẩn cổng 3306).
+        - Trách nhiệm:
+          + Lưu trữ bền vững (Persistent Storage) 23 bảng quan hệ với định dạng mã hóa utf8mb4_unicode_ci.
+          + Đảm bảo tính toàn vẹn dữ liệu thông qua khóa chính (Primary Key), khóa ngoại (Foreign Key)
+            ràng buộc toàn vẹn tham chiếu (Cascade / Restrict), và chỉ mục tối ưu tìm kiếm (Indexes).
+          + Thực thi các thủ tục lưu trữ (Stored Procedures) xử lý hàng loạt dữ liệu lớn (tính lương,
+            chốt bảng công, dọn dẹp nhật ký kiểm toán).
+          + Đảm bảo các thuộc tính giao dịch ACID (Atomicity, Consistency, Isolation, Durability).
+
+1.3. MÔ HÌNH PHÂN LỚP LOGIC TRONG MÃ NGUỒN (N-LAYER ARCHITECTURE):
+     Mã nguồn dự án SmartHRM được tổ chức thành các lớp độc lập theo nguyên tắc hướng đối tượng và
+     mô hình thiết kế chuẩn của Microsoft .NET:
+
+     +---------------------------------------------------------------------------------------+
+     |                                 GIAO DIỆN NGƯỜI DÙNG                                  |
+     |                       GUI LAYER (Presentation - SmartHRM.GUI)                         |
+     |   - MainForm, LoginForm, DashboardForm, CrudForm, EntityEditForm, ReportForm...       |
+     |   - Điều khiển nhập liệu, Bắt sự kiện người dùng, Hiển thị dữ liệu, Xuất báo cáo      |
+     +-------------------------------------------+-------------------------------------------+
+                                                 | Gọi qua Service Interfaces
+                                                 v (`ICrudService`, `IAuthService`, `GenericBUS`)
+     +---------------------------------------------------------------------------------------+
+     |                                 XỬ LÝ NGHIỆP VỤ                                       |
+     |                   BUS LAYER (Business Logic - SmartHRM.BUS)                           |
+     |   - GenericBUS<T>, EmployeeBUS, DepartmentBUS, AttendanceBUS, PayrollBUS...           |
+     |   - Kiểm tra phân quyền (Session.Require), Xác thực dữ liệu đầu vào (Validation),     |
+     |     Bộ máy tính lương (FormulaEngine), Haversine GPS, Quản lý giao dịch               |
+     +-------------------------------------------+-------------------------------------------+
+                                                 | Gọi qua Data Access Interfaces
+                                                 v (`IGenericDAL<T>`, `GenericDAL<T>`)
+     +---------------------------------------------------------------------------------------+
+     |                                 TRUY XUẤT DỮ LIỆU                                     |
+     |                    DAL LAYER (Data Access - SmartHRM.DAL)                             |
+     |   - DbHelper, GenericDAL<T>, EmployeeDAL, DepartmentDAL, ReportDAL...                 |
+     |   - Parameterized SQL (MySqlParameter), MySqlConnector, Thực thi Stored Procedures,   |
+     |     Ánh xạ dữ liệu tự động (ORM Mini) từ IDataReader / DataTable sang DTO qua         |
+     |     Reflection và Metadata Attributes                                                 |
+     +-------------------------------------------+-------------------------------------------+
+                                                 | Giao thức mạng TCP/IP (Port 3306)
+                                                 v Thực thi SQL / Stored Procedures
+     +---------------------------------------------------------------------------------------+
+     |                             CƠ SỞ DỮ LIỆU QUAN HỆ                                     |
+     |                       DATABASE TIER (MySQL Database 8.0)                              |
+     |   - 23 Bảng dữ liệu quan hệ (employees, departments, attendance, payroll, users...)   |
+     |   - Stored Procedures (sp_CalculateMonthlyPayroll, sp_ProcessAttendanceCheckIn...)     |
+     +---------------------------------------------------------------------------------------+
+
+     * TẦNG THỰC THỂ DỮ LIỆU DÙNG CHUNG (DTO - SmartHRM.DTO):
+       - Các lớp POCO: `BaseDTO`, `EmployeeDTO`, `DepartmentDTO`, `PayrollDTO`, `UserDTO`...
+       - Các Custom Attributes: `[Table]`, `[Field]`, `[Ignore]`.
+       - Đóng vai trò là vật chứa dữ liệu (Data Carriers) xuyên suốt, di chuyển độc lập giữa cả
+         3 lớp GUI <--> BUS <--> DAL mà không phụ thuộc vào bất kỳ công nghệ tầng nào.
+
+     * TẦNG HẠ TẦNG VÀ DỊCH VỤ DÙNG CHUNG (COMMON / CROSS-CUTTING CONCERNS - SmartHRM.Common):
+       - `AppLogger`: Ghi log kỹ thuật đa cấp độ (Debug, Info, Warn, Error, Fatal) tự động xoay
+         vòng file hàng ngày và lọc thông tin nhạy cảm.
+       - `Session`: Lưu trữ phiên làm việc toàn cục của người dùng đăng nhập hiện tại và cung cấp
+         hàm kiểm tra quyền (`Session.Can`, `Session.Require`).
+       - `Const` & `Modules`: Danh mục mã chuẩn hóa cho 25 phân hệ và các hành động kiểm soát.
+       - `ExcelHelper` & `ExportChart`: Thư viện xử lý xuất báo cáo Excel và nhúng biểu đồ động.
+       - `CrystalExporter`: Cầu nối xuất bản và in ấn báo cáo qua Crystal Reports.
+
+1.4. NGUYÊN TẮC GIAO TIẾP VÀ LUỒNG DỮ LIỆU GIỮA CÁC LỚP (DATA FLOW & INTERACTION):
+     a) Chiều phụ thuộc (Dependency Direction):
+        GUI --> BUS --> DAL --> MySQL Connector --> MySQL Database.
+        - Tầng trên chỉ biết tầng ngay dưới nó thông qua Interface trừu tượng (Dependency Inversion).
+        - Tầng DAL tuyệt đối không biết gì về BUS hay GUI.
+        - Tầng GUI tuyệt đối không được gọi trực tiếp xuống DAL hay gửi câu lệnh SQL vào CSDL.
+     b) Luồng xử lý một yêu cầu nghiệp vụ chuẩn (Ví dụ: Thêm mới hoặc Sửa Nhân viên):
+        1. Người dùng nhập thông tin trên giao diện `EntityEditForm` và bấm "Lưu".
+        2. Tầng GUI thu thập các giá trị từ Controls vào đối tượng `EmployeeDTO`.
+        3. Tầng GUI gọi phương thức nghiệp vụ: `bus.Save(employeeDto)`.
+        4. Tầng BUS tiếp nhận DTO và tiến hành kiểm tra đa lớp:
+           - Kiểm tra phân quyền: `Session.Require(Const.M_EMP, isNew ? "add" : "edit")`.
+           - Kiểm tra tính hợp lệ dữ liệu: `Validate(dto)` (Mã NV, Họ tên, định dạng Email, CCCD).
+           - Xử lý nghiệp vụ bổ trợ: `BeforeSave(dto, isNew)` (Chuẩn hóa chữ hoa họ tên, kiểm tra trùng lặp).
+        5. Tầng BUS gọi tầng DAL: `dal.Insert(dto)` hoặc `dal.Update(dto)`.
+        6. Tầng DAL sử dụng Reflection đọc các thuộc tính của DTO, tự động sinh câu lệnh SQL Parameterized:
+           `INSERT INTO employees (...) VALUES (@p0, @p1, ...)` với các đối tượng `MySqlParameter`.
+        7. `DbHelper` mở kết nối, thực thi câu lệnh SQL xuống MySQL Server an toàn 100% chống SQL Injection.
+        8. Sau khi ghi thành công, tầng BUS tự động ghi nhật ký kiểm toán:
+           `AuditBUS.Log(isNew ? "Thêm mới" : "Cập nhật", Const.M_EMP, $"Lưu nhân viên {dto.FullName}")`.
+        9. Kết quả phản hồi ngược lại tầng GUI, cập nhật DataGridView và hiển thị thông báo thành công cho người dùng.
+
+
+2. CÂY HỆ THỐNG (SYSTEM TREE & HIERARCHY)
+----------------------------------------------------------------------------------------------------
+Nhằm thể hiện rõ nét tính toàn diện, cấu trúc phân cấp và mối quan hệ chặt chẽ giữa các thành phần
+trong dự án SmartHRM, hệ thống được biểu diễn thông qua 3 mô hình cây phân cấp chi tiết:
+
+2.1. CÂY PHÂN RÃ CHỨC NĂNG HỆ THỐNG (FUNCTIONAL DECOMPOSITION TREE):
+     Sơ đồ cây phân cấp toàn diện từ Hệ thống tổng thể -> 7 Khối phân hệ chính -> 25 Phân hệ con nghiệp vụ:
+
+SMARTHRM - HỆ THỐNG QUẢN TRỊ NHÂN SỰ, CHẤM CÔNG & TIỀN LƯƠNG
+│
+├── 1. PHÂN HỆ QUẢN TRỊ HỆ THỐNG & BẢO MẬT (SYSTEM & SECURITY)
+│   ├── 1.1. Xác thực & Đăng nhập Hệ thống (AUTH)
+│   │   ├── Đăng nhập bằng Tên người dùng / Email & Mật khẩu băm BCrypt
+│   │   ├── Ghi nhớ tài khoản trên máy trạm
+│   │   └── Quên mật khẩu & Khôi phục mật khẩu tự động qua mã OTP Email
+│   ├── 1.2. Quản lý Tài khoản Người dùng (USER - Module: sys_user)
+│   │   ├── Tạo mới, cập nhật hồ sơ tài khoản người dùng
+│   │   ├── Khóa / Mở khóa tài khoản đăng nhập
+│   │   ├── Đặt lại mật khẩu tài khoản
+│   │   └── Liên kết tài khoản hệ thống với mã hồ sơ nhân sự
+│   ├── 1.3. Phân quyền Người dùng theo Vai trò (ROLE - Module: sys_role)
+│   │   ├── Quản lý danh mục nhóm quyền (Admin, Quản lý Nhân sự, Nhân viên...)
+│   │   ├── Thiết lập ma trận 4 quyền chi tiết (Xem, Thêm, Sửa, Xóa) trên 25 phân hệ
+│   │   └── Hỗ trợ chế độ giới hạn phạm vi dữ liệu cá nhân ("Self-Only")
+│   ├── 1.4. Nhật ký Kiểm toán Hoạt động Hệ thống (AUDIT - Module: sys_audit)
+│   │   ├── Tự động ghi vết mọi hành vi Thêm, Sửa, Xóa, Duyệt, Tính lương kèm IP/Thời gian
+│   │   ├── Tra cứu và lọc nhật ký kiểm toán đa tiêu chí nâng cao
+│   │   └── Dọn dẹp nhật ký kiểm toán cũ an toàn (ngưỡng tối thiểu 30 ngày)
+│   └── 1.5. Cấu hình & Tham số Vận hành Hệ thống (SETTING - Module: sys_setting)
+│       ├── Cấu hình thông số máy chủ Email gửi tin SMTP
+│       ├── Cấu hình tọa độ GPS trụ sở văn phòng và bán kính cho phép chấm công
+│       └── Cấu hình tỷ lệ trích nộp bảo hiểm bắt buộc và ngày công chuẩn tháng
+│
+├── 2. PHÂN HỆ QUẢN LÝ TỔ CHỨC & HỒ SƠ NHÂN SỰ (ORGANIZATION & EMPLOYEES)
+│   ├── 2.1. Sơ đồ Tổ chức Cây Phòng ban (ORGCHART - Module: org_chart)
+│   │   ├── Trực quan hóa cấu trúc tổ chức phòng ban phân cấp dạng TreeView
+│   │   └── Hiển thị thông tin trưởng đơn vị và số lượng nhân sự trực thuộc
+│   ├── 2.2. Quản lý Danh mục Phòng ban (DEPT - Module: org_dept)
+│   │   ├── Quản lý mã phòng, tên phòng, phòng ban cấp cha, trưởng phòng
+│   │   └── Kiểm tra ràng buộc ngăn chặn xóa phòng ban khi còn nhân sự hoạt động
+│   ├── 2.3. Quản lý Danh mục Chức danh / Vị trí Công việc (POS - Module: org_pos)
+│   │   ├── Định nghĩa chức danh chuyên môn (Giám đốc, Trưởng phòng, Chuyên viên...)
+│   │   └── Thiết lập mức phụ cấp chức vụ tương ứng
+│   ├── 2.4. Quản lý Hồ sơ Nhân sự Toàn diện (EMP - Module: hr_emp)
+│   │   ├── Quản lý lý lịch trích ngang: Mã NV, Họ tên, Ngày sinh, CCCD, Điện thoại, Email
+│   │   ├── Quản lý công việc: Phòng ban, Chức danh, Quản lý trực tiếp, Trạng thái làm việc
+│   │   ├── Quản lý tài chính: Mức lương cơ bản, Số tài khoản, Mã số thuế, Sổ BHXH, Giảm trừ
+│   │   ├── Quản lý quỹ phép năm và theo dõi lịch sử công tác
+│   │   └── Bảo toàn dữ liệu: Nghiêm cấm xóa vật lý, chuyển trạng thái sang "Nghỉ việc"
+│   └── 2.5. Quản lý Hợp đồng Lao động (CONTRACT - Module: hr_contract)
+│       ├── Quản lý các loại hợp đồng: Thử việc, Có thời hạn (1-3 năm), Không thời hạn, Mùa vụ
+│       ├── Quản lý thời hạn hiệu lực, mức lương ký kết và điều khoản công việc
+│       └── Tự động rà soát và đánh dấu hợp đồng đã hết hiệu lực (MarkExpired)
+│
+├── 3. PHÂN HỆ TUYỂN DỤNG & TIẾP NHẬN NHÂN VIÊN MỚI (RECRUITMENT & ONBOARDING)
+│   ├── 3.1. Quản lý Đề xuất Tuyển dụng (RECRUIT - Module: rec_request)
+│   │   ├── Lập yêu cầu bổ sung nhân sự từ các phòng ban (vị trí, số lượng, thời hạn)
+│   │   └── Quy trình xét duyệt đề xuất tuyển dụng (Chờ duyệt, Đã duyệt, Từ chối)
+│   ├── 3.2. Quản lý Hồ sơ Ứng viên (CANDIDATE - Module: rec_candidate)
+│   │   ├── Tiếp nhận hồ sơ, thông tin liên lạc, vị trí ứng tuyển, liên kết file CV
+│   │   ├── Quản lý lịch hẹn phỏng vấn, vòng đánh giá chuyên môn
+│   │   └── Cập nhật trạng thái ứng viên (Mới nộp, Phỏng vấn, Trúng tuyển, Từ chối)
+│   └── 3.3. Quy trình Tiếp nhận Onboarding Tự động (ONBOARD)
+│       ├── Chuyển đổi hồ sơ ứng viên trúng tuyển sang hồ sơ nhân viên thử việc trong 1 click
+│       └── Tự động khởi tạo hợp đồng lao động thử việc ban đầu từ dữ liệu ứng tuyển
+│
+├── 4. PHÂN HỆ CHẤM CÔNG & CA LÀM VIỆC (TIME & ATTENDANCE)
+│   ├── 4.1. Cấu hình Ca làm việc (SHIFT - Module: time_shift)
+│   │   ├── Định nghĩa danh mục ca: Ca sáng, Ca chiều, Ca hành chính, Ca đêm
+│   │   └── Thiết lập giờ bắt đầu, giờ kết thúc, thời gian nghỉ giữa ca
+│   ├── 4.2. Lập lịch Phân ca Nhân sự (SCHEDULE - Module: time_sched)
+│   │   └── Phân công ca làm việc linh hoạt cho từng nhân sự theo chu kỳ thời gian
+│   ├── 4.3. Quản lý Dữ liệu Chấm công Hàng ngày (ATTENDANCE - Module: time_att)
+│   │   ├── Ghi nhận thời gian Check-in, Check-out thực tế của nhân viên
+│   │   ├── Tích hợp xác thực vị trí chấm công GPS qua công thức Haversine
+│   │   ├── Tự động tính toán số phút đi muộn, số phút về sớm và quy đổi công chuẩn
+│   │   └── Hỗ trợ nhập (Import) dữ liệu chấm công hàng loạt từ máy chấm công vân tay (Excel)
+│   ├── 4.4. Quản lý Đơn từ Điện tử & Nghỉ phép (LEAVE - Module: time_leave)
+│   │   ├── Nhân viên gửi đơn trực tuyến: Nghỉ phép năm, Nghỉ ốm, Thai sản, Việc riêng, Làm thêm (OT)
+│   │   ├── Tự động kiểm tra số dư và trừ ngày nghỉ vào quỹ phép năm
+│   │   └── Quy trình duyệt đơn trực tuyến 2 cấp (Quản lý trực tiếp duyệt, HR duyệt)
+│   └── 4.5. Chốt Bảng Chấm công Tổng hợp Tháng (TIMESHEET - Module: time_sheet)
+│       ├── Tự động tổng hợp dữ liệu từ chấm công hàng ngày và các đơn từ đã duyệt
+│       ├── Thống kê tổng ngày công, ngày nghỉ phép, ngày nghỉ không lương, giờ làm thêm OT
+│       └── Khóa bảng công (Lock Timesheet) bảo vệ tính toàn vẹn trước khi tính lương
+│
+├── 5. PHÂN HỆ TIỀN LƯƠNG & CHẾ ĐỘ PHÚC LỢI (PAYROLL & BENEFITS)
+│   ├── 5.1. Định nghĩa Công thức Lương Động (FORMULA - Module: pay_formula)
+│   │   ├── Thiết lập danh mục các khoản phụ cấp, trợ cấp, thưởng và giảm trừ
+│   │   └── Bộ máy FormulaEngine biên dịch công thức tính toán theo biến ngữ cảnh
+│   ├── 5.2. Tính toán & Chốt Bảng lương Định kỳ (PAYROLL - Module: pay_calc)
+│   │   ├── Tự động tính lương theo ngày công thực tế từ bảng chấm công đã chốt
+│   │   ├── Tự động trích nộp bảo hiểm bắt buộc: BHXH (8%), BHYT (1.5%), BHTN (1%) và NSDLĐ (21.5%)
+│   │   ├── Tự động tính thuế TNCN lũy tiến từng phần theo quy định của pháp luật Việt Nam
+│   │   ├── Tính lương thực lĩnh (Net Salary = Gross - Bảo hiểm - Thuế - Phạt + Thưởng)
+│   │   └── Chốt bảng lương tháng và xuất bảng thanh toán lương toàn doanh nghiệp
+│   └── 5.3. Phiếu lương Cá nhân Tự phục vụ (MYPAYSLIP - Module: pay_slip)
+│       └── Nhân viên tự tra cứu chi tiết thu nhập, các khoản trích nộp từng tháng minh bạch
+│
+├── 6. PHÂN HỆ ĐÁNH GIÁ HIỆU SUẤT & ĐÀO TẠO (PERFORMANCE & TRAINING)
+│   ├── 6.1. Thiết lập Kỳ Đánh giá Hiệu suất (KPIPERIOD - Module: kpi_period)
+│   │   └── Quản lý các đợt đánh giá định kỳ theo Tháng, Quý hoặc Năm
+│   ├── 6.2. Danh mục Tiêu chí Đánh giá KPI (KPICRITERIA - Module: kpi_crit)
+│   │   └── Xây dựng bộ tiêu chí đo lường gắn theo chức danh công việc kèm trọng số (%)
+│   ├── 6.3. Chấm điểm & Xếp loại Hiệu suất Nhân sự (KPIEVAL - Module: kpi_eval)
+│   │   ├── Nhân viên tự chấm điểm và giải trình kết quả (Self-Evaluation)
+│   │   ├── Quản lý trực tiếp chấm điểm, ghi nhận xét và xếp hạng (Manager-Evaluation)
+│   │   └── Tự động tính điểm tổng hợp theo trọng số và xếp loại (Xuất sắc, Tốt, Khá, Yếu)
+│   ├── 6.4. Quản lý Khóa Đào tạo & Huấn luyện (COURSE - Module: trn_course)
+│   │   └── Quản lý tên khóa học, giảng viên, thời lượng, ngân sách và chỉ tiêu đào tạo
+│   └── 6.5. Quản lý Học viên Tham gia Đào tạo (TRAINING - Module: trn_part)
+│       └── Phân công nhân viên tham gia khóa học, theo dõi điểm số và cấp chứng chỉ hoàn thành
+│
+└── 7. BÁO CÁO, THỐNG KÊ & DỰ BÁO NHÂN SỰ (REPORTS & ANALYTICS)
+    ├── 7.1. Bảng Điều khiển Tổng quan Thời gian thực (DASHBOARD)
+    │   ├── Hệ thống thẻ chỉ số nhanh (KPI Cards): Nhân sự hiện tại, Tuyển mới, Nghỉ việc...
+    │   └── Biểu đồ tổng quan cơ cấu nhân sự và biến động lao động
+    ├── 7.2. Trung tâm Báo cáo & Thống kê Chuyên sâu (REPORT)
+    │   ├── Báo cáo phân tích nhân sự: Cơ cấu phòng ban, giới tính, độ tuổi, loại hợp đồng
+    │   ├── Báo cáo phân tích tỷ lệ biến động và nghỉ việc 12 tháng (Turnover Rate)
+    │   ├── Báo cáo chi tiết chấm công: Tỷ lệ đi muộn, về sớm, nghỉ phép, tổng giờ làm thêm
+    │   └── Báo cáo chi phí quỹ lương và các khoản trích nộp bảo hiểm qua các kỳ
+    └── 7.3. Xuất bản Dữ liệu Đa phương thức (EXPORT)
+        ├── Tự động định dạng và vẽ biểu đồ nhúng vào file Microsoft Excel (.xlsx) qua ClosedXML
+        └── Xuất và in ấn phiếu báo cáo chuẩn mẫu qua Crystal Reports (GenericGrid.rpt)
+
+
+2.2. CÂY ĐIỀU HƯỚNG GIAO DIỆN NGƯỜI DÙNG (UI NAVIGATION & MENU TREE):
+     Cấu trúc phân cấp màn hình và luồng điều hướng người dùng trên giao diện chính (`MainForm`):
+
+MainForm (Khung làm việc chính của ứng dụng - SmartHRM Dashboard & Navigation)
+│
+├── 1. VÙNG TIÊU ĐỀ & ĐIỀU KHIỂN HỆ THỐNG (Header Bar)
+│   ├── Biểu trưng thương hiệu & Tiêu đề ứng dụng ("SmartHRM - Quản trị Nhân sự")
+│   ├── Hiển thị thông tin người dùng đang đăng nhập: Họ tên, Nhóm vai trò (Session.User)
+│   ├── Nút chức năng "Đổi mật khẩu" (Mở hộp thoại ChangePasswordDialog)
+│   └── Nút chức năng "Đăng xuất" (Xóa Session, đóng MainForm và quay về LoginForm)
+│
+├── 2. THANH ĐIỀU HƯỚNG BÊN TRÁI (Sidebar Menu Panel - Phân quyền theo vai trò)
+│   ├── 📌 MỤC TỔNG QUAN
+│   │   └── [Dashboard] -> Nạp `DashboardForm` vào vùng làm việc chính
+│   │
+│   ├── 👥 MỤC QUẢN LÝ NHÂN SỰ
+│   │   ├── [Sơ đồ tổ chức]     -> Mở `OrgChartForm` (Hiển thị TreeView phân cấp phòng ban)
+│   │   ├── [Phòng ban]         -> Mở `CrudForm` (Cấu hình ánh xạ `DepartmentDTO` / `DepartmentBUS`)
+│   │   ├── [Chức vụ]           -> Mở `CrudForm` (Cấu hình ánh xạ `PositionDTO` / `PositionBUS`)
+│   │   ├── [Hồ sơ nhân viên]   -> Mở `CrudForm` (Cấu hình ánh xạ `EmployeeDTO` / `EmployeeBUS`)
+│   │   └── [Hợp đồng lao động] -> Mở `CrudForm` (Cấu hình ánh xạ `ContractDTO` / `ContractBUS`)
+│   │
+│   ├── 💼 MỤC TUYỂN DỤNG & ONBOARDING
+│   │   ├── [Yêu cầu tuyển dụng]-> Mở `CrudForm` (Cấu hình ánh xạ `RecruitmentRequestDTO`)
+│   │   └── [Hồ sơ ứng viên]    -> Mở `CrudForm` (Cấu hình ánh xạ `CandidateDTO` + Nút Onboard)
+│   │
+│   ├── ⏰ MỤC CHẤM CÔNG & CA LÀM
+│   │   ├── [Danh mục ca làm]   -> Mở `CrudForm` (Cấu hình ánh xạ `ShiftDTO` / `ShiftBUS`)
+│   │   ├── [Phân ca làm việc]  -> Mở `CrudForm` (Cấu hình ánh xạ `WorkScheduleDTO`)
+│   │   ├── [Dữ liệu chấm công] -> Mở `CrudForm` (Cấu hình ánh xạ `AttendanceDTO` + Nút GPS Check)
+│   │   ├── [Đơn nghỉ phép]     -> Mở `CrudForm` (Cấu hình ánh xạ `LeaveRequestDTO` + Nút Duyệt)
+│   │   └── [Chốt bảng công]    -> Mở `TimesheetForm` (Tổng hợp công tháng, Khóa bảng công)
+│   │
+│   ├── 💰 MỤC TIỀN LƯƠNG & PHÚC LỢI
+│   │   ├── [Công thức tính lương]-> Mở `CrudForm` (Cấu hình ánh xạ `SalaryFormulaDTO`)
+│   │   ├── [Tính bảng lương]   -> Mở `PayrollForm` (Tính lương tự động, chốt sổ, in bảng lương)
+│   │   └── [Phiếu lương cá nhân]-> Mở `MyPayslipForm` (Xem chi tiết phiếu lương của chính mình)
+│   │
+│   ├── 🎯 MỤC HIỆU SUẤT & ĐÀO TẠO
+│   │   ├── [Kỳ đánh giá KPI]   -> Mở `CrudForm` (Cấu hình ánh xạ `KpiPeriodDTO`)
+│   │   ├── [Tiêu chí đánh giá] -> Mở `CrudForm` (Cấu hình ánh xạ `KpiCriteriaDTO`)
+│   │   ├── [Đánh giá KPI]      -> Mở `CrudForm` (Cấu hình ánh xạ `KpiEvaluationDTO`)
+│   │   ├── [Khóa đào tạo]      -> Mở `CrudForm` (Cấu hình ánh xạ `TrainingCourseDTO`)
+│   │   └── [Học viên tham gia] -> Mở `CrudForm` (Cấu hình ánh xạ `TrainingParticipantDTO`)
+│   │
+│   ├── 📊 MỤC BÁO CÁO & THỐNG KÊ
+│   │   └── [Trung tâm báo cáo] -> Mở `ReportForm` (Bộ lọc đa chiều, Biểu đồ trực quan, Xuất Excel/Crystal)
+│   │
+│   └── ⚙️ MỤC QUẢN TRỊ HỆ THỐNG
+│       ├── [Tài khoản người dùng] -> Mở `UserForm` (Quản lý User, kích hoạt, đặt lại mật khẩu)
+│       ├── [Phân quyền nhóm]      -> Mở `RoleForm` (Ma trận phân quyền 25 phân hệ với 4 quyền Xem/Thêm/Sửa/Xóa)
+│       ├── [Nhật ký kiểm toán]    -> Mở `AuditLogForm` (Tra cứu vết thao tác hệ thống, dọn dẹp log)
+│       └── [Cấu hình hệ thống]    -> Mở `SettingForm` (Cấu hình SMTP, GPS văn phòng, tham số vận hành)
+│
+├── 3. VÙNG NỘI DUNG CHÍNH (Workspace / Content Panel - Nạp động Form con)
+│   └── Tự động nạp UserControl / Form chức năng tương ứng khi người dùng nhấp chọn từ Sidebar Menu
+│
+└── 4. THANH TRẠNG THÁI HỆ THỐNG (StatusStrip - Footer Bar)
+    ├── Biểu tượng trạng thái kết nối Cơ sở dữ liệu MySQL (Online / Sẵn sàng)
+    ├── Tên máy chủ và tên CSDL kết nối (`localhost:3306 / smarthrm`)
+    ├── Phiên bản ứng dụng (SmartHRM v1.0.0)
+    └── Đồng hồ hiển thị thời gian thực của hệ thống
+
+
+2.3. CÂY CẤU TRÚC MÃ NGUỒN VẬT LÝ DỰ ÁN (PHYSICAL SOLUTION & SOURCE TREE):
+     Sơ đồ phân cấp thư mục và các tệp mã nguồn trong Visual Studio Solution:
+
+SmartHRM (.NET)/
+├── Database/
+│   └── smarthrm.sql                     # Kịch bản DDL tạo CSDL, 23 bảng quan hệ và dữ liệu mẫu
+├── SmartHRM/
+│   ├── SmartHRM.slnx                    # Tệp Solution quản lý dự án Visual Studio hiện đại
+│   └── SmartHRM/                        # Thư mục mã nguồn chính của dự án C# WinForms
+│       ├── App.config                   # Tệp cấu hình XML: Chuỗi kết nối MySQL, SMTP, LogLevel
+│       ├── Program.cs                   # Điểm khởi động ứng dụng (Main), xử lý lỗi toàn cục
+│       ├── packages.config              # Danh sách khai báo các thư viện NuGet Package sử dụng
+│       ├── SmartHRM.csproj              # Tệp cấu hình dự án C# Project (.NET Framework 4.7.2)
+│       │
+│       ├── DTO/                         # TẦNG THỰC THỂ DỮ LIỆU (DATA TRANSFER OBJECTS)
+│       │   ├── BaseDTO.cs               # Lớp thực thể cơ sở, Custom Attributes ([Table], [Field], [Ignore])
+│       │   ├── HrDTOs.cs                # Các DTO phân hệ Nhân sự: Department, Position, Employee, Contract...
+│       │   ├── TimePayDTOs.cs           # Các DTO phân hệ Chấm công & Lương: Shift, Attendance, Leave, Payroll...
+│       │   ├── PerfDTOs.cs              # Các DTO phân hệ Hiệu suất & Đào tạo: KpiPeriod, KpiEval, Course...
+│       │   └── SystemDTOs.cs            # Các DTO phân hệ Hệ thống: User, Role, RolePermission, AuditLog, Setting
+│       │
+│       ├── DAL/                         # TẦNG TRUY XUẤT DỮ LIỆU (DATA ACCESS LAYER)
+│       │   ├── DbHelper.cs              # Quản lý kết nối MySQL, Parameterized Queries an toàn, Transaction
+│       │   ├── GenericDAL.cs            # Triển khai mẫu Generic Repository, sinh SQL CRUD tự động qua Reflection
+│       │   ├── HrDALs.cs                # DAL chuyên biệt cho Nhân sự, Phòng ban, Hợp đồng, Ứng viên
+│       │   ├── TimePayDALs.cs           # DAL chuyên biệt cho Chấm công, Phân ca, Bảng công, Tính lương
+│       │   ├── PerfDALs.cs              # DAL chuyên biệt cho Đánh giá KPI và Đào tạo học viên
+│       │   ├── SystemDALs.cs            # DAL chuyên biệt cho Tài khoản, Phân quyền ma trận, Nhật ký, Cấu hình
+│       │   └── ReportDAL.cs             # DAL chuyên biệt thực thi các truy vấn SQL thống kê phức tạp vẽ biểu đồ
+│       │
+│       ├── BUS/                         # TẦNG XỬ LÝ NGHIỆP VỤ (BUSINESS LOGIC LAYER)
+│       │   ├── Core.cs                  # Interface IGenericBUS<T>, triển khai trừu tượng GenericBUS<T>
+│       │   ├── HrBUSs.cs                # Xử lý quy tắc nghiệp vụ Phòng ban, Nhân viên, Hợp đồng, Tuyển dụng
+│       │   ├── TimePayBUSs.cs           # Nghiệp vụ phân ca, xử lý đi muộn/về sớm, chốt công, tính lương tự động
+│       │   ├── PerfBUSs.cs              # Nghiệp vụ quản lý chu kỳ đánh giá, xếp loại KPI, khóa đào tạo
+│       │   ├── SystemBUS.cs             # Nghiệp vụ tài khoản, đổi mật khẩu BCrypt, phân quyền ma trận, cấu hình
+│       │   ├── MailAndAuth.cs           # Dịch vụ gửi email SMTP, cấp phát và xác thực mã OTP quên mật khẩu
+│       │   ├── DbInitializer.cs         # Khởi tạo tự động tài khoản admin và quyền mặc định khi CSDL trống
+│       │   └── ExcelHelper.cs           # Tiện ích xuất dữ liệu Excel định dạng chuyên nghiệp qua ClosedXML
+│       │
+│       ├── GUI/                         # TẦNG GIAO DIỆN NGƯỜI DÙNG (WINDOWS FORMS)
+│       │   ├── MainForm.cs / .Designer  # Form làm việc chính, điều hướng Sidebar Menu, nạp dynamic forms
+│       │   ├── LoginForm.cs / .Designer # Form đăng nhập tài khoản, xác thực mật khẩu, quên mật khẩu qua OTP
+│       │   ├── DashboardForm.cs / .Des  # Bảng điều khiển KPI Cards và biểu đồ thống kê tổng quan
+│       │   ├── CrudForm.cs / .Designer  # Form tổng quát dùng chung cho 25 phân hệ (Tìm kiếm, Lưới, Phân quyền)
+│       │   ├── EntityEditForm.cs        # Hộp thoại sinh động các trường nhập liệu tự động từ Metadata DTO
+│       │   ├── ReportForm.cs / .Designer# Trung tâm lọc dữ liệu đa chiều, vẽ biểu đồ động và xuất báo cáo
+│       │   ├── OrgChartForm.cs          # Sơ đồ trực quan hóa cơ cấu tổ chức phòng ban theo cây TreeView
+│       │   ├── TimesheetForm.cs         # Giao diện tổng hợp bảng chấm công tháng và khóa bảng công
+│       │   ├── PayrollForm.cs           # Giao diện tính lương tự động, xem bảng lương và phiếu lương cá nhân
+│       │   ├── RoleForm.cs              # Giao diện ma trận phân quyền 25 phân hệ với 4 quyền Xem/Thêm/Sửa/Xóa
+│       │   ├── AuditLogForm.cs          # Giao diện tra cứu nhật ký kiểm toán hệ thống và bảo trì dọn dẹp log
+│       │   ├── CrystalExporter.cs       # Cầu nối tích hợp tài liệu in ấn báo cáo Crystal Reports
+│       │   ├── ExportChart.cs           # Công cụ chụp và nhúng biểu đồ thống kê trực tiếp vào file Excel
+│       │   ├── Ui.cs                    # Bộ quy chuẩn giao diện người dùng: Màu sắc, phông chữ, bo góc, thông báo
+│       │   └── AppImages.cs             # Bộ thư viện tài nguyên icon vector vẽ bằng mã GDI+ mượt mà
+│       │
+│       ├── Common/                      # TẦNG BỔ TRỢ DÙNG CHUNG (CROSS-CUTTING / INFRASTRUCTURE)
+│       │   ├── AppLogger.cs             # Hệ thống ghi nhật ký kỹ thuật ra file .log luân phiên hàng ngày
+│       │   ├── Session.cs               # Quản lý phiên làm việc, lưu trữ vết người dùng và kiểm tra quyền
+│       │   ├── Const.cs                 # Định nghĩa các hằng số hệ thống, mã hành động, trạng thái nhân sự
+│       │   └── Modules.cs               # Danh mục định nghĩa chuẩn hóa 25 phân hệ chức năng hệ thống
+│       │
+│       ├── Reports/                     # MẪU BÁO CÁO IN ẤN CRYSTAL REPORTS
+│       │   ├── GenericGrid.rpt          # Tệp thiết kế biểu mẫu báo cáo lưới in ấn chuẩn Crystal Reports
+│       │   └── GenericGrid.xsd          # Lược đồ dữ liệu định nghĩa cấu trúc bảng báo cáo
+│       │
+│       └── bin/Debug/                   # Tệp nhị phân đã biên dịch sẵn (SmartHRM.exe, thư viện dll, configs)
+│
+├── BAO_CAO_DU_AN_SMARTHRM.txt           # Báo cáo tổng kết toàn diện kiến trúc dự án SmartHRM
+└── README.md                            # Hướng dẫn chi tiết cài đặt môi trường, kết nối MySQL và chạy dự án
+
+
+
+====================================================================================================
+IV. LIỆT KÊ TÓM TẮT CÔNG VIỆC ĐÓNG GÓP CỦA MỖI THÀNH VIÊN TRONG DỰ ÁN
 ====================================================================================================
 
 Dự án được xây dựng và hoàn thiện bởi nhóm 2 thành viên:
@@ -175,7 +572,7 @@ Dự án được xây dựng và hoàn thiện bởi nhóm 2 thành viên:
 
 
 ====================================================================================================
-IV. LIỆT KÊ CÁC LỚP THỰC THỂ (DTO) VÀ LỚP TRUY XUẤT DỮ LIỆU (DAL)
+V. LIỆT KÊ CÁC LỚP THỰC THỂ (DTO) VÀ LỚP TRUY XUẤT DỮ LIỆU (DAL)
 ====================================================================================================
 
 1. KIẾN TRÚC TẦNG TRUY XUẤT DỮ LIỆU (DAL FRAMEWORK)
@@ -233,7 +630,7 @@ STT | Lớp Thực thể (DTO)       | Bảng CSDL (MySQL)       | Lớp DAL tư
 
 
 ====================================================================================================
-V. LIỆT KÊ CÁC LỚP NGHIỆP VỤ: BUS (BUSINESS LOGIC LAYER)
+VI. LIỆT KÊ CÁC LỚP NGHIỆP VỤ: BUS (BUSINESS LOGIC LAYER)
 ====================================================================================================
 
 Tầng nghiệp vụ (BUS) đóng vai trò trung tâm điều phối logic, áp dụng các quy tắc kiểm tra (validation),
@@ -343,7 +740,7 @@ kiểm soát quyền hạn (RBAC), tính toán số liệu và tương tác vớ
 
 
 ====================================================================================================
-VI. LIỆT KÊ CÁC GIAO DIỆN HỆ THỐNG: GUI (GRAPHICAL USER INTERFACE)
+VII. LIỆT KÊ CÁC GIAO DIỆN HỆ THỐNG: GUI (GRAPHICAL USER INTERFACE)
 ====================================================================================================
 
 Tầng giao diện (GUI) được xây dựng trên Windows Forms với thiết kế phẳng (Flat Design) hiện đại,
@@ -430,7 +827,7 @@ bố cục khoa học, màu sắc hài hòa và tối ưu trải nghiệm ngư�
 
 
 ====================================================================================================
-VII. THIẾT KẾ HƯỚNG ĐỐI TƯỢNG (OOP - OBJECT-ORIENTED PROGRAMMING)
+VIII. THIẾT KẾ HƯỚNG ĐỐI TƯỢNG (OOP - OBJECT-ORIENTED PROGRAMMING)
 ====================================================================================================
 
 Hệ thống SmartHRM được thiết kế và xây dựng tuân thủ chặt chẽ các nguyên lý lập trình hướng đối
@@ -814,7 +1211,7 @@ STT | Tên Lớp (Class Name)      | Tầng Kiến trúc | Kế thừa từ (Inh
 
 
 ====================================================================================================
-VIII. TRUY VẤN CƠ SỞ DỮ LIỆU (DATABASE QUERIES & STORED PROCEDURES)
+IX. TRUY VẤN CƠ SỞ DỮ LIỆU (DATABASE QUERIES & STORED PROCEDURES)
 ====================================================================================================
 
 Cơ chế truy vấn và thao tác cơ sở dữ liệu trong hệ thống SmartHRM được thiết kế theo 2 phương thức
