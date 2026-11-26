@@ -67,3 +67,5 @@ D:\BT Classroom Lab\SmartHRM (.NET)\SmartHRM\SmartHRM\bin\Debug\CrystalDecisions
 D:\BT Classroom Lab\SmartHRM (.NET)\SmartHRM\SmartHRM\bin\Debug\CrystalDecisions.ReportAppServer.ObjectFactory.dll
 D:\BT Classroom Lab\SmartHRM (.NET)\SmartHRM\SmartHRM\bin\Debug\CrystalDecisions.ReportAppServer.CommonControls.dll
 D:\BT Classroom Lab\SmartHRM (.NET)\SmartHRM\SmartHRM\bin\Debug\stdole.dll
+D:\BT Classroom Lab\SmartHRM (.NET)\SmartHRM\SmartHRM\bin\Debug\Reports\GenericGrid.rpt
+D:\BT Classroom Lab\SmartHRM (.NET)\SmartHRM\SmartHRM\bin\Debug\Reports\GenericGrid.cs

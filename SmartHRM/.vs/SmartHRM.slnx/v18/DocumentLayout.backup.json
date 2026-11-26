@@ -3,7 +3,23 @@
   "WorkspaceRootPath": "D:\\BT Classroom Lab\\SmartHRM (.NET)\\SmartHRM\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{C9F9ED6F-FFDF-4847-B5E9-2D17FC14A237}|SmartHRM\\SmartHRM.csproj|d:\\bt classroom lab\\smarthrm (.net)\\smarthrm\\smarthrm\\dto\\const.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{C9F9ED6F-FFDF-4847-B5E9-2D17FC14A237}|SmartHRM\\SmartHRM.csproj|d:\\bt classroom lab\\smarthrm (.net)\\smarthrm\\smarthrm\\app.config||{FA3CD31E-987B-443A-9B81-186104E8DAC1}",
+      "RelativeMoniker": "D:0:0:{C9F9ED6F-FFDF-4847-B5E9-2D17FC14A237}|SmartHRM\\SmartHRM.csproj|solutionrelative:smarthrm\\app.config||{FA3CD31E-987B-443A-9B81-186104E8DAC1}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C9F9ED6F-FFDF-4847-B5E9-2D17FC14A237}|SmartHRM\\SmartHRM.csproj|D:\\BT Classroom Lab\\SmartHRM (.NET)\\SmartHRM\\smarthrm\\dal\\reportdal.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C9F9ED6F-FFDF-4847-B5E9-2D17FC14A237}|SmartHRM\\SmartHRM.csproj|solutionrelative:smarthrm\\dal\\reportdal.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C9F9ED6F-FFDF-4847-B5E9-2D17FC14A237}|SmartHRM\\SmartHRM.csproj|D:\\BT Classroom Lab\\SmartHRM (.NET)\\SmartHRM\\smarthrm\\bus\\systembus.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C9F9ED6F-FFDF-4847-B5E9-2D17FC14A237}|SmartHRM\\SmartHRM.csproj|solutionrelative:smarthrm\\bus\\systembus.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C9F9ED6F-FFDF-4847-B5E9-2D17FC14A237}|SmartHRM\\SmartHRM.csproj|D:\\BT Classroom Lab\\SmartHRM (.NET)\\SmartHRM\\smarthrm\\dal\\hrdals.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C9F9ED6F-FFDF-4847-B5E9-2D17FC14A237}|SmartHRM\\SmartHRM.csproj|solutionrelative:smarthrm\\dal\\hrdals.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C9F9ED6F-FFDF-4847-B5E9-2D17FC14A237}|SmartHRM\\SmartHRM.csproj|D:\\BT Classroom Lab\\SmartHRM (.NET)\\SmartHRM\\smarthrm\\dto\\const.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{C9F9ED6F-FFDF-4847-B5E9-2D17FC14A237}|SmartHRM\\SmartHRM.csproj|solutionrelative:smarthrm\\dto\\const.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
@@ -12,9 +28,6 @@
     },
     {
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|D:\\BT Classroom Lab\\SmartHRM (.NET)\\dulieumau.txt||{8B382828-6202-11D1-8870-0000F87579D2}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\pc\\.copilot\\plans\\plan-thm-trng-thi-ngh-hu-v-chnh-sch-cng-ty.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}|MarkdownSecurePreview"
     },
     {
       "AbsoluteMoniker": "D:0:0:{C9F9ED6F-FFDF-4847-B5E9-2D17FC14A237}|SmartHRM\\SmartHRM.csproj|D:\\BT Classroom Lab\\SmartHRM (.NET)\\SmartHRM\\smarthrm\\bus\\dbinitializer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -27,9 +40,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{C9F9ED6F-FFDF-4847-B5E9-2D17FC14A237}|SmartHRM\\SmartHRM.csproj|D:\\BT Classroom Lab\\SmartHRM (.NET)\\SmartHRM\\smarthrm\\bus\\perfbus.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{C9F9ED6F-FFDF-4847-B5E9-2D17FC14A237}|SmartHRM\\SmartHRM.csproj|solutionrelative:smarthrm\\bus\\perfbus.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\pc\\.copilot\\plans\\plan-thm-bo-co-theo-di-bin-ng-lng.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}|MarkdownSecurePreview"
     },
     {
       "AbsoluteMoniker": "D:0:0:{C9F9ED6F-FFDF-4847-B5E9-2D17FC14A237}|SmartHRM\\SmartHRM.csproj|D:\\BT Classroom Lab\\SmartHRM (.NET)\\SmartHRM\\smarthrm\\bus\\paybus.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -68,24 +78,12 @@
       "RelativeMoniker": "D:0:0:{C9F9ED6F-FFDF-4847-B5E9-2D17FC14A237}|SmartHRM\\SmartHRM.csproj|solutionrelative:smarthrm\\gui\\crystalexporter.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{C9F9ED6F-FFDF-4847-B5E9-2D17FC14A237}|SmartHRM\\SmartHRM.csproj|D:\\BT Classroom Lab\\SmartHRM (.NET)\\SmartHRM\\smarthrm\\reports\\genericgrid.rpt||{C0EF7560-990E-4D61-B970-65A6096B6866}",
-      "RelativeMoniker": "D:0:0:{C9F9ED6F-FFDF-4847-B5E9-2D17FC14A237}|SmartHRM\\SmartHRM.csproj|solutionrelative:smarthrm\\reports\\genericgrid.rpt||{C0EF7560-990E-4D61-B970-65A6096B6866}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{C9F9ED6F-FFDF-4847-B5E9-2D17FC14A237}|SmartHRM\\SmartHRM.csproj|D:\\BT Classroom Lab\\SmartHRM (.NET)\\SmartHRM\\smarthrm\\bus\\core.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{C9F9ED6F-FFDF-4847-B5E9-2D17FC14A237}|SmartHRM\\SmartHRM.csproj|solutionrelative:smarthrm\\bus\\core.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{C9F9ED6F-FFDF-4847-B5E9-2D17FC14A237}|SmartHRM\\SmartHRM.csproj|D:\\BT Classroom Lab\\SmartHRM (.NET)\\SmartHRM\\smarthrm\\dal\\reportdal.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{C9F9ED6F-FFDF-4847-B5E9-2D17FC14A237}|SmartHRM\\SmartHRM.csproj|solutionrelative:smarthrm\\dal\\reportdal.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{C9F9ED6F-FFDF-4847-B5E9-2D17FC14A237}|SmartHRM\\SmartHRM.csproj|D:\\BT Classroom Lab\\SmartHRM (.NET)\\SmartHRM\\smarthrm\\bus\\hrbus.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{C9F9ED6F-FFDF-4847-B5E9-2D17FC14A237}|SmartHRM\\SmartHRM.csproj|solutionrelative:smarthrm\\bus\\hrbus.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{C9F9ED6F-FFDF-4847-B5E9-2D17FC14A237}|SmartHRM\\SmartHRM.csproj|D:\\BT Classroom Lab\\SmartHRM (.NET)\\SmartHRM\\smarthrm\\dal\\hrdals.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{C9F9ED6F-FFDF-4847-B5E9-2D17FC14A237}|SmartHRM\\SmartHRM.csproj|solutionrelative:smarthrm\\dal\\hrdals.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{C9F9ED6F-FFDF-4847-B5E9-2D17FC14A237}|SmartHRM\\SmartHRM.csproj|D:\\BT Classroom Lab\\SmartHRM (.NET)\\SmartHRM\\smarthrm\\dal\\timepaydals.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -94,10 +92,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{C9F9ED6F-FFDF-4847-B5E9-2D17FC14A237}|SmartHRM\\SmartHRM.csproj|D:\\BT Classroom Lab\\SmartHRM (.NET)\\SmartHRM\\smarthrm\\dto\\systemdtos.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{C9F9ED6F-FFDF-4847-B5E9-2D17FC14A237}|SmartHRM\\SmartHRM.csproj|solutionrelative:smarthrm\\dto\\systemdtos.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{C9F9ED6F-FFDF-4847-B5E9-2D17FC14A237}|SmartHRM\\SmartHRM.csproj|D:\\BT Classroom Lab\\SmartHRM (.NET)\\SmartHRM\\smarthrm\\bus\\systembus.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{C9F9ED6F-FFDF-4847-B5E9-2D17FC14A237}|SmartHRM\\SmartHRM.csproj|solutionrelative:smarthrm\\bus\\systembus.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -107,33 +101,50 @@
       "DocumentGroups": [
         {
           "DockedHeight": 225,
-          "SelectedChildIndex": 3,
+          "SelectedChildIndex": 0,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "dulieumau.txt",
-              "DocumentMoniker": "D:\\BT Classroom Lab\\SmartHRM (.NET)\\dulieumau.txt",
-              "RelativeDocumentMoniker": "..\\dulieumau.txt",
-              "ToolTip": "D:\\BT Classroom Lab\\SmartHRM (.NET)\\dulieumau.txt",
-              "RelativeToolTip": "..\\dulieumau.txt",
-              "ViewState": "AgIAADMAAAAAAAAAAAAIwEkAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003109|",
-              "WhenOpened": "2026-11-25T13:44:17.696Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "plan-thm-trng-thi-ngh-hu-v-chnh-sch-cng-ty.md [Preview]",
-              "DocumentMoniker": "C:\\Users\\pc\\.copilot\\plans\\plan-thm-trng-thi-ngh-hu-v-chnh-sch-cng-ty.md",
-              "ToolTip": "C:\\Users\\pc\\.copilot\\plans\\plan-thm-trng-thi-ngh-hu-v-chnh-sch-cng-ty.md [Preview]",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001818|",
-              "WhenOpened": "2026-11-25T13:31:50.638Z",
-              "EditorCaption": " [Preview]"
+              "DocumentIndex": 0,
+              "Title": "App.config",
+              "DocumentMoniker": "D:\\BT Classroom Lab\\SmartHRM (.NET)\\SmartHRM\\SmartHRM\\App.config",
+              "RelativeDocumentMoniker": "SmartHRM\\App.config",
+              "ToolTip": "D:\\BT Classroom Lab\\SmartHRM (.NET)\\SmartHRM\\SmartHRM\\App.config",
+              "RelativeToolTip": "SmartHRM\\App.config",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAIAAAAzAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000601|",
+              "WhenOpened": "2026-11-26T13:42:03.845Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 1,
+              "Title": "ReportDAL.cs",
+              "DocumentMoniker": "D:\\BT Classroom Lab\\SmartHRM (.NET)\\SmartHRM\\SmartHRM\\DAL\\ReportDAL.cs",
+              "RelativeDocumentMoniker": "SmartHRM\\DAL\\ReportDAL.cs",
+              "ToolTip": "D:\\BT Classroom Lab\\SmartHRM (.NET)\\SmartHRM\\SmartHRM\\DAL\\ReportDAL.cs",
+              "RelativeToolTip": "SmartHRM\\DAL\\ReportDAL.cs",
+              "ViewState": "AgIAAC0AAAAAAAAAAAAmwEIAAABBAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-11-25T13:16:02.015Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "SystemBUS.cs",
+              "DocumentMoniker": "D:\\BT Classroom Lab\\SmartHRM (.NET)\\SmartHRM\\SmartHRM\\BUS\\SystemBUS.cs",
+              "RelativeDocumentMoniker": "SmartHRM\\BUS\\SystemBUS.cs",
+              "ToolTip": "D:\\BT Classroom Lab\\SmartHRM (.NET)\\SmartHRM\\SmartHRM\\BUS\\SystemBUS.cs",
+              "RelativeToolTip": "SmartHRM\\BUS\\SystemBUS.cs",
+              "ViewState": "AgIAAFcAAAAAAAAAAAAAwAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-11-25T13:29:39.754Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
               "Title": "SystemDALs.cs",
               "DocumentMoniker": "D:\\BT Classroom Lab\\SmartHRM (.NET)\\SmartHRM\\SmartHRM\\DAL\\SystemDALs.cs",
               "RelativeDocumentMoniker": "SmartHRM\\DAL\\SystemDALs.cs",
@@ -145,32 +156,19 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "Const.cs",
-              "DocumentMoniker": "D:\\BT Classroom Lab\\SmartHRM (.NET)\\SmartHRM\\SmartHRM\\DTO\\Const.cs",
-              "RelativeDocumentMoniker": "SmartHRM\\DTO\\Const.cs",
-              "ToolTip": "D:\\BT Classroom Lab\\SmartHRM (.NET)\\SmartHRM\\SmartHRM\\DTO\\Const.cs",
-              "RelativeToolTip": "SmartHRM\\DTO\\Const.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "DocumentIndex": 3,
+              "Title": "HrDALs.cs",
+              "DocumentMoniker": "D:\\BT Classroom Lab\\SmartHRM (.NET)\\SmartHRM\\SmartHRM\\DAL\\HrDALs.cs",
+              "RelativeDocumentMoniker": "SmartHRM\\DAL\\HrDALs.cs",
+              "ToolTip": "D:\\BT Classroom Lab\\SmartHRM (.NET)\\SmartHRM\\SmartHRM\\DAL\\HrDALs.cs",
+              "RelativeToolTip": "SmartHRM\\DAL\\HrDALs.cs",
+              "ViewState": "AgIAABIAAAAAAAAAAAAowAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-11-25T13:15:21.289Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-11-25T13:28:44.007Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 24,
-              "Title": "SystemBUS.cs",
-              "DocumentMoniker": "D:\\BT Classroom Lab\\SmartHRM (.NET)\\SmartHRM\\SmartHRM\\BUS\\SystemBUS.cs",
-              "RelativeDocumentMoniker": "SmartHRM\\BUS\\SystemBUS.cs",
-              "ToolTip": "D:\\BT Classroom Lab\\SmartHRM (.NET)\\SmartHRM\\SmartHRM\\BUS\\SystemBUS.cs",
-              "RelativeToolTip": "SmartHRM\\BUS\\SystemBUS.cs",
-              "ViewState": "AgIAAHAAAAAAAAAAAIBJwAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-11-25T13:29:39.754Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 23,
+              "DocumentIndex": 22,
               "Title": "SystemDTOs.cs",
               "DocumentMoniker": "D:\\BT Classroom Lab\\SmartHRM (.NET)\\SmartHRM\\SmartHRM\\DTO\\SystemDTOs.cs",
               "RelativeDocumentMoniker": "SmartHRM\\DTO\\SystemDTOs.cs",
@@ -183,6 +181,30 @@
             {
               "$type": "Document",
               "DocumentIndex": 4,
+              "Title": "Const.cs",
+              "DocumentMoniker": "D:\\BT Classroom Lab\\SmartHRM (.NET)\\SmartHRM\\SmartHRM\\DTO\\Const.cs",
+              "RelativeDocumentMoniker": "SmartHRM\\DTO\\Const.cs",
+              "ToolTip": "D:\\BT Classroom Lab\\SmartHRM (.NET)\\SmartHRM\\SmartHRM\\DTO\\Const.cs",
+              "RelativeToolTip": "SmartHRM\\DTO\\Const.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-11-25T13:15:21.289Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "dulieumau.txt",
+              "DocumentMoniker": "D:\\BT Classroom Lab\\SmartHRM (.NET)\\dulieumau.txt",
+              "RelativeDocumentMoniker": "..\\dulieumau.txt",
+              "ToolTip": "D:\\BT Classroom Lab\\SmartHRM (.NET)\\dulieumau.txt",
+              "RelativeToolTip": "..\\dulieumau.txt",
+              "ViewState": "AgIAADMAAAAAAAAAAAAIwEkAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003109|",
+              "WhenOpened": "2026-11-25T13:44:17.696Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
               "Title": "DbInitializer.cs",
               "DocumentMoniker": "D:\\BT Classroom Lab\\SmartHRM (.NET)\\SmartHRM\\SmartHRM\\BUS\\DbInitializer.cs",
               "RelativeDocumentMoniker": "SmartHRM\\BUS\\DbInitializer.cs",
@@ -191,18 +213,6 @@
               "ViewState": "AgIAABMAAAAAAAAAAAASwAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-11-25T13:28:44.116Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 21,
-              "Title": "HrDALs.cs",
-              "DocumentMoniker": "D:\\BT Classroom Lab\\SmartHRM (.NET)\\SmartHRM\\SmartHRM\\DAL\\HrDALs.cs",
-              "RelativeDocumentMoniker": "SmartHRM\\DAL\\HrDALs.cs",
-              "ToolTip": "D:\\BT Classroom Lab\\SmartHRM (.NET)\\SmartHRM\\SmartHRM\\DAL\\HrDALs.cs",
-              "RelativeToolTip": "SmartHRM\\DAL\\HrDALs.cs",
-              "ViewState": "AgIAABMAAAAAAAAAAABBwAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-11-25T13:28:44.007Z"
             },
             {
               "$type": "Document",
@@ -218,7 +228,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 8,
               "Title": "HrDTOs.cs",
               "DocumentMoniker": "D:\\BT Classroom Lab\\SmartHRM (.NET)\\SmartHRM\\SmartHRM\\DTO\\HrDTOs.cs",
               "RelativeDocumentMoniker": "SmartHRM\\DTO\\HrDTOs.cs",
@@ -230,7 +240,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 9,
               "Title": "PerfBUS.cs",
               "DocumentMoniker": "D:\\BT Classroom Lab\\SmartHRM (.NET)\\SmartHRM\\SmartHRM\\BUS\\PerfBUS.cs",
               "RelativeDocumentMoniker": "SmartHRM\\BUS\\PerfBUS.cs",
@@ -242,7 +252,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 22,
+              "DocumentIndex": 21,
               "Title": "TimePayDALs.cs",
               "DocumentMoniker": "D:\\BT Classroom Lab\\SmartHRM (.NET)\\SmartHRM\\SmartHRM\\DAL\\TimePayDALs.cs",
               "RelativeDocumentMoniker": "SmartHRM\\DAL\\TimePayDALs.cs",
@@ -254,29 +264,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
-              "Title": "plan-thm-bo-co-theo-di-bin-ng-lng.md [Preview]",
-              "DocumentMoniker": "C:\\Users\\pc\\.copilot\\plans\\plan-thm-bo-co-theo-di-bin-ng-lng.md",
-              "ToolTip": "C:\\Users\\pc\\.copilot\\plans\\plan-thm-bo-co-theo-di-bin-ng-lng.md [Preview]",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001818|",
-              "WhenOpened": "2026-11-25T13:18:04.282Z",
-              "EditorCaption": " [Preview]"
-            },
-            {
-              "$type": "Document",
               "DocumentIndex": 19,
-              "Title": "ReportDAL.cs",
-              "DocumentMoniker": "D:\\BT Classroom Lab\\SmartHRM (.NET)\\SmartHRM\\SmartHRM\\DAL\\ReportDAL.cs",
-              "RelativeDocumentMoniker": "SmartHRM\\DAL\\ReportDAL.cs",
-              "ToolTip": "D:\\BT Classroom Lab\\SmartHRM (.NET)\\SmartHRM\\SmartHRM\\DAL\\ReportDAL.cs",
-              "RelativeToolTip": "SmartHRM\\DAL\\ReportDAL.cs",
-              "ViewState": "AgIAAAcAAAAAAAAAAIBHwAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-11-25T13:16:02.015Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 18,
               "Title": "Core.cs",
               "DocumentMoniker": "D:\\BT Classroom Lab\\SmartHRM (.NET)\\SmartHRM\\SmartHRM\\BUS\\Core.cs",
               "RelativeDocumentMoniker": "SmartHRM\\BUS\\Core.cs",
@@ -288,7 +276,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 10,
               "Title": "PayBUS.cs",
               "DocumentMoniker": "D:\\BT Classroom Lab\\SmartHRM (.NET)\\SmartHRM\\SmartHRM\\BUS\\PayBUS.cs",
               "RelativeDocumentMoniker": "SmartHRM\\BUS\\PayBUS.cs",
@@ -300,7 +288,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 12,
+              "DocumentIndex": 14,
               "Title": "AppLogger.cs",
               "DocumentMoniker": "D:\\BT Classroom Lab\\SmartHRM (.NET)\\SmartHRM\\SmartHRM\\Common\\AppLogger.cs",
               "RelativeDocumentMoniker": "SmartHRM\\Common\\AppLogger.cs",
@@ -312,7 +300,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 11,
+              "DocumentIndex": 13,
               "Title": "DashboardForm.cs",
               "DocumentMoniker": "D:\\BT Classroom Lab\\SmartHRM (.NET)\\SmartHRM\\SmartHRM\\GUI\\DashboardForm.cs",
               "RelativeDocumentMoniker": "SmartHRM\\GUI\\DashboardForm.cs",
@@ -324,7 +312,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 11,
               "Title": "ReportForm.cs",
               "DocumentMoniker": "D:\\BT Classroom Lab\\SmartHRM (.NET)\\SmartHRM\\SmartHRM\\GUI\\ReportForm.cs",
               "RelativeDocumentMoniker": "SmartHRM\\GUI\\ReportForm.cs",
@@ -336,7 +324,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
+              "DocumentIndex": 12,
               "Title": "LoginForm.cs",
               "DocumentMoniker": "D:\\BT Classroom Lab\\SmartHRM (.NET)\\SmartHRM\\SmartHRM\\GUI\\LoginForm.cs",
               "RelativeDocumentMoniker": "SmartHRM\\GUI\\LoginForm.cs",
@@ -348,7 +336,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 13,
+              "DocumentIndex": 15,
               "Title": "EntityEditForm.cs",
               "DocumentMoniker": "D:\\BT Classroom Lab\\SmartHRM (.NET)\\SmartHRM\\SmartHRM\\GUI\\EntityEditForm.cs",
               "RelativeDocumentMoniker": "SmartHRM\\GUI\\EntityEditForm.cs",
@@ -360,7 +348,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 15,
+              "DocumentIndex": 17,
               "Title": "MainForm.cs",
               "DocumentMoniker": "D:\\BT Classroom Lab\\SmartHRM (.NET)\\SmartHRM\\SmartHRM\\GUI\\MainForm.cs",
               "RelativeDocumentMoniker": "SmartHRM\\GUI\\MainForm.cs",
@@ -372,18 +360,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 17,
-              "Title": "GenericGrid.rpt",
-              "DocumentMoniker": "D:\\BT Classroom Lab\\SmartHRM (.NET)\\SmartHRM\\SmartHRM\\Reports\\GenericGrid.rpt",
-              "RelativeDocumentMoniker": "SmartHRM\\Reports\\GenericGrid.rpt",
-              "ToolTip": "D:\\BT Classroom Lab\\SmartHRM (.NET)\\SmartHRM\\SmartHRM\\Reports\\GenericGrid.rpt",
-              "RelativeToolTip": "SmartHRM\\Reports\\GenericGrid.rpt",
-              "Icon": "00000000-0000-0000-0000-000000000000.000000|iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAIeSURBVDhPpZJNSFRRFMd/9973ZnIaswwiWvSFmyFNFyEUTlC4qDYptghaSOAmoY3QojZFVkLuIqZ2FhVCYGOLFhERRBs3MkP0IWmZ5geaOo06M76v28Ia581r1w/O4lzO\u002BZ9z7jnwP2itRamfGEzpUr\u002BczpYGX3yAxGBKu56nXc/T5SQGU/pfBWTgQQim5leYnFv2GcCF0/WBLgMCAFKKgAHce56GslF9Akquu0qKot3xepFC0BqvoTVeQ0tTDVXRcDHHJ/AnHyUlSkqSYoAH0/eJTzWgpMRQEtPwN\u002B3zTKUAMJTg5vwN2ORQKbew7GU5MnGw2FUpxt6OT61C6ONA9fBXj1O/LLpnryKlwciPMZbnsgBknSyNk3UMH/vgExD5vNW2Wlhrfj\u002Be23NrYOnkdEYSj4UZajhDxf4wM\u002BkZvj0Zg0XIDdgAJN\u002BNcq45JgBk5/X\u002B5KXbz7oMN3vlbsd2jsZCvEwVsPofExGVUNCQgULS8W0kwPnLD0Xy7YheyKzos73juvbiqD7U9UUf6K/Tq/k1bdmuth1XW7arn74ZCa6xr6ddh0MmVdEKmmIRtkYNTNPkUf0LLNtFqfXqSglMtfH3gUMqOJCe8KiuCrGr2qBg2TiOWx5WxDdQ36tJ/Xk2zOKqZHPI4/DuDAuLC\u002BzcsY1IZON4AE407hOUC\u002BTzVlvesq9lsrnan0src0Pp8e7hjxOvge99Pe250ti//Aa4Se8VLBKf0wAAAABJRU5ErkJggg==",
-              "WhenOpened": "2026-11-12T13:01:56.584Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 16,
+              "DocumentIndex": 18,
               "Title": "CrystalExporter.cs",
               "DocumentMoniker": "D:\\BT Classroom Lab\\SmartHRM (.NET)\\SmartHRM\\SmartHRM\\GUI\\CrystalExporter.cs",
               "RelativeDocumentMoniker": "SmartHRM\\GUI\\CrystalExporter.cs",
@@ -395,7 +372,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 14,
+              "DocumentIndex": 16,
               "Title": "Ui.cs",
               "DocumentMoniker": "D:\\BT Classroom Lab\\SmartHRM (.NET)\\SmartHRM\\SmartHRM\\GUI\\Ui.cs",
               "RelativeDocumentMoniker": "SmartHRM\\GUI\\Ui.cs",

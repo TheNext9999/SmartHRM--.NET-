@@ -261,11 +261,12 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>GenericGrid.rpt</DependentUpon>
       <SubType>Component</SubType>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Compile>
     <Compile Include="Reports\GenericGrid.Designer.cs">
+      <DependentUpon>GenericGrid.xsd</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>GenericGrid.xsd</DependentUpon>
     </Compile>
     <EmbeddedResource Include="GUI\AuditLogForm.resx">
       <DependentUpon>AuditLogForm.cs</DependentUpon>
@@ -315,6 +316,7 @@
     <EmbeddedResource Include="Reports\GenericGrid.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>GenericGrid.cs</LastGenOutput>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
