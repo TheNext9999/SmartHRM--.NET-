@@ -118,7 +118,7 @@
               "ToolTip": "D:\\BT Classroom Lab\\SmartHRM (.NET)\\SmartHRM\\SmartHRM\\SmartHRM.csproj",
               "RelativeToolTip": "SmartHRM\\SmartHRM.csproj",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
-              "WhenOpened": "2026-11-28T09:12:39.841Z",
+              "WhenOpened": "2026-11-28T09:20:19.346Z",
               "EditorCaption": ""
             },
             {
@@ -129,7 +129,7 @@
               "RelativeDocumentMoniker": "SmartHRM\\App.config",
               "ToolTip": "D:\\BT Classroom Lab\\SmartHRM (.NET)\\SmartHRM\\SmartHRM\\App.config",
               "RelativeToolTip": "SmartHRM\\App.config",
-              "ViewState": "AgIAAA8AAAAAAAAAAAAAAAIAAAAzAAAAAAAAAA==",
+              "ViewState": "AgIAABUAAAAAAAAAAAAAAAIAAAAzAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000601|",
               "WhenOpened": "2026-11-26T13:42:03.845Z",
               "EditorCaption": ""
@@ -144,7 +144,8 @@
               "RelativeToolTip": "SmartHRM\\DAL\\ReportDAL.cs",
               "ViewState": "AgIAAC0AAAAAAAAAAAAmwEIAAABBAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-11-25T13:16:02.015Z"
+              "WhenOpened": "2026-11-25T13:16:02.015Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
